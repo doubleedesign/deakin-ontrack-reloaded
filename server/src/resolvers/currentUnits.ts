@@ -1,4 +1,5 @@
 import { RawUnit, ServerContext, Unit } from '../types';
+import { GraphQLError } from 'graphql/error';
 
 export const getCurrentUnitsResolver = {
 	Query: {
@@ -11,7 +12,7 @@ export const getCurrentUnitsResolver = {
 				}).map((unit: RawUnit) => unit.unit);
 			}
 			catch(error) {
-				throw new Error(error.message);
+				throw new GraphQLError(error.message);
 			}
 		}
 	}
