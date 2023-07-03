@@ -1,7 +1,7 @@
 {
 	"name": "deakin-custom-ontrack-client",
-	"version": "0.0.1",
 	"private": true,
+	"version": "0.0.1",
 	"description": "Custom app to access and present data about my class progress in Deakin's OnTrack system. Published without any warranty, use at your own risk.",
 	"author": "Leesa Ward",
 	"workspaces": ["./server", "./frontend"],
