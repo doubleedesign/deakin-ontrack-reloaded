@@ -28,7 +28,7 @@ function App() {
 			context: {
 				headers: {
 					username: username,
-					token: token
+					'auth-token': token
 				}
 			}
 		});
