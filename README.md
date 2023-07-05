@@ -1,4 +1,4 @@
-# OnTrack Reloaded
+# <img src="frontend/public/ontrack-reloaded.svg" width="50" alt="" style="position:relative; top:10px"> OnTrack Reloaded
 
 Custom client to view data from Deakin University's OnTrack assessment system, used for IT and CS units.
 
