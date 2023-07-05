@@ -3,8 +3,8 @@ import { CURRENT_UNITS_QUERY } from './graphql/queries.ts';
 import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
 import { GraphQLError } from 'graphql/error';
-import { Unit } from './types.ts';
 import { AppContext } from './context/AppContextProvider.tsx';
+import { Unit } from '@server/types.ts';
 
 function App() {
 	const { setCredentials, queryOptions } = useContext(AppContext);
