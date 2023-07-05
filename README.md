@@ -56,13 +56,8 @@ You are welcome to fork this repo and modify it to find your own way of managing
 
 While I will respond to GitHub issues to the best of my ability when I have capacity to do so, please understand that this is a side project primarily built for personal use and published a) to showcase some of my skills and b) in the hope that it may assist fellow students. 
 
-This project does noes not replicate all functionality of OnTrack. I accept no responsibility for missed tasks or assessment information if you use this app. It is your responsibility to check the official OnTrack app regularly to make sure you have the latest and complete information.
+This project is published as-is, with absolutely no warranty whatsoever, no guarantee of support, no guarantees about its functionality or data completeness, and no guarantee that changes to this app will be backwards-compatible (i.e., no promise that forks won't break if my changes are pulled into them).
 
-This project is published as-is, with:
-- absolutely no warranty whatsoever
-- no guarantee of support
-- no guarantee that it will work for you
-- no guarantee that that data shown will be complete and accurate and remain so if changes are made to the OnTrack API, and
-- no guarantee that changes to this app will be backwards-compatible, i.e., forks won't break if my changes are pulled in.
+This project does noes not replicate all functionality of OnTrack. I accept no responsibility for missed tasks or assessment information if you use this app. It is your responsibility to check the official OnTrack app regularly to make sure you have the latest and complete information.
 
 With that fine print out of the way, go forth and reload! 
