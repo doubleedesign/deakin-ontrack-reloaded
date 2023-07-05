@@ -1,4 +1,5 @@
-import { ProjectOverview, ServerContext, Subject } from '../types';
+import { ServerContext, Subject } from '../types';
+import { ProjectOverview } from '../datasources/OnTrack/types';
 import { GraphQLError } from 'graphql/error';
 
 export const getCurrentSubjectsResolver = {

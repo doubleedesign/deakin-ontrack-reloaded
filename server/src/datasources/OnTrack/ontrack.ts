@@ -1,5 +1,5 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import { ProjectDetail, ProjectOverview, UnitDetail } from 'src/types';
+import { ProjectDetail, ProjectOverview, UnitDetail } from './types';
 
 /**
  * Each unit enrolment you have is for some reason called a Project in the OnTrack API.

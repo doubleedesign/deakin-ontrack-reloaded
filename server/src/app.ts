@@ -1,7 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import chalk from 'chalk';
-import { Ontrack } from './datasources/ontrack';
+import { Ontrack } from './datasources/OnTrack/ontrack';
 import { typeDefs } from './schema';
 import { getCurrentSubjectsResolver } from './resolvers/currentSubjects';
 

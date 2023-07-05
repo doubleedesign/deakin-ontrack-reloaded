@@ -11,8 +11,8 @@
 		"skipLibCheck": true,
 		"moduleResolution": "bundler",
 		"paths": {
-			"@server/*": [
-				"../server/src/*"
+			"@server/types.ts": [
+				"../server/src/types.ts"
 			]
 		},
 		"allowImportingTsExtensions": true,
