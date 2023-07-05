@@ -3,12 +3,12 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import chalk from 'chalk';
 import { Ontrack } from './datasources/ontrack';
 import { typeDefs } from './schema';
-import { getCurrentUnitsResolver } from './resolvers/currentUnits';
+import { getCurrentSubjectsResolver } from './resolvers/currentSubjects';
 
 const graphQLServer = new ApolloServer({
 	typeDefs,
 	resolvers: {
-		...getCurrentUnitsResolver
+		...getCurrentSubjectsResolver
 	}
 });
 

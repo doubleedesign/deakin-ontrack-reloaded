@@ -2,26 +2,22 @@ import gql from 'graphql-tag';
 
 export const typeDefs = gql`
 	type Query {
-		getCurrentUnits: [Unit]
+		getCurrentSubjects: [Subject]
 	}
 	
-	type RawUnit {
-		campus_id: Int
-		id: Int
-		portfolio_available: Boolean
+	type Subject {
+		project_id: Int
+		unit_id: Int
+		unit_code: String
+        name: String
 		target_grade: Int
-		unit: Unit
-		user_id: Int
+		assignments: [Assignment]
 	}
 	
-	type Unit {
-		active: Boolean
-		code: String
-		name: String
-		id: String
-		start_date: String
-		end_date: String
-		my_role: String
-		teaching_period: Int
+	type Assignment {
+		id: Int
+		target_date: String
+		due_date: String
+		status: String
 	}
 `;

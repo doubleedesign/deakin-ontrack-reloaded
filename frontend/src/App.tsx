@@ -1,17 +1,17 @@
 import { useCallback, useState, useContext, useEffect } from 'react';
-import { CURRENT_UNITS_QUERY } from './graphql/queries.ts';
+import { CURRENT_SUBJECTS_QUERY } from './graphql/queries.ts';
 import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
 import { GraphQLError } from 'graphql/error';
 import { AppContext } from './context/AppContextProvider.tsx';
-import { Unit } from '@server/types.ts';
+import { Subject } from '@server/types.ts';
 
 function App() {
 	const { setCredentials, queryOptions } = useContext(AppContext);
-	const [getCurrentUnits] = useLazyQuery(CURRENT_UNITS_QUERY, { fetchPolicy: 'no-cache' });
+	const [getCurrentUnits] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'no-cache' });
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [currentUnits, setCurrentUnits] = useState<Partial<Unit>[]>();
+	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
 
 	const handleOntrack = useCallback(async function handleOntrack() {
 		// Stop lying to me, TypeScript. The response contains a detailed 'errors' array.
@@ -22,13 +22,13 @@ function App() {
 			setErrors(errors);
 		}
 		if(data) {
-			setCurrentUnits(data.getCurrentUnits);
+			setCurrentSubjects(data.getCurrentSubjects);
 		}
 	}, [getCurrentUnits, queryOptions]);
 
 	useEffect(() => {
-		console.log(currentUnits);
-	}, [currentUnits]);
+		console.log(currentSubjects);
+	}, [currentSubjects]);
 
 	return (
 		<>

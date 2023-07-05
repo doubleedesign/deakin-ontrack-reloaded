@@ -1,10 +1,9 @@
 import gql from 'graphql-tag';
 
-export const CURRENT_UNITS_QUERY = gql`
+export const CURRENT_SUBJECTS_QUERY = gql`
     query CurrentUnitsQuery {
-        getCurrentUnits {
-            name,
-            id
+        getCurrentSubjects {
+            name
         }
     }
 `;
