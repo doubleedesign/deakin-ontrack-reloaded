@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/deakin-custom-ontrack-client.iml" filepath="$PROJECT_DIR$/.idea/deakin-custom-ontrack-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/deakin-ontrack-reloaded.iml" filepath="$PROJECT_DIR$/.idea/deakin-ontrack-reloaded.iml" />
     </modules>
   </component>
 </project>
