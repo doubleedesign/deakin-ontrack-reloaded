@@ -6,18 +6,17 @@ export const typeDefs = gql`
 	}
 	
 	type Subject {
-		project_id: Int
-		unit_id: Int
-		unit_code: String
+		projectId: Int
+		unitId: Int
+		unitCode: String
         name: String
-		target_grade: Int
-		assignments: [Assignment]
+		targetGrade: Int
 	}
 	
 	type Assignment {
 		id: Int
-		target_date: String
-		due_date: String
+		targetDate: String
+		dueDate: String
 		status: String
 	}
 `;

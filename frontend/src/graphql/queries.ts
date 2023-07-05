@@ -1,9 +1,11 @@
 import gql from 'graphql-tag';
 
 export const CURRENT_SUBJECTS_QUERY = gql`
-    query CurrentUnitsQuery {
+    query CurrentSubjectsQuery {
         getCurrentSubjects {
-            name
+            unitCode,
+	        name,
+	        targetGrade
         }
     }
 `;

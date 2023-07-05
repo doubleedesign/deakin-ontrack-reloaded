@@ -26,7 +26,7 @@ export type ProjectDetail = ProjectOverview & {
 }
 
 export type UnitOverview = {
-	id: string;
+	id: number;
 	code: string;
 	name: string;
 	start_date: string;
