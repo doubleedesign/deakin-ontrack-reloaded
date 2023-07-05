@@ -2,8 +2,12 @@
 	"name": "frontend",
 	"private": true,
 	"version": "0.0.1",
-	"description": "Front-end for custom app to access and present data about my class progress in Deakin's OnTrack system. Published without any warranty, use at your own risk.",
+	"description": "Front-end for personal custom app to access and present data about my class progress in Deakin's OnTrack system.",
 	"author": "Leesa Ward",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/doubleedesign/deakin-custom-ontrack-client"
+	},
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
