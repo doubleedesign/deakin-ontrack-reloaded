@@ -17,8 +17,18 @@ export type Subject = {
 
 export type Assignment = {
 	id: number;
+	unitId: number;
+	abbreviation: string;
+	name: string;
+	description: string;
+	status: TaskStatus;
 	targetDate: string;
 	dueDate: string;
-	status: TaskStatus;
+	submissionDate: string;
+	completionDate: string;
+	weighting: number;
+	isGraded: boolean;
+	maxPoints: number;
+	awardedPoints: number;
 }
 
