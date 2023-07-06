@@ -8,7 +8,9 @@ import { getCurrentSubjectsResolver } from './resolvers/currentSubjects';
 const graphQLServer = new ApolloServer({
 	typeDefs,
 	resolvers: {
-		...getCurrentSubjectsResolver
+		Query: {
+			...getCurrentSubjectsResolver,
+		}
 	}
 });
 
