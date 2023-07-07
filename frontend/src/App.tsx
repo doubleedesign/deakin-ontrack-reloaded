@@ -1,18 +1,20 @@
 import { useCallback, useState, useContext, useEffect } from 'react';
-import { CURRENT_SUBJECTS_QUERY } from './graphql/queries.ts';
+import { CURRENT_SUBJECTS_QUERY, UPCOMING_ASSIGNMENTS_QUERY } from './graphql/queries.ts';
 import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
 import { GraphQLError } from 'graphql/error';
 import { AppContext } from './context/AppContextProvider.tsx';
-import { Subject } from '@server/types.ts';
+import { Assignment, Subject } from '@server/types.ts';
 
 function App() {
 	const { setCredentials, queryOptions } = useContext(AppContext);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'no-cache' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
+	const [getUpcomingAssignments] = useLazyQuery(UPCOMING_ASSIGNMENTS_QUERY, { fetchPolicy: 'no-cache' });
+	const [upcomingAssignments, setUpcomingAssignments] = useState<Assignment[]>();
 
-	function handleSubjects() {
+	async function handleSubjects() {
 		// Stop lying to me, TypeScript. The response contains a detailed 'errors' array when there's errors.
 		// @ts-ignore
 		const { data, errors } = await getCurrentSubjects(queryOptions);
@@ -24,13 +26,30 @@ function App() {
 		}
 	}
 
-	const handleOntrack = useCallback(async function handleOntrack() {
-		handleSubjects();
-	},[]);
+	async function handleAssignments() {
+		// @ts-ignore
+		const { data, errors } = await getUpcomingAssignments(queryOptions);
+		if(errors)  {
+			setErrors(errors);
+		}
+		if(data) {
+			setUpcomingAssignments(data.assignments);
+		}
+	}
+
+	// TODO: This isn't actually working, but keeping it here for now to show the general idea
+	function handleOntrack() {
+		handleSubjects().then();
+		handleAssignments().then();
+	}
 
 	useEffect(() => {
 		console.log(currentSubjects);
 	}, [currentSubjects]);
+
+	useEffect(() => {
+		console.log(upcomingAssignments);
+	}, [upcomingAssignments]);
 
 	return (
 		<>

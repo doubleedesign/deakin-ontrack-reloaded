@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const typeDefs = gql`
 	type Query {
 		getCurrentSubjects: [Subject]
+		getUpcomingAssignments: [Assignment]
 	}
 	
 	type Subject {

@@ -4,12 +4,14 @@ import chalk from 'chalk';
 import { Ontrack } from './datasources/OnTrack/ontrack';
 import { typeDefs } from './schema';
 import { getCurrentSubjectsResolver } from './resolvers/currentSubjects';
+import { getUpcomingAssignmentsResolver } from './resolvers/upcomingAssignments';
 
 const graphQLServer = new ApolloServer({
 	typeDefs,
 	resolvers: {
 		Query: {
 			...getCurrentSubjectsResolver,
+			...getUpcomingAssignmentsResolver,
 		}
 	}
 });

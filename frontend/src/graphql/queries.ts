@@ -11,3 +11,18 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{subjects: Subject[]}> = 
         }
     }
 `;
+
+export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{assignments: Assignment[]}> = gql`
+    query UpcomingAssignmentsQuery {
+        getUpcomingAssignments {
+            id,
+            name,
+            description,
+	        target_date,
+            due_date,
+            unitId,
+            projectId
+        }
+    }
+
+`;
