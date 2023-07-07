@@ -24,8 +24,23 @@ export class Ontrack extends RESTDataSource {
 	/**
 	 * Gets all of your enrolments, called "Projects" in the OnTrack API
 	 */
-	public async getProjects(): Promise<ProjectOverview[]> {
+	public async getAllProjects(): Promise<ProjectOverview[]> {
 		return await this.get('/api/projects', this.options);
+	}
+
+	/**
+	 * Get just your current enrolments, called "Projects" in the OnTrack API
+	 */
+	public async getCurrentProjects(): Promise<ProjectOverview[]> {
+		const projects = await this.get('/api/projects/?include_inactive=false', this.options);
+
+		// At the time of writing,
+		// the include_inactive parameter doesn't actually work, it returns all projects regardless
+		// (the front-end code in OnTrack just outputs an empty component for inactive units)
+		// so I need to do my own filtering
+		return projects.filter(project => {
+			return new Date(project.unit.end_date) > new Date();
+		});
 	}
 
 	/**

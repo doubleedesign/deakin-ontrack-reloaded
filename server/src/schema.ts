@@ -15,14 +15,16 @@ export const typeDefs = gql`
 	
 	type Assignment {
 		id: Int
+		unitId: Int
+		projectId: Int
 		abbreviation: String
 		name: String
 		description: String
         status: String
-		targetDate: String
-		dueDate: String
-        submissionDate: String
-		completionDate: String
+		target_date: String
+		due_date: String
+        submission_date: String
+		completion_date: String
 		weighting: Int
 		isGraded: Boolean
 		maxPoints: Int

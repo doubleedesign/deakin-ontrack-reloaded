@@ -6,7 +6,7 @@ import chalk from 'chalk';
 export const getCurrentSubjectsResolver = {
 	getCurrentSubjects: async (_: any, args: any, context: ServerContext): Promise<Subject[]> => {
 		try {
-			const projects: ProjectOverview[] = await context.datasources.onTrack.getProjects();
+			const projects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
 
 			const current: ProjectOverview[] = projects.filter((item: ProjectOverview) => {
 				return new Date(item.unit.end_date) > new Date();

@@ -16,18 +16,19 @@ export type Subject = {
 }
 
 export type Assignment = {
-	id: number;
+	id: number; // The Task ID, not the Task Definition ID
+	projectId: number;
 	unitId: number;
 	abbreviation: string;
 	name: string;
 	description: string;
 	status: TaskStatus;
-	targetDate: string;
-	dueDate: string;
-	submissionDate: string;
-	completionDate: string;
+	target_date: string;
+	due_date: string;
+	submission_date: string;
+	completion_date: string;
 	weighting: number;
-	isGraded: boolean;
+	is_graded: boolean;
 	maxPoints: number;
 	awardedPoints: number;
 }
