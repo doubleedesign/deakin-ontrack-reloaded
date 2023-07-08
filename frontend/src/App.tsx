@@ -42,7 +42,7 @@ function App() {
 		}
 	}
 
-	const handleOntrack = useCallback(async function handleOntrack() {
+	const handleOntrack = useCallback(async function() {
 		await handleSubjects();
 		await handleAssignments();
 	}, []);
@@ -55,7 +55,7 @@ function App() {
 		console.log(upcomingAssignments);
 	}, [upcomingAssignments]);
 
-	const handleDataExample = useCallback(async function handleDataExample() {
+	const handleDataExample = useCallback(async function() {
 		// Very basic example, you probably also want to handle errors here
 		const { data } = await getAssignments(
 			{

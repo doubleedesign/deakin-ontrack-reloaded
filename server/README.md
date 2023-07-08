@@ -179,7 +179,7 @@ export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsFor
 export default function YourComponent() {
 	const [getAssignments] = useLazyQuery(ASSIGNMENTS_FOR_SUBJECT_QUERY, { fetchPolicy: 'no-cache' });
 
-	const handleDataExample = useCallback(async function handleDataExample() {
+	const handleDataExample = useCallback(async function() {
 		// Very basic example, you probably also want to handle errors here as well as do something with the data
 		const { data } = await getAssignments(
 			{
