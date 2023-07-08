@@ -26,7 +26,7 @@ Other important information:
 1. Fork this repo.
 2. Clone your fork on your machine.
 3. In a terminal, un `npm install` from the root of the project (it uses [NPM workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces))
-4. In the terminal, go into the server folder with `cd server` and run `npm run dev`
+4. In the terminal, go into the server folder with `cd server` and run `npm run start` to run with the real OnTrack API or `npm run dev` to run with the [Mock API](mockapi/README.md)
     - Optionally, go to http://localhost:5000 in your browser to use [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/v2/testing/graphql-playground/)
 5. In a second terminal window, go into the frontend folder with `cd frontend` and run `npm run dev`
    - Open the URL shown in your terminal.

@@ -18,15 +18,24 @@ const graphQLServer = new ApolloServer({
 	}
 });
 
-const server = await startStandaloneServer(graphQLServer, {
-	listen: { port: 5000 },
-	context: async ({ req, res }) => {
-		return ({
-			datasources: {
-				onTrack: new Ontrack(<string>req.headers.username, <string>req.headers['auth-token'])
-			}
-		});
-	},
-});
+function startServer() {
+	let baseURL = 'https://ontrack.deakin.edu.au';
+	if(process.env.NODE_ENV.trim() == 'development') {
+		baseURL = 'http://localhost:6001';
+	}
 
-console.log(chalk.magenta(`🚀 GraphQL server ready at: ${server.url}`));
+	startStandaloneServer(graphQLServer, {
+		listen: { port: 5000 },
+		context: async ({ req, res }) => {
+			return ({
+				datasources: {
+					onTrack: new Ontrack(<string>req.headers.username, <string>req.headers['auth-token'], baseURL)
+				}
+			});
+		},
+	}).then((server) => {
+		console.log(chalk.magenta(`🚀 GraphQL server ready at: ${server.url}`));
+	});
+}
+
+startServer();

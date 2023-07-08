@@ -10,15 +10,15 @@ import { ProjectDetail, ProjectOverview, UnitDetail } from './types';
 export class Ontrack extends RESTDataSource {
 	private readonly options: { headers: { Username: string; 'Auth-Token': string } };
 
-	constructor(username: string, token: string) {
+	constructor(username: string, token: string, baseURL: string) {
 		super();
-		this.baseURL = 'https://ontrack.deakin.edu.au';
 		this.options = {
 			headers: {
 				'Auth-Token': token,
 				'Username': username
 			}
 		};
+		this.baseURL = baseURL;
 	}
 
 	/**
