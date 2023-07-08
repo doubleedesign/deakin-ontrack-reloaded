@@ -3,17 +3,17 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import chalk from 'chalk';
 import { Ontrack } from './datasources/OnTrack/ontrack';
 import { typeDefs } from './schema';
-import { getCurrentSubjectsResolver } from './resolvers/currentSubjects';
-import { getUpcomingAssignmentsResolver } from './resolvers/upcomingAssignments';
-import { getAssignmentsForSubjectResolver } from './resolvers/assignmentsForSubject';
+import { currentSubjectsResolver } from './resolvers/currentSubjects';
+import { allUpcomingAssignmentsResolver } from './resolvers/upcomingAssignments';
+import { assignmentsForSubjectResolver } from './resolvers/assignmentsForSubject';
 
 const graphQLServer = new ApolloServer({
 	typeDefs,
 	resolvers: {
 		Query: {
-			...getCurrentSubjectsResolver,
-			...getUpcomingAssignmentsResolver,
-			...getAssignmentsForSubjectResolver
+			...currentSubjectsResolver,
+			...allUpcomingAssignmentsResolver,
+			...assignmentsForSubjectResolver
 		}
 	}
 });

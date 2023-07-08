@@ -4,8 +4,8 @@ import { GraphQLError } from 'graphql/error';
 import pick from 'lodash/pick';
 import chalk from 'chalk';
 
-export const getAssignmentsForSubjectResolver = {
-	getAssignmentsForSubject: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
+export const assignmentsForSubjectResolver = {
+	allAssignmentsForSubject: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
 		try {
 			const projectDetails: ProjectDetail = await context.datasources.onTrack.getProjectDetails(args.projectId);
 			const unitDetails: UnitDetail = await context.datasources.onTrack.getUnitDetails(args.unitId);

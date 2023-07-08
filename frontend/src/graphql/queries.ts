@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
 import { Assignment, Subject } from '@server/types.ts';
 
-export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{getCurrentSubjects: Subject[]}> = gql`
+export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject[]}> = gql`
     query CurrentSubjectsQuery {
-        getCurrentSubjects {
+        currentSubjects {
             unitCode,
 	        name,
 	        targetGrade
@@ -12,9 +12,9 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{getCurrentSubjects: Subj
     }
 `;
 
-export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{getUpcomingAssignments: Assignment[]}> = gql`
+export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{allUpcomingAssignments: Assignment[]}> = gql`
     query UpcomingAssignmentsQuery {
-        getUpcomingAssignments {
+        allUpcomingAssignments {
             id,
             name,
             description,
@@ -26,9 +26,9 @@ export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{getUpcomingAssignmen
     }
 `;
 
-export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{getAssignmentsForSubject: Assignment[]}> = gql`
+export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsForSubject: Assignment[]}> = gql`
     query AssignmentsForSubjectQuery($projectId: Int, $unitId: Int) {
-        getAssignmentsForSubject(projectId: $projectId, unitId: $unitId) {
+        allAssignmentsForSubject(projectId: $projectId, unitId: $unitId) {
             abbreviation,
             name,
             due_date,

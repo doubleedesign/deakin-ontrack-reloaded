@@ -27,7 +27,7 @@ function App() {
 			setErrors(errors);
 		}
 		if(data) {
-			setCurrentSubjects(data.getCurrentSubjects);
+			setCurrentSubjects(data.currentSubjects);
 		}
 	}
 
@@ -38,7 +38,7 @@ function App() {
 			setErrors(errors);
 		}
 		if(data) {
-			setUpcomingAssignments(data.getUpcomingAssignments);
+			setUpcomingAssignments(data.allUpcomingAssignments);
 		}
 	}
 

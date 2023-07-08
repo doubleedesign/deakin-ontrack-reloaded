@@ -5,8 +5,8 @@ import chalk from 'chalk';
 import pick from 'lodash/pick';
 import flattenDeep from 'lodash/flattenDeep';
 
-export const getUpcomingAssignmentsResolver = {
-	getUpcomingAssignments: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
+export const allUpcomingAssignmentsResolver = {
+	allUpcomingAssignments: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
 		try {
 			const projects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
 			const ids = projects.map(project => {

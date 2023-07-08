@@ -3,8 +3,8 @@ import { ProjectOverview } from '../datasources/OnTrack/types';
 import { GraphQLError } from 'graphql/error';
 import chalk from 'chalk';
 
-export const getCurrentSubjectsResolver = {
-	getCurrentSubjects: async (_: any, args: any, context: ServerContext): Promise<Subject[]> => {
+export const currentSubjectsResolver = {
+	currentSubjects: async (_: any, args: any, context: ServerContext): Promise<Subject[]> => {
 		try {
 			const projects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
 

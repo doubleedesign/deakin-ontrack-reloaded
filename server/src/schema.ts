@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 
 export const typeDefs = gql`
 	type Query {
-		getCurrentSubjects: [Subject]
-		getUpcomingAssignments: [Assignment]
-		getAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
+		currentSubjects: [Subject]
+		allUpcomingAssignments: [Assignment]
+		allAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
 	}
 	
 	type Subject {
