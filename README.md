@@ -13,6 +13,7 @@ A bit about how it's built and how it works:
   - [Front-end queries](server/README.md#queries-front-end)
   - [A complete example](server/README.md#a-complete-example)
 - [Front-end app](frontend/README.md)
+- [Mock API](mockapi/README.md) (for demonstration, development, and testing purposes)
 
 Other important information:
 - [Making your own version](#making-your-own-version)
