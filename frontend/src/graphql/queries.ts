@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
 import { Assignment, Subject } from '@server/types.ts';
 
-export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{subjects: Subject[]}> = gql`
+export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{getCurrentSubjects: Subject[]}> = gql`
     query CurrentSubjectsQuery {
         getCurrentSubjects {
             unitCode,
@@ -12,7 +12,7 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{subjects: Subject[]}> = 
     }
 `;
 
-export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{assignments: Assignment[]}> = gql`
+export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{getUpcomingAssignments: Assignment[]}> = gql`
     query UpcomingAssignmentsQuery {
         getUpcomingAssignments {
             id,

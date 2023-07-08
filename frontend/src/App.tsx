@@ -22,7 +22,7 @@ function App() {
 			setErrors(errors);
 		}
 		if(data) {
-			setCurrentSubjects(data.subjects);
+			setCurrentSubjects(data.getCurrentSubjects);
 		}
 	}
 
@@ -33,14 +33,13 @@ function App() {
 			setErrors(errors);
 		}
 		if(data) {
-			setUpcomingAssignments(data.assignments);
+			setUpcomingAssignments(data.getUpcomingAssignments);
 		}
 	}
-
-	// TODO: This isn't actually working, but keeping it here for now to show the general idea
-	function handleOntrack() {
-		handleSubjects().then();
-		handleAssignments().then();
+	
+	async function handleOntrack() {
+		await handleSubjects();
+		await handleAssignments();
 	}
 
 	useEffect(() => {
