@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"module": "esnext",
+		"target": "esnext",
+		"moduleResolution": "nodenext",
+		"allowImportingTsExtensions": true,
+		"esModuleInterop": true,
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"incremental": true,
+		"paths": {
+			"@server/types.ts": ["../server/src/types.ts"],
+			"@server/ontrack/types.ts": ["../server/src/datasources/OnTrack/types.ts"],
+		},
+	},
+	"include": [
+		"src"
+	]
+}
