@@ -147,6 +147,13 @@ const graphQLServer = new ApolloServer({
 
 ### 4. Query
 
+#### Example in GraphQL Playground
+
+Note that you would also need to  fill in your `username` and `Auth-Token` in the **Headers** tab at the bottom.
+
+<img width="1280" alt="GQL Playground example" src="https://github.com/doubleedesign/deakin-ontrack-reloaded/assets/563583/844ae6c7-482d-4933-9e5b-e8239c15d6e4">
+
+
 #### Example usage in React component
 
 ```typescript
