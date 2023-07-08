@@ -48,3 +48,145 @@ Queries can essentially be copied from GraphQL Playground into `queries.ts`.
 ## GraphQL Playground
 
 With your server running locally, you can access [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/v2/testing/graphql-playground/) at http://localhost:5000/graphql to test queries. I find it's a good idea to do this before trying to implement them on the front-end, as it helps narrow down where the problem is if something isn't working.
+
+---
+## A complete example
+
+I've tried to do some fairly self-contained commits to show the different pieces of adding a new query, but as I often ended up fixing or changing bits later I figured it'd be a good idea to note a complete working example here for future reference. 
+
+These are the steps I take to add a new endpoint/query. You could do some of them in a different order (and I do find I sometimes jump back and forth between steps to get it right), this is just what made the most sense to me as a general approach.
+
+### 1. Here's a datasource I prepared earlier
+
+In `datasources/OnTrack/ontrack.ts`, there are methods that call the same endpoints that the real OnTrack app does at the time of writing. See [Wording and Definitions](#wording-and-definitions) above as well as the `OnTrack` class file itself for more information about what these are.
+
+### 2. Schemas and types
+
+```typescript
+// server/src/types.ts
+
+// ... any new types (or modifications to existing types) needed for this new thing
+// These are what's used by the resolver functions (and possibly elsewhere)
+```
+
+```typescript
+// server/src/schema.ts
+
+// ... any new types (or modifications to existing types) needed for this new thing
+// The fields here are what's made available to be queried from the front-end 
+```
+
+
+### 3. Resolver
+
+Note that the function name in the resolver (here `allAssignmentsForSubject`) must match the field defined in the `Query` schema in `typeDefs`, and this is also what is used in front-end queries.
+
+```typescript
+// server/src/resolvers/assignmentsForSubject.ts
+import { Assignment, ServerContext } from '../types';
+import { ProjectDetail, UnitDetail, Task, TaskDefinition } from '../datasources/OnTrack/types';
+import { GraphQLError } from 'graphql/error';
+import pick from 'lodash/pick';
+import chalk from 'chalk';
+
+export const getAssignmentsForSubjectResolver = {
+	allAssignmentsForSubject: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
+		try {
+			const projectDetails: ProjectDetail = await context.datasources.onTrack.getProjectDetails(args.projectId);
+			const unitDetails: UnitDetail = await context.datasources.onTrack.getUnitDetails(args.unitId);
+
+			return projectDetails.tasks.map((task: Task) => {
+				const taskDef: TaskDefinition = unitDetails.task_definitions.find((taskDef: TaskDefinition) => {
+					return taskDef.id === task.task_definition_id;
+				});
+
+				return {
+					unitId: args.unitId,
+					projectId: args.projectId,
+					...pick(task, ['id', 'due_date', 'status', 'submission_date', 'completion_date']),
+					...pick(taskDef, ['abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+					maxPoints: taskDef.max_quality_pts,
+					awardedPoints: task.quality_pts
+				};
+			});
+		}
+		catch (error) {
+			console.error(chalk.red(error.message));
+			throw new GraphQLError(error.message);
+		}
+	}
+};
+```
+
+```typescript
+// server/src/schema.ts
+export const typeDefs = gql`
+	type Query {
+		${''/* ...other resolvers */ }
+		allAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
+	}
+	
+	${''/* ...other types, including any new ones needed for this new thing */ }
+`
+```
+
+```typescript
+// server/src/app.ts
+// ...
+const graphQLServer = new ApolloServer({
+	typeDefs,
+	resolvers: {
+		Query: {
+			//...other resolvers
+			...assignmentsForSubjectResolver
+		}
+	}
+});
+// ...
+```
+
+### 4. Query
+
+#### Example usage in React component
+
+```typescript
+// frontend/src/graphql/queries.ts
+import gql from 'graphql-tag';
+import { TypedDocumentNode } from '@apollo/client';
+import { Assignment } from '@server/types.ts';
+
+export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsForSubject: Assignment[]}> = gql`
+    query AssignmentsForSubjectQuery($projectId: Int, $unitId: Int) {
+        allAssignmentsForSubject(projectId: $projectId, unitId: $unitId) {
+            abbreviation,
+            name,
+            due_date,
+            status
+        }
+    }
+`;
+```
+
+```tsx
+// frontend/src/components/YourComponent.tsx
+export default function YourComponent() {
+	const [getAssignments] = useLazyQuery(ASSIGNMENTS_FOR_SUBJECT_QUERY, { fetchPolicy: 'no-cache' });
+
+	const handleDataExample = useCallback(async function handleDataExample() {
+		// Very basic example, you probably also want to handle errors here as well as do something with the data
+		const { data } = await getAssignments(
+			{
+				variables: { projectId: 12345, unitId: 123 },
+				...queryOptions
+			}
+		);
+		console.log(data);
+	}, [getAssignments, queryOptions]);
+	
+	return (
+		<>
+            <button onClick={handleDataExample}>Click me</button>
+        </>
+    )
+}
+```
