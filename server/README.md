@@ -39,7 +39,10 @@ One difference between the two files/definition sets is that you only include th
 TypeScript types can be defined at either or both the server or front-end level according to where you need them, but as I have several shared types it makes sense to define these in one place (the server) and make them available using a path mapping in the `compilerOptions` of my front-end `tsconfig`.
 
 ### Queries (front-end)
-// TODO.
+
+The [React Apollo Client](https://www.apollographql.com/docs/react/) is used in my front-end app to query the GraphQL server on the front-end, making the data available for use in front-end components. The queries themselves are defined in `frontend/src/graphql/queries.ts`, and can be executed using Apollo Client's `useQuery` or `useLazyQuery` depending on the situation. 
+
+Queries can essentially be copied from GraphQL Playground into `queries.ts`.
 
 --- 
 ## GraphQL Playground
