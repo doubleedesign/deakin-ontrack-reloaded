@@ -5,6 +5,7 @@ import { Ontrack } from './datasources/OnTrack/ontrack';
 import { typeDefs } from './schema';
 import { getCurrentSubjectsResolver } from './resolvers/currentSubjects';
 import { getUpcomingAssignmentsResolver } from './resolvers/upcomingAssignments';
+import { getAssignmentsForSubjectResolver } from './resolvers/assignmentsForSubject';
 
 const graphQLServer = new ApolloServer({
 	typeDefs,
@@ -12,6 +13,7 @@ const graphQLServer = new ApolloServer({
 		Query: {
 			...getCurrentSubjectsResolver,
 			...getUpcomingAssignmentsResolver,
+			...getAssignmentsForSubjectResolver
 		}
 	}
 });

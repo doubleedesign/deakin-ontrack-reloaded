@@ -4,6 +4,7 @@ export const typeDefs = gql`
 	type Query {
 		getCurrentSubjects: [Subject]
 		getUpcomingAssignments: [Assignment]
+		getAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
 	}
 	
 	type Subject {

@@ -1,5 +1,9 @@
 import { useCallback, useState, useContext, useEffect } from 'react';
-import { CURRENT_SUBJECTS_QUERY, UPCOMING_ASSIGNMENTS_QUERY } from './graphql/queries.ts';
+import {
+	ASSIGNMENTS_FOR_SUBJECT_QUERY,
+	CURRENT_SUBJECTS_QUERY,
+	UPCOMING_ASSIGNMENTS_QUERY
+} from './graphql/queries.ts';
 import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
 import { GraphQLError } from 'graphql/error';
@@ -13,6 +17,7 @@ function App() {
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
 	const [getUpcomingAssignments] = useLazyQuery(UPCOMING_ASSIGNMENTS_QUERY, { fetchPolicy: 'no-cache' });
 	const [upcomingAssignments, setUpcomingAssignments] = useState<Assignment[]>();
+	const [getAssignments] = useLazyQuery(ASSIGNMENTS_FOR_SUBJECT_QUERY, { fetchPolicy: 'no-cache' });
 
 	async function handleSubjects() {
 		// Stop lying to me, TypeScript. The response contains a detailed 'errors' array when there's errors.
@@ -36,11 +41,11 @@ function App() {
 			setUpcomingAssignments(data.getUpcomingAssignments);
 		}
 	}
-	
-	async function handleOntrack() {
+
+	const handleOntrack = useCallback(async function handleOntrack() {
 		await handleSubjects();
 		await handleAssignments();
-	}
+	}, []);
 
 	useEffect(() => {
 		console.log(currentSubjects);
@@ -49,6 +54,17 @@ function App() {
 	useEffect(() => {
 		console.log(upcomingAssignments);
 	}, [upcomingAssignments]);
+
+	const handleDataExample = useCallback(async function handleDataExample() {
+		// Very basic example, you probably also want to handle errors here
+		const { data } = await getAssignments(
+			{
+				variables: { projectId: 47250, unitId: 278 },
+				...queryOptions
+			}
+		);
+		console.log(data);
+	}, [getAssignments, queryOptions]);
 
 	return (
 		<>
@@ -60,7 +76,7 @@ function App() {
 				<input type="submit" value="Let's go"/>
 			</form>
 
-			{queryOptions && <button onClick={handleOntrack}>Get data</button>}
+			{queryOptions && <button onClick={handleDataExample}>Get data</button>}
 
 			{errors && errors.map(error => {
 				return (
