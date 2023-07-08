@@ -5,11 +5,13 @@ Custom client to view data from Deakin University's OnTrack assessment system, u
 I'm building this as a learning exercise and to find ways to view and track my course progress and upcoming assessment information that work better for me than the current OnTrack interface. 
 
 A bit about how it's built and how it works: 
-- [GraphQL](server/README.md)
+- [Wording and Definitions](server/README.md#wording-and-definitions)
+- [GraphQL Server](server/README.md)
   - [Datasources](server/README.md#datasources-server-level)
   - [Resolvers](server/README.md#resolvers-server-level)
   - [Schemas and types](server/README.md#schemas-server-level-and-types)
   - [Front-end queries](server/README.md#queries-front-end)
+  - [A complete example](server/README.md#a-complete-example)
 - [Front-end app](frontend/README.md)
 
 Other important information:

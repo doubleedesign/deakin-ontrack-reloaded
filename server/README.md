@@ -176,7 +176,12 @@ export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsFor
 
 ```tsx
 // frontend/src/components/YourComponent.tsx
+import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from 'frontend/src/graphql/queries';
+import { AppContext } from './context/AppContextProvider.tsx';
+import { useContext, useCallback } from 'react';
+
 export default function YourComponent() {
+	const { queryOptions } = useContext(AppContext);
 	const [getAssignments] = useLazyQuery(ASSIGNMENTS_FOR_SUBJECT_QUERY, { fetchPolicy: 'no-cache' });
 
 	const handleDataExample = useCallback(async function() {
