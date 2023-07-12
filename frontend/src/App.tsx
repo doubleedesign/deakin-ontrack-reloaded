@@ -4,11 +4,12 @@ import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
 import { AppContext } from './context/AppContextProvider.tsx';
 import { Subject } from '@server/types.ts';
+import SubjectSummary from './components/SubjectSummary/SubjectSummary.tsx';
 import { useLocalStorage } from './hooks/useLocalStorage.ts';
 
 function App() {
 	const { setCredentials, authenticated, queryOptions, errors, setErrors } = useContext(AppContext);
-	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'no-cache' });
+	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
 	// I feel like the creds shouldn't be directly available from the context object, but I guess
 	// having them in browser storage kind of amounts to the same thing...? (Also they're in the queryOptions anyway...)
@@ -40,16 +41,16 @@ function App() {
 				<input type="submit" value="Let's go"/>
 			</form>
 
-			{errors && errors.map(error => {
+			{errors && errors.map((error, index) => {
 				return (
-					<Alert message={`${error.extensions.code} ${error.message}`}
+					<Alert key={index} message={`${error.extensions.code} ${error.message}`}
 				              more={error.extensions.stacktrace as string}
 					/>
 				);
 			})}
 
 			{currentSubjects && currentSubjects.map(subject => {
-				// TODO: Load a subject summary component
+				return <SubjectSummary key={subject.projectId} subject={subject}/>;
 			})}
 		</>
 	);
