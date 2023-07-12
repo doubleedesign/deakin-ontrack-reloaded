@@ -9,7 +9,7 @@ import { useLocalStorage } from './hooks/useLocalStorage.ts';
 
 function App() {
 	const { setCredentials, authenticated, queryOptions, errors, setErrors } = useContext(AppContext);
-	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only' });
+	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
 	// I feel like the creds shouldn't be directly available from the context object, but I guess
 	// having them in browser storage kind of amounts to the same thing...? (Also they're in the queryOptions anyway...)
