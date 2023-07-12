@@ -5,6 +5,8 @@ import { Assignment, Subject } from '@server/types.ts';
 export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject[]}> = gql`
     query CurrentSubjectsQuery {
         currentSubjects {
+	        projectId,
+	        unitId,
             unitCode,
 	        name,
 	        targetGrade
