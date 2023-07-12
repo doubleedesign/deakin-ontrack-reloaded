@@ -7,6 +7,7 @@ import {
 	FormEvent, Dispatch, SetStateAction
 } from 'react';
 import { GraphQLError } from 'graphql/error';
+import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
@@ -29,9 +30,9 @@ interface MyQueryContext {
 }
 
 const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
-	const [username, setUsername] = useState<string>();
+	const { value: username, setValue: setUsername } = useLocalStorage('otr_username', '');
+	const { value: token, setValue: setToken } = useLocalStorage('otr_token', '');
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
-	const [token, setToken] = useState<string>();
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 

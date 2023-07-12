@@ -4,11 +4,16 @@ import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
 import { AppContext } from './context/AppContextProvider.tsx';
 import { Subject } from '@server/types.ts';
+import { useLocalStorage } from './hooks/useLocalStorage.ts';
 
 function App() {
 	const { setCredentials, authenticated, queryOptions, errors, setErrors } = useContext(AppContext);
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'no-cache' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
+	// I feel like the creds shouldn't be directly available from the context object, but I guess
+	// having them in browser storage kind of amounts to the same thing...? (Also they're in the queryOptions anyway...)
+	const { value: username } = useLocalStorage('otr_username', '');
+	const { value: token } = useLocalStorage('otr_token', '');
 
 	useEffect(() => {
 		getCurrentSubjects(queryOptions).then(response => {
@@ -29,9 +34,9 @@ function App() {
 		<>
 			<form onSubmit={(event) => setCredentials(event)}>
 				<label htmlFor="username">Username</label>
-				<input id="username" name="username"/>
+				<input id="username" name="username" defaultValue={username}/>
 				<label htmlFor="token">Auth-Token</label>
-				<input id="token" name="token"/>
+				<input id="token" name="token" defaultValue={token}/>
 				<input type="submit" value="Let's go"/>
 			</form>
 
