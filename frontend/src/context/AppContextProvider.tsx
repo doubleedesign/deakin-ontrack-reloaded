@@ -67,13 +67,11 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 					}
 				})
 				.catch(error => {
-					// TODO: User feedback
-					console.error(error);
+					setErrors([new GraphQLError(error.message, { extensions: { code: 500, stacktrace: '' } })]);
 				});
 		}
 		else {
-			// TODO: User feedback
-			console.error('Fill in ya creds!');
+			setErrors([new GraphQLError('Fill in your creds!')]);
 		}
 	}, [username, token]);
 
