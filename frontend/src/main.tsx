@@ -7,6 +7,7 @@ import AppContextProvider from './context/AppContextProvider.tsx';
 const client = new ApolloClient({
 	uri: 'http://localhost:5000',
 	cache: new InMemoryCache(),
+	connectToDevTools: true
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
