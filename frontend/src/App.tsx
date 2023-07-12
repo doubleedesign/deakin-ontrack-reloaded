@@ -2,13 +2,11 @@ import { useState, useContext, useEffect } from 'react';
 import { CURRENT_SUBJECTS_QUERY } from './graphql/queries.ts';
 import { useLazyQuery } from '@apollo/client';
 import Alert from './components/Alert/Alert.tsx';
-import { GraphQLError } from 'graphql/error';
 import { AppContext } from './context/AppContextProvider.tsx';
 import { Subject } from '@server/types.ts';
 
 function App() {
-	const { setCredentials, authenticated, queryOptions } = useContext(AppContext);
-	const [errors, setErrors] = useState<GraphQLError[]>([]);
+	const { setCredentials, authenticated, queryOptions, errors, setErrors } = useContext(AppContext);
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'no-cache' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
 

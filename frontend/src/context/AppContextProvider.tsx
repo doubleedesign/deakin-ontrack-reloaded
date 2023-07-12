@@ -4,13 +4,16 @@ import {
 	useEffect,
 	FC,
 	PropsWithChildren,
-	FormEvent
+	FormEvent, Dispatch, SetStateAction
 } from 'react';
+import { GraphQLError } from 'graphql/error';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
 	authenticated: boolean;
-	queryOptions: MyQueryContext | undefined
+	queryOptions: MyQueryContext | undefined,
+	errors: GraphQLError[];
+	setErrors: Dispatch<SetStateAction<GraphQLError[]>>;
 }
 export const AppContext = createContext({} as MyAppContext);
 
@@ -30,6 +33,8 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
 	const [token, setToken] = useState<string>();
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
+	const [errors, setErrors] = useState<GraphQLError[]>([]);
+
 	const setCredentials = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const creds = new FormData(event.currentTarget);
@@ -52,7 +57,12 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 						setAuthenticated(true);
 					}
 					else {
-						throw new Error(`Error authenticating with OnTrack. ${response.statusText}`);
+						throw new GraphQLError('Error authenticating with OnTrack', {
+							extensions: {
+								code: response.status,
+								stacktrace: ''
+							}
+						});
 					}
 				})
 				.catch(error => {
@@ -68,6 +78,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	useEffect(() => {
 		if(authenticated) {
+			setErrors([]);
 			setQueryOptions({
 				context: {
 					headers: {
@@ -80,7 +91,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	}, [authenticated]);
 
 	return (
-		<AppContext.Provider value={{ setCredentials, authenticated, queryOptions }}>
+		<AppContext.Provider value={{ setCredentials, authenticated, queryOptions, errors, setErrors }}>
 			{children}
 		</AppContext.Provider>);
 };
