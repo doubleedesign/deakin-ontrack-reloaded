@@ -89,6 +89,7 @@ export type TaskDefinition = TaskCommon & {
 	description: string;
 	weighting: number;
 	target_grade: number;
+	start_date: string;
 	target_date: string;
 	upload_requirements: unknown[];
 	tutorial_stream_abbr: string;

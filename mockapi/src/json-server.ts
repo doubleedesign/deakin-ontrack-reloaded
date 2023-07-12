@@ -1,6 +1,6 @@
 import require from 'require-from-esm';
 const jsonServer = require('json-server');
-import { db } from './data.ts';
+import db from './data.json' assert { type: 'json' };
 import chalk from 'chalk';
 
 const server = jsonServer.create();
