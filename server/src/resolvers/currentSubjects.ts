@@ -8,11 +8,7 @@ export const currentSubjectsResolver = {
 		try {
 			const projects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
 
-			const current: ProjectOverview[] = projects.filter((item: ProjectOverview) => {
-				return new Date(item.unit.end_date) > new Date();
-			});
-
-			return await Promise.all(current.map(async (item: ProjectOverview) => {
+			return await Promise.all(projects.map(async (item: ProjectOverview) => {
 				const project = await context.datasources.onTrack.getProjectDetails(item.id);
 				const unit = await context.datasources.onTrack.getUnitDetails(item.unit.id);
 
