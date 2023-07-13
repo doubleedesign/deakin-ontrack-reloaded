@@ -17,18 +17,20 @@ function App() {
 	const { value: token } = useLocalStorage('otr_token', '');
 
 	useEffect(() => {
-		getCurrentSubjects(queryOptions).then(response => {
-			if(response.data) {
-				setCurrentSubjects(response.data.currentSubjects);
-				setErrors([]);
-			}
-			// Stop lying to me about what fields can be there, TypeScript
-			// @ts-ignore
-			if(response?.errors) {
+		if(authenticated) {
+			getCurrentSubjects(queryOptions).then(response => {
+				if (response.data) {
+					setCurrentSubjects(response.data.currentSubjects);
+					setErrors([]);
+				}
+				// Stop lying to me about what fields can be there, TypeScript
 				// @ts-ignore
-				setErrors(response.errors);
-			}
-		});
+				if (response?.errors) {
+					// @ts-ignore
+					setErrors(response.errors);
+				}
+			});
+		}
 	}, [authenticated]);
 
 	return (
