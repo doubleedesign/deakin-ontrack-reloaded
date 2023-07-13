@@ -36,14 +36,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 
-	const setCredentials = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		const creds = new FormData(event.currentTarget);
-		setUsername(creds.get('username') as string);
-		setToken(creds.get('token') as string);
-	};
-
-	useEffect(() => {
+	function authenticate(username: string, token: string) {
 		if(username && token) {
 			// Hit an endpoint that requires authentication but doesn't return much data, just to see if I can
 			// TODO: Handle the mock API - only require auth if really accessing OnTrack
@@ -51,54 +44,73 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 				method: 'GET',
 				headers: {
 					username: username,
-					'auth-token': token
+					'Auth-Token': token
 				} })
 				.then(response => {
 					if(response.status === 200) {
+						setUsername(username);
+						setToken(token);
 						setAuthenticated(true);
+						setErrors([]);
+						setQueryOptions({
+							context: {
+								headers: {
+									username: username,
+									'Auth-Token': token
+								}
+							}
+						});
 					}
 					else {
-						setAuthenticated(false);
-						setQueryOptions(undefined);
+						clearAuthStatus();
 						throw new GraphQLError('Error authenticating with OnTrack', {
 							extensions: {
 								code: response.status,
-								stacktrace: ''
+								stacktrace: './frontend/src/context/AppContextProvider.tsx'
 							}
 						});
 					}
 				})
 				.catch(error => {
+					clearAuthStatus();
 					setErrors([new GraphQLError(error.message, { extensions: {
 						code: 401,
-						stacktrace: '' } })]);
+						stacktrace: './frontend/src/context/AppContextProvider.tsx'
+					} })]);
 				});
 		}
 		else {
-			setErrors([new GraphQLError('Fill in your creds!')]);
-		}
-	}, [username, token]);
-
-	useEffect(() => {
-		if(authenticated) {
-			setErrors([]);
-			setQueryOptions({
-				context: {
-					headers: {
-						username: username,
-						'Auth-Token': token
-					}
+			clearAuthStatus();
+			setErrors([new GraphQLError('Hey, I\'m gonna need to see some ID.', {
+				extensions: {
+					code: 401,
+					note: 'Please enter your username and auth token.',
+					stacktrace: './frontend/src/context/AppContextProvider.tsx',
 				}
-			});
+			})]);
 		}
-		else {
-			setErrors([new GraphQLError('Error authenticating with OnTrack', { extensions: {
-				code: 401,
-				stacktrace: ''
-			} })]);
-			setQueryOptions(undefined);
-		}
-	}, [authenticated]);
+	}
+
+	function clearAuthStatus() {
+		setAuthenticated(false);
+		setQueryOptions(undefined);
+	}
+
+	// Authenticate with values saved in local storage on load
+	useEffect(() => {
+		authenticate(username, token);
+	}, []);
+
+	// Function to update credentials and re-authenticate that can be called on form submissions in other components
+	const setCredentials = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const creds = new FormData(event.currentTarget);
+		const username = creds.get('username') as string;
+		const token = creds.get('token') as string;
+
+		authenticate(username, token);
+	};
+
 
 	return (
 		<AppContext.Provider value={{ setCredentials, authenticated, queryOptions, errors, setErrors }}>

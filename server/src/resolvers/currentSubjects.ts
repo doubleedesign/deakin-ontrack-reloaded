@@ -24,7 +24,7 @@ export const currentSubjectsResolver = {
 			else {
 				throw new GraphQLError('No projects found', { extensions: {
 					code: 404,
-					stackTrace: ''
+					stacktrace: './server/src/resolvers/currentSubjects.ts'
 				} });
 			}
 		}

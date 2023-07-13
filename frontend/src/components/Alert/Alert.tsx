@@ -9,7 +9,7 @@ interface AlertProps {
 const Alert: FC<AlertProps> = (props) => (
 	<AlertWrapper>
 		<p><strong>{props.message}</strong></p>
-		{props.more && <small>{props.more}</small>}
+		{props.more && <span>{props.more}</span>}
 	</AlertWrapper>
 );
 

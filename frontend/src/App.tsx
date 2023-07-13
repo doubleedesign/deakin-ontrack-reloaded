@@ -5,17 +5,11 @@ import Alert from './components/Alert/Alert.tsx';
 import { AppContext } from './context/AppContextProvider.tsx';
 import { Subject } from '@server/types.ts';
 import SubjectSummary from './components/SubjectSummary/SubjectSummary.tsx';
-import { useLocalStorage } from './hooks/useLocalStorage.ts';
-import { GraphQLError } from 'graphql/error';
 
 function App() {
 	const { setCredentials, authenticated, queryOptions, errors, setErrors } = useContext(AppContext);
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>();
-	// I feel like the creds shouldn't be directly available from the context object, but I guess
-	// having them in browser storage kind of amounts to the same thing...? (Also they're in the queryOptions anyway...)
-	const { value: username } = useLocalStorage('otr_username', '');
-	const { value: token } = useLocalStorage('otr_token', '');
 
 	useEffect(() => {
 		if(authenticated && queryOptions) {
@@ -34,10 +28,6 @@ function App() {
 		}
 		else {
 			setCurrentSubjects([]);
-			setErrors([new GraphQLError('Error authenticating with OnTrack', { extensions: {
-				code: 401,
-				stacktrace: ''
-			} })]);
 		}
 	}, [authenticated, queryOptions]);
 
@@ -45,16 +35,18 @@ function App() {
 		<>
 			<form onSubmit={(event) => setCredentials(event)}>
 				<label htmlFor="username">Username</label>
-				<input id="username" name="username" defaultValue={username}/>
+				<input id="username" name="username" defaultValue={queryOptions?.context?.headers?.username}/>
 				<label htmlFor="token">Auth-Token</label>
-				<input id="token" name="token" defaultValue={token}/>
+				<input id="token" name="token" defaultValue={queryOptions?.context?.headers['Auth-Token']}/>
 				<input type="submit" value="Let's go"/>
 			</form>
 
 			{errors && errors.map((error, index) => {
+				console.error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`);
 				return (
-					<Alert key={index} message={`${error.extensions.code} ${error.message}`}
-				              more={error.extensions.stacktrace as string}
+					<Alert key={`error-${index}`}
+					       message={`${error.extensions?.code} ${error.message}`}
+			               more={error.extensions?.note as string}
 					/>
 				);
 			})}
