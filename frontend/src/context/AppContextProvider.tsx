@@ -20,7 +20,7 @@ export const AppContext = createContext({} as MyAppContext);
 
 interface MyCredentials {
 	username: string | undefined;
-	'auth-token': string | undefined;
+	'Auth-Token': string | undefined;
 }
 
 interface MyQueryContext {
@@ -58,6 +58,8 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 						setAuthenticated(true);
 					}
 					else {
+						setAuthenticated(false);
+						setQueryOptions(undefined);
 						throw new GraphQLError('Error authenticating with OnTrack', {
 							extensions: {
 								code: response.status,
@@ -67,7 +69,9 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 					}
 				})
 				.catch(error => {
-					setErrors([new GraphQLError(error.message, { extensions: { code: 500, stacktrace: '' } })]);
+					setErrors([new GraphQLError(error.message, { extensions: {
+						code: 401,
+						stacktrace: '' } })]);
 				});
 		}
 		else {
@@ -82,10 +86,17 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 				context: {
 					headers: {
 						username: username,
-						'auth-token': token
+						'Auth-Token': token
 					}
 				}
 			});
+		}
+		else {
+			setErrors([new GraphQLError('Error authenticating with OnTrack', { extensions: {
+				code: 401,
+				stacktrace: ''
+			} })]);
+			setQueryOptions(undefined);
 		}
 	}, [authenticated]);
 

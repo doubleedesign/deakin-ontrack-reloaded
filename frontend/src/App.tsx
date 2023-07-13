@@ -6,6 +6,7 @@ import { AppContext } from './context/AppContextProvider.tsx';
 import { Subject } from '@server/types.ts';
 import SubjectSummary from './components/SubjectSummary/SubjectSummary.tsx';
 import { useLocalStorage } from './hooks/useLocalStorage.ts';
+import { GraphQLError } from 'graphql/error';
 
 function App() {
 	const { setCredentials, authenticated, queryOptions, errors, setErrors } = useContext(AppContext);
@@ -17,7 +18,7 @@ function App() {
 	const { value: token } = useLocalStorage('otr_token', '');
 
 	useEffect(() => {
-		if(authenticated) {
+		if(authenticated && queryOptions) {
 			getCurrentSubjects(queryOptions).then(response => {
 				if (response.data) {
 					setCurrentSubjects(response.data.currentSubjects);
@@ -31,7 +32,14 @@ function App() {
 				}
 			});
 		}
-	}, [authenticated]);
+		else {
+			setCurrentSubjects([]);
+			setErrors([new GraphQLError('Error authenticating with OnTrack', { extensions: {
+				code: 401,
+				stacktrace: ''
+			} })]);
+		}
+	}, [authenticated, queryOptions]);
 
 	return (
 		<>

@@ -7,19 +7,26 @@ export const currentSubjectsResolver = {
 	currentSubjects: async (_: any, args: any, context: ServerContext): Promise<Subject[]> => {
 		try {
 			const projects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
+			if(projects) {
+				return await Promise.all(projects.map(async (item: ProjectOverview) => {
+					const project = await context.datasources.onTrack.getProjectDetails(item.id);
+					const unit = await context.datasources.onTrack.getUnitDetails(item.unit.id);
 
-			return await Promise.all(projects.map(async (item: ProjectOverview) => {
-				const project = await context.datasources.onTrack.getProjectDetails(item.id);
-				const unit = await context.datasources.onTrack.getUnitDetails(item.unit.id);
-
-				return {
-					projectId: item.id,
-					unitId: item.unit.id,
-					unitCode: unit.code,
-					name: unit.name,
-					targetGrade: project.target_grade
-				};
-			}));
+					return {
+						projectId: item.id,
+						unitId: item.unit.id,
+						unitCode: unit.code,
+						name: unit.name,
+						targetGrade: project.target_grade
+					};
+				}));
+			}
+			else {
+				throw new GraphQLError('No projects found', { extensions: {
+					code: 404,
+					stackTrace: ''
+				} });
+			}
 		}
 		catch (error) {
 			console.error(chalk.red(error.message));
