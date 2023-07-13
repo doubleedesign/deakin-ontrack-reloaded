@@ -18,8 +18,8 @@ export const assignmentsForSubjectResolver = {
 				return {
 					unitId: args.unitId,
 					projectId: args.projectId,
-					...pick(task, ['id', 'due_date', 'status', 'submission_date', 'completion_date']),
-					...pick(taskDef, ['abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+					...pick(task, ['status', 'submission_date', 'completion_date']),
+					...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
 					maxPoints: taskDef.max_quality_pts,
 					awardedPoints: task.quality_pts
 				};

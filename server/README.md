@@ -11,10 +11,10 @@ What is useful to a student, a user of this  app, is a combination of data from 
 
 Similarly, the OnTrack API also has:
 
-- **Tasks** are data about the individual student's work on a task, such as its status and submission date. They are associated with Projects.
+- **Tasks** are data about the individual student's work on a task, such as its status and submission date. They are associated with Projects. They are not created until you perform an action such as update the status or submit work. (In the background these actions trigger a `PUT` operation on the Project.) 
 - **Task definitions** are exactly what the name implies - they contain fields like the task name and target date, and are associated with Units.
 
-The combination of which I am calling **Assignments**.
+...the combination of which I am calling **Assignments**. 
 
 ## GraphQL server
 Eeek, GraphQL?! Overkill? Maybe. But it's a learning exercise.
@@ -103,8 +103,8 @@ export const getAssignmentsForSubjectResolver = {
 				return {
 					unitId: args.unitId,
 					projectId: args.projectId,
-					...pick(task, ['id', 'due_date', 'status', 'submission_date', 'completion_date']),
-					...pick(taskDef, ['abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+					...pick(task, ['status', 'submission_date', 'completion_date']),
+					...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
 					maxPoints: taskDef.max_quality_pts,
 					awardedPoints: task.quality_pts
 				};

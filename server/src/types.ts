@@ -16,7 +16,7 @@ export type Subject = {
 }
 
 export type Assignment = {
-	id: number; // The Task ID, not the Task Definition ID
+	id: number; // The Task Definition ID, because Tasks aren't created until you do something with them
 	projectId: number;
 	unitId: number;
 	abbreviation: string;
