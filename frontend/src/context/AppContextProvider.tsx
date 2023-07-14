@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { GraphQLError } from 'graphql/error';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
+import { lightTheme } from '../theme.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
@@ -15,6 +16,8 @@ export interface MyAppContext {
 	queryOptions: MyQueryContext | undefined,
 	errors: GraphQLError[];
 	setErrors: Dispatch<SetStateAction<GraphQLError[]>>;
+	theme: 'light' | 'dark';
+	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
 }
 export const AppContext = createContext({} as MyAppContext);
 
@@ -35,6 +38,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
+	const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
 	function authenticate(username: string, token: string) {
 		if(username && token) {
@@ -113,7 +117,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 
 	return (
-		<AppContext.Provider value={{ setCredentials, authenticated, queryOptions, errors, setErrors }}>
+		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated, queryOptions, errors, setErrors }}>
 			{children}
 		</AppContext.Provider>);
 };
