@@ -29,6 +29,7 @@ export const AppContext = createContext({} as MyAppContext);
 interface MyCredentials {
 	username: string | undefined;
 	'Auth-Token': string | undefined;
+	Authorization: string | undefined;
 }
 
 interface MyQueryContext {
@@ -38,39 +39,40 @@ interface MyQueryContext {
 }
 
 const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
+	// OnTrack auth
 	const { value: username, setValue: setUsername } = useLocalStorage('otr_username', '');
-	const { value: token, setValue: setToken } = useLocalStorage('otr_token', '');
-	const [authenticated, setAuthenticated] = useState<boolean>(false);
+	const { value: otToken, setValue: setOtToken } = useLocalStorage('otr_token', '');
+	const [otAuthenticated, setOtAuthenticated] = useState<boolean>(false);
+
+	// DeakinSync auth
+	const { value: dsToken, setValue: setDsToken } = useLocalStorage('ds_token', '');
+	const [dsAuthenticated, setDsAuthenticated] = useState<boolean>(false);
+
+	// All the auth together to query my GraphQL BFF
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
+
+	// Everything else
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [theme, setTheme] = useState<'light' | 'dark'>('light');
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>([]);
 
-	function authenticate(username: string, token: string) {
-		if(username && token) {
+	// TODO: Handle the mock API - only require auth if really accessing OnTrack
+	function authenticate(username: string, submittedOtToken: string, submittedDsToken: string) {
+		if(username && submittedDsToken) {
 			// Hit an endpoint that requires authentication but doesn't return much data, just to see if I can
-			// TODO: Handle the mock API - only require auth if really accessing OnTrack
 			fetch('https://ontrack.deakin.edu.au/api/unit_roles', {
 				method: 'GET',
 				headers: {
 					username: username,
-					'Auth-Token': token
+					'Auth-Token': submittedOtToken
 				} })
 				.then(response => {
 					if(response.status === 200) {
 						setUsername(username);
-						setToken(token);
-						setAuthenticated(true);
+						setOtToken(submittedOtToken);
+						setOtAuthenticated(true);
 						setErrors([]);
-						setQueryOptions({
-							context: {
-								headers: {
-									username: username,
-									'Auth-Token': token
-								}
-							}
-						});
 					}
 					else {
 						clearAuthStatus();
@@ -90,12 +92,32 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 					} })]);
 				});
 		}
+		if(submittedDsToken) {
+			fetch('https://bff-sync.sync.deakin.edu.au/v1/authorised', {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${submittedDsToken}`
+				}
+			}).then(response => {
+				if(response.status === 200) {
+					setDsToken(submittedDsToken);
+					setDsAuthenticated(true);
+					setErrors([]);
+				}
+			}).catch(error => {
+				clearAuthStatus();
+				setErrors([new GraphQLError(error.message, { extensions: {
+					code: 401,
+					stacktrace: './frontend/src/context/AppContextProvider.tsx'
+				} })]);
+			});
+		}
 		else {
 			clearAuthStatus();
 			setErrors([new GraphQLError('Hey, I\'m gonna need to see some ID.', {
 				extensions: {
 					code: 401,
-					note: 'Please enter your username and auth token.',
+					note: 'Please enter your username and auth token for OnTrack and Bearer token for DeakinSync.',
 					stacktrace: './frontend/src/context/AppContextProvider.tsx',
 				}
 			})]);
@@ -103,27 +125,52 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	}
 
 	function clearAuthStatus() {
-		setAuthenticated(false);
+		setOtAuthenticated(false);
 		setQueryOptions(undefined);
 	}
 
 	// Authenticate with values saved in local storage on load
 	useEffect(() => {
-		authenticate(username, token);
+		authenticate(username, otToken, dsToken);
 	}, []);
+
+	// Set up query headers after authentication
+	useEffect(() => {
+		const creds = {
+			username: '',
+			'Auth-Token': '',
+			Authorization: ''
+		};
+
+		if(otAuthenticated) {
+			creds.username = username;
+			creds['Auth-Token'] = otToken;
+		}
+
+		if(dsAuthenticated) {
+			creds.Authorization = `Bearer ${dsToken}`;
+		}
+
+		setQueryOptions({
+			context: {
+				headers: creds
+			}
+		});
+	}, [otAuthenticated, otToken, dsAuthenticated, dsToken]);
 
 	// Function to update credentials and re-authenticate that can be called on form submissions in other components
 	const setCredentials = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const creds = new FormData(event.currentTarget);
 		const username = creds.get('username') as string;
-		const token = creds.get('token') as string;
+		const otToken = creds.get('otToken') as string;
+		const dsToken = creds.get('dsToken') as string;
 
-		authenticate(username, token);
+		authenticate(username, otToken, dsToken);
 	};
 
 	useEffect(() => {
-		if(authenticated && queryOptions) {
+		if(otAuthenticated && queryOptions) {
 			const themeObject = theme === 'light' ? lightTheme : darkTheme;
 			getCurrentSubjects(queryOptions).then(response => {
 				if (response.data) {
@@ -148,10 +195,10 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		else {
 			setCurrentSubjects([]);
 		}
-	}, [authenticated, queryOptions, theme]);
+	}, [otAuthenticated, queryOptions, theme]);
 
 	return (
-		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated, queryOptions, currentSubjects, errors, setErrors }}>
+		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated: otAuthenticated, queryOptions, currentSubjects, errors, setErrors }}>
 			{children}
 		</AppContext.Provider>);
 };

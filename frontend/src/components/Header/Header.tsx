@@ -22,8 +22,12 @@ const Header: FC = () => {
 							<input id="username" name="username" type="text" defaultValue={queryOptions?.context?.headers?.username}/>
 						</div>
 						<div>
-							<label htmlFor="token">Auth-Token</label>
-							<input id="token" name="token" type="text" defaultValue={queryOptions?.context?.headers['Auth-Token']}/>
+							<label htmlFor="otToken">OnTrack Auth-Token</label>
+							<input id="otToken" name="otToken" type="text" defaultValue={queryOptions?.context?.headers['Auth-Token']}/>
+						</div>
+						<div>
+							<label htmlFor="dsToken">DeakinSync bearer token</label>
+							<input id="dsToken" name="dsToken" type="text" defaultValue={queryOptions?.context?.headers['Authorization']}/>
 						</div>
 						<Button type="submit" color="primary">Let's go</Button>
 					</StyledForm>
