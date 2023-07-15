@@ -8,10 +8,10 @@ import {
 } from 'react';
 import { GraphQLError } from 'graphql/error';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
-import { lightTheme } from '../theme.ts';
 import { useLazyQuery } from '@apollo/client';
 import { CURRENT_SUBJECTS_QUERY } from '../graphql/queries.ts';
 import { Subject } from '@server/types.ts';
+import { tabColors } from '../constants.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
@@ -125,7 +125,12 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		if(authenticated && queryOptions) {
 			getCurrentSubjects(queryOptions).then(response => {
 				if (response.data) {
-					setCurrentSubjects(response.data.currentSubjects);
+					setCurrentSubjects(response.data.currentSubjects.map((item, index) => {
+						return {
+							...item,
+							color: tabColors[index]
+						};
+					}));
 					setErrors([]);
 				}
 				// Stop lying to me about what fields can be there, TypeScript

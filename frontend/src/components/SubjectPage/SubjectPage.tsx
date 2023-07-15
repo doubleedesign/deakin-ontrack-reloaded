@@ -1,12 +1,17 @@
 import React, { FC } from 'react';
-import { SubjectPageWrapper } from './SubjectPage.styled';
+import { Panel, Row } from '../common.styled.ts';
+import { PageContent } from './SubjectPage.styled.ts';
 
-interface SubjectPageProps {}
-
-const SubjectPage: FC<SubjectPageProps> = () => (
- <SubjectPageWrapper>
-    SubjectPage Component
- </SubjectPageWrapper>
-);
+const SubjectPage: FC = () => {
+	return (
+		<Panel>
+			<Row>
+				<PageContent>
+						SubjectPage Component
+				</PageContent>
+			</Row>
+		</Panel>
+	);
+};
 
 export default SubjectPage;

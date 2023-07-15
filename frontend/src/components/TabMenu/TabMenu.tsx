@@ -1,16 +1,30 @@
 import React, { FC } from 'react';
-import { TabMenuWrapper } from './TabMenu.styled';
+import { TabMenuWrapper, TabMenuList, TabMenuListItem, TabMenuNavLink } from './TabMenu.styled';
 import { MenuItem } from '../../types.ts';
+import { slugify } from '../../utils.ts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ScreenReaderText } from '../common.styled.ts';
 
 interface TabMenuProps {
 	items: MenuItem[]
 }
 
 const TabMenu: FC<TabMenuProps> = ({ items }) => {
-	console.log(items);
+
 	return (
 		<TabMenuWrapper>
-			TabMenu Component
+			<TabMenuList>
+				{items.map((item, index) => (
+					<TabMenuListItem key={item.label} className={`tab-${slugify(item.label)}`}>
+						<TabMenuNavLink to={item.route} color={item.color}>
+							{item.label === 'Home' ?
+								<><FontAwesomeIcon icon={['fas', 'list-ul']}/><ScreenReaderText>Home</ScreenReaderText></>
+								: item.label
+							}
+						</TabMenuNavLink>
+					</TabMenuListItem>
+				))}
+			</TabMenuList>
 		</TabMenuWrapper>
 	);
 };

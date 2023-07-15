@@ -13,6 +13,7 @@ export type Subject = {
 	unitCode: string;
 	name: string;
 	targetGrade: number;
+	color?: string;
 }
 
 export type Assignment = {

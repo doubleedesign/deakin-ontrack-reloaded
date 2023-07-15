@@ -4,8 +4,8 @@ import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { ThemeToggleButton } from '../ThemeToggle/ThemeToggle.styled.ts';
 
 export const HeaderWrapper = styled.header`
-	padding-top: ${({ theme }): string => theme.spacing.md};
-	padding-bottom: ${({ theme }): string => theme.spacing.md};
+    padding-top: ${({ theme }): string => theme.spacing.md};
+    padding-bottom: ${({ theme }): string => theme.spacing.md};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         padding-top: ${({ theme }): string => theme.spacing.xl};

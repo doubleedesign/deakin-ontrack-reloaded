@@ -11,6 +11,26 @@ export const AppWrapper = styled.div`
 	overflow-x: hidden;
 `;
 
+// TODO: Work out how to make container queries work!
+export const Container = styled.div`
+	container-name: nearest-container;
+	container-type: size;
+`;
+
+export const Panel = styled.div`
+	padding: ${({ theme }): string => theme.spacing.lg} 0;
+
+    ${props => breakpointUp(props.theme.breakpoints.lg, css`
+        padding-top: ${({ theme }): string => theme.spacing.xl};
+        padding-bottom: ${({ theme }): string => theme.spacing.xl}
+    `)};
+
+    ${props => breakpointUp(props.theme.breakpoints.xl, css`
+        padding-top: ${({ theme }): string => theme.spacing.xxl};
+        padding-bottom: ${({ theme }): string => theme.spacing.xxl}
+    `)};
+`;
+
 export const Row = styled.div`
 	display: flex;
 	max-width: 1280px;
@@ -54,6 +74,7 @@ export const StyledForm = styled.form`
 		label {
 			display: block;
 			font-size: 0.75rem;
+			padding-bottom: 2px;
 		}
     }
 
@@ -69,6 +90,12 @@ export const StyledForm = styled.form`
 		    width: 100%;
 		    line-height: 1.8;
 		    padding: ${({ theme }): string => theme.spacing.xs};
+
+		    &:focus, &:focus-visible {
+			    outline: none;
+			    border-color: ${({ theme }): string => theme.colors.secondary};
+			    box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors.secondary};
+		    }
 	    }
     }
 `;

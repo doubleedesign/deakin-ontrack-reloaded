@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { createBrowserRouter } from 'react-router-dom';
-import App from './App.tsx';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppContextProvider from './context/AppContextProvider.tsx';
 import './global.css';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faS, faLightbulb } from '@fortawesome/pro-solid-svg-icons';
-import { fal, faLightbulbOn } from '@fortawesome/pro-light-svg-icons';
+import App from './App.tsx';
 import SubjectPage from './components/SubjectPage/SubjectPage.tsx';
 import Dashboard from './components/Dashboard/Dashboard.tsx';
-library.add(fal, faS, faLightbulb, faLightbulbOn);
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faS, faLightbulb, faListUl } from '@fortawesome/pro-solid-svg-icons';
+import { fal, faLightbulbOn } from '@fortawesome/pro-light-svg-icons';
+library.add(fal, faS, faLightbulb, faLightbulbOn, faListUl);
 
 const client = new ApolloClient({
 	uri: 'http://localhost:5000',
@@ -19,8 +19,10 @@ const client = new ApolloClient({
 });
 
 const router = createBrowserRouter([
-	{ path: '/', element: <Dashboard/> },
-	{ path: ':projectId', element: <SubjectPage/> }
+	{ path: '/', element: <App/>, children: [
+		{ path: '', element: <Dashboard/> },
+		{ path: ':projectId', element: <SubjectPage/> }
+	] },
 ]);
 
 
@@ -28,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<ApolloProvider client={client}>
 			<AppContextProvider>
-				<App router={router}/>
+				<RouterProvider router={router}/>
 			</AppContextProvider>
 		</ApolloProvider>
 	</React.StrictMode>,
