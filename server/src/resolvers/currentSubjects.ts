@@ -8,7 +8,7 @@ export const currentSubjectsResolver = {
 		try {
 			const projects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
 			if(projects) {
-				return await Promise.all(projects.map(async (item: ProjectOverview) => {
+				const items = await Promise.all(projects.map(async (item: ProjectOverview) => {
 					const project = await context.datasources.onTrack.getProjectDetails(item.id);
 					const unit = await context.datasources.onTrack.getUnitDetails(item.unit.id);
 
@@ -20,6 +20,8 @@ export const currentSubjectsResolver = {
 						targetGrade: project.target_grade
 					};
 				}));
+
+				return items.sort((a, b) => a.unitCode.localeCompare(b.unitCode));
 			}
 			else {
 				throw new GraphQLError('No projects found', { extensions: {
