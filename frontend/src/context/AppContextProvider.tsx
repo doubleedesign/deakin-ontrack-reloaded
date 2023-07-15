@@ -9,11 +9,15 @@ import {
 import { GraphQLError } from 'graphql/error';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 import { lightTheme } from '../theme.ts';
+import { useLazyQuery } from '@apollo/client';
+import { CURRENT_SUBJECTS_QUERY } from '../graphql/queries.ts';
+import { Subject } from '@server/types.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
 	authenticated: boolean;
 	queryOptions: MyQueryContext | undefined,
+	currentSubjects: Subject[],
 	errors: GraphQLError[];
 	setErrors: Dispatch<SetStateAction<GraphQLError[]>>;
 	theme: 'light' | 'dark';
@@ -39,6 +43,8 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [theme, setTheme] = useState<'light' | 'dark'>('light');
+	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
+	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>([]);
 
 	function authenticate(username: string, token: string) {
 		if(username && token) {
@@ -115,9 +121,28 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		authenticate(username, token);
 	};
 
+	useEffect(() => {
+		if(authenticated && queryOptions) {
+			getCurrentSubjects(queryOptions).then(response => {
+				if (response.data) {
+					setCurrentSubjects(response.data.currentSubjects);
+					setErrors([]);
+				}
+				// Stop lying to me about what fields can be there, TypeScript
+				// @ts-ignore
+				if (response?.errors) {
+					// @ts-ignore
+					setErrors(response.errors);
+				}
+			});
+		}
+		else {
+			setCurrentSubjects([]);
+		}
+	}, [authenticated, queryOptions]);
 
 	return (
-		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated, queryOptions, errors, setErrors }}>
+		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated, queryOptions, currentSubjects, errors, setErrors }}>
 			{children}
 		</AppContext.Provider>);
 };
