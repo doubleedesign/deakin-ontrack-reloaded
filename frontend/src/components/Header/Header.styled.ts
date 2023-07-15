@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { Row } from '../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { ThemeToggleButton } from '../ThemeToggle/ThemeToggle.styled.ts';
+import { NavLink } from 'react-router-dom';
 
 export const HeaderWrapper = styled.header`
     padding-top: ${({ theme }): string => theme.spacing.md};
@@ -16,29 +17,6 @@ export const HeaderWrapper = styled.header`
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
-	}
-	
-	h1 {
-		display: flex;
-		align-items: center;
-		color: ${({ theme }): string => theme.colors.primary};
-		
-		img {
-			height: 3rem;
-			width: auto;
-			display: inline-block;
-			margin-right: ${({ theme }): string => theme.spacing.sm};
-		}
-		
-		span {
-            font-family: ${({ theme }): string => theme.fonts.accent};
-			display: inline-block;
-            color: ${({ theme }): string => theme.colors.accent};
-            transform: rotate(-15deg);
-            position: relative;
-            bottom: -0.75rem;
-            left: -2rem;
-		}
 	}
 	
 	form {
@@ -59,4 +37,31 @@ export const HeaderWrapper = styled.header`
         align-items: flex-end;
         padding-bottom: 0.4rem;
 	}
+`;
+
+export const LogoNavLink = styled(NavLink)`
+	text-decoration: none;
+
+    h1 {
+        display: flex;
+        align-items: center;
+        color: ${({ theme }): string => theme.colors.logo};
+
+        img {
+            height: 3rem;
+            width: auto;
+            display: inline-block;
+            margin-right: ${({ theme }): string => theme.spacing.sm};
+        }
+
+        span {
+            font-family: ${({ theme }): string => theme.fonts.accent};
+            display: inline-block;
+            color: ${({ theme }): string => theme.colors.accent};
+            transform: rotate(-15deg);
+            position: relative;
+            bottom: -0.75rem;
+            left: -2rem;
+        }
+    }
 `;

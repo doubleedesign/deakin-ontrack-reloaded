@@ -11,7 +11,8 @@ import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 import { useLazyQuery } from '@apollo/client';
 import { CURRENT_SUBJECTS_QUERY } from '../graphql/queries.ts';
 import { Subject } from '@server/types.ts';
-import { tabColors } from '../constants.ts';
+import { lightTheme, darkTheme } from '../theme.ts';
+import { adjustHue, tint, complement } from 'polished';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
@@ -123,12 +124,15 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	useEffect(() => {
 		if(authenticated && queryOptions) {
+			const themeObject = theme === 'light' ? lightTheme : darkTheme;
 			getCurrentSubjects(queryOptions).then(response => {
 				if (response.data) {
 					setCurrentSubjects(response.data.currentSubjects.map((item, index) => {
 						return {
 							...item,
-							color: tabColors[index]
+							color: index % 2 === 0
+								? adjustHue(30 * index, tint(0.2, themeObject.colors.secondary))
+								: complement(adjustHue(30 * index, tint(0.2, themeObject.colors.secondary)))
 						};
 					}));
 					setErrors([]);
@@ -144,7 +148,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		else {
 			setCurrentSubjects([]);
 		}
-	}, [authenticated, queryOptions]);
+	}, [authenticated, queryOptions, theme]);
 
 	return (
 		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated, queryOptions, currentSubjects, errors, setErrors }}>

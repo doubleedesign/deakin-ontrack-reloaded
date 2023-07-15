@@ -6,13 +6,11 @@ import { Panel, Row } from '../common.styled.ts';
 const Dashboard: FC = () => {
 	const { currentSubjects } = useContext(AppContext);
 	return (
-		<Panel>
-			<Row>
-				{currentSubjects && currentSubjects.map(subject => {
-					return <SubjectSummary key={subject.projectId} subject={subject}/>;
-				})}
-			</Row>
-		</Panel>
+		<Row>
+			{currentSubjects && currentSubjects.map(subject => {
+				return <SubjectSummary key={subject.projectId} subject={subject}/>;
+			})}
+		</Row>
 	);
 };
 

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { darken, readableColor } from 'polished';
+import { darken, meetsContrastGuidelines, readableColor, shade } from 'polished';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 
 export const AppWrapper = styled.div`
@@ -17,31 +17,36 @@ export const Container = styled.div`
 	container-type: size;
 `;
 
-export const Panel = styled.div`
+export const Panel = styled.section.attrs({ 'data-component-id': 'Panel' })`
 	padding: ${({ theme }): string => theme.spacing.lg} 0;
-
+	background: ${({ theme }): string => theme.colors.contentBackground};
+    max-width: 1280px;
+	margin: 0 auto;
+	border-radius: 0.4rem;
+    box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors.reverseSubtle};
+	position: relative;
+	z-index: 10;
+	
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         padding-top: ${({ theme }): string => theme.spacing.xl};
         padding-bottom: ${({ theme }): string => theme.spacing.xl}
     `)};
-
-    ${props => breakpointUp(props.theme.breakpoints.xl, css`
-        padding-top: ${({ theme }): string => theme.spacing.xxl};
-        padding-bottom: ${({ theme }): string => theme.spacing.xxl}
-    `)};
 `;
 
-export const Row = styled.div`
+export const Row = styled.div.attrs({ 'data-component-id': 'Row' })`
 	display: flex;
-	max-width: 1280px;
+	flex-wrap: wrap;
+	width: 100%;
+    max-width: 1280px;
 	margin: 0 auto;
 	padding: 0 ${({ theme }): string => theme.spacing.sm};
 	position: relative;
 `;
 
-export const Col = styled.div`
+export const Col = styled.div.attrs({ 'data-component-id': 'Col' })`
 	position: relative;
 	padding: 0 ${({ theme }): string => theme.spacing.sm};
+	flex-grow: 1;
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         padding: 0 ${({ theme }): string => theme.spacing.md};
@@ -64,7 +69,7 @@ export const ScreenReaderText = styled.span`
     word-wrap: normal !important;
 `;
 
-export const StyledForm = styled.form`
+export const StyledForm = styled.form.attrs({ 'data-component-id': 'StyledForm' })`
 	display: flex;
 	align-items: flex-end;
 	
@@ -109,7 +114,14 @@ export const Button = styled.button<ButtonProps>`
     font-family: ${({ theme }): string => theme.fonts.body};
 	font-weight: 600;
     background: ${({ color, theme }): string => theme.colors[color]};
-    color: ${({ color, theme }): string => readableColor(darken(0.1, theme.colors[color]))};
+    color: ${({ color, theme }): string => {
+		const scores = meetsContrastGuidelines(shade(0.1, theme.colors[color]), '#FFF');
+		if(scores.AALarge) {
+			return '#FFF';
+		}
+		return readableColor(shade(0.1, theme.colors[color]));
+	}};
+	
 	border: 0;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -120,7 +132,6 @@ export const Button = styled.button<ButtonProps>`
 	
 	&:hover, &:focus, &:active {
 		background: ${({ color, theme }): string => darken(0.1, theme.colors[color])};
-        color: ${({ color, theme }): string => readableColor(darken(0.1, theme.colors[color]))};
 	}
 	
 	&:focus {

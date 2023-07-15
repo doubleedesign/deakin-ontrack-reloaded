@@ -26,6 +26,9 @@ export const TabMenuListItem = styled.li`
 
 // @ts-ignore
 export const TabMenuNavLink = styled(NavLink)<{color: string}>`
+	display: block;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
     padding: ${({ theme }): string => theme.spacing.sm} ${({ theme }): string => theme.spacing.lg};
     background: ${props => props.color};
 	color: ${props => {

@@ -14,7 +14,7 @@ const TabMenu: FC<TabMenuProps> = ({ items }) => {
 	return (
 		<TabMenuWrapper>
 			<TabMenuList>
-				{items.map((item, index) => (
+				{items.map((item) => (
 					<TabMenuListItem key={item.label} className={`tab-${slugify(item.label)}`}>
 						<TabMenuNavLink to={item.route} color={item.color}>
 							{item.label === 'Home' ?

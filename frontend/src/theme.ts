@@ -1,3 +1,5 @@
+import { adjustHue, darken, lighten, shade, tint, desaturate, complement } from 'polished';
+
 const baseTheme = {
 	fonts: {
 		body: 'Yaldevi, sans-serif',
@@ -20,12 +22,30 @@ const baseTheme = {
 	}
 };
 
+const lightModePrimary = '#00a7d9';
+const lightModeGreen = '#71d900';
+const darkModePrimary = desaturate(0.2, tint(0.2, lightModePrimary));
+const darkModeGreen = tint(0.3, desaturate(0.1, lightModeGreen));
+
+function generateColors(baseColor: string, baseGreen: string) {
+	return {
+		primary: baseColor,
+		secondary: shade(0.2, adjustHue(75, baseColor)),
+		accent: tint(0.3, adjustHue(120, baseColor)),
+		// Always start with a shade of green for the 'status color' calculations,
+		// so the results are more likely to make sense
+		success: tint(0.1, baseGreen),
+		error: adjustHue(255, baseGreen),
+		warning: lighten(0.05, adjustHue(315, baseGreen)),
+		info: adjustHue(120, baseGreen),
+	};
+}
+
 export const lightTheme = {
 	...baseTheme,
 	colors: {
-		primary: '#3939FF',
-		secondary: '#00aac7',
-		accent: '#eb00c4',
+		...generateColors(lightModePrimary, lightModeGreen),
+		logo: '#3939FF',
 		pageBackground: '#f6f5f5',
 		contentBackground: '#FFF',
 		reverse: '#100e17',
@@ -33,16 +53,16 @@ export const lightTheme = {
 		bodyText: '#100e17',
 		themeToggle: '#d9d9d9',
 		themeToggleHover: 'rgba(0,0,0,0.8)',
-		themeToggleColor: 'rgba(255,255,255,0.5)',
+		themeToggleColor: 'rgba(255,255,255,0.5)'
 	}
 };
+
 
 export const darkTheme = {
 	...baseTheme,
 	colors: {
-		primary: '#5b5bf6',
-		secondary: '#00aac7',
-		accent: '#be2ea8',
+		...generateColors(darkModePrimary, darkModeGreen),
+		logo: '#5b5bf6',
 		pageBackground: '#100e17',
 		contentBackground: '#1c1928',
 		reverse: '#e7e7e7',

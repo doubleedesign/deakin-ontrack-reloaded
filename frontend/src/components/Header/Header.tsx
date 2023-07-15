@@ -1,8 +1,9 @@
 import React, { FC, useContext } from 'react';
-import { HeaderWrapper } from './Header.styled';
+import { HeaderWrapper, LogoNavLink } from './Header.styled';
 import { Button, Col, Row, StyledForm } from '../common.styled.ts';
 import { AppContext } from '../../context/AppContextProvider.tsx';
 import ThemeToggle from '../ThemeToggle/ThemeToggle.tsx';
+
 const Header: FC = () => {
 	const { setCredentials, queryOptions } = useContext(AppContext);
 
@@ -10,9 +11,11 @@ const Header: FC = () => {
 		<HeaderWrapper>
 			<Row>
 				<Col>
-					<h1><img src="/ontrack-reloaded.svg" alt=""/>OnTrack <span>Reloaded</span></h1>
+					<LogoNavLink to='/'>
+						<h1><img src="/ontrack-reloaded.svg" alt=""/>OnTrack <span>Reloaded</span></h1>
+					</LogoNavLink>
 				</Col>
-				<Col>
+				<Col style={{ flexGrow: 0 }}>
 					<StyledForm onSubmit={(event) => setCredentials(event)}>
 						<div>
 							<label htmlFor="username">Username</label>
@@ -22,7 +25,7 @@ const Header: FC = () => {
 							<label htmlFor="token">Auth-Token</label>
 							<input id="token" name="token" type="text" defaultValue={queryOptions?.context?.headers['Auth-Token']}/>
 						</div>
-						<Button type="submit" color="secondary">Let's go</Button>
+						<Button type="submit" color="primary">Let's go</Button>
 					</StyledForm>
 				</Col>
 				<ThemeToggle/>
