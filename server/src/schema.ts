@@ -13,7 +13,7 @@ export const typeDefs = gql`
 		unitCode: String
         name: String
 		targetGrade: Int,
-		url: [String]
+		urls: [String]
 	}
 	
 	type Assignment {

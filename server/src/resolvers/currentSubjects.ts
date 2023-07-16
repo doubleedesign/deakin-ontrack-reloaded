@@ -3,6 +3,7 @@ import { ProjectOverview } from '../datasources/OnTrack/types';
 import { GraphQLError } from 'graphql/error';
 import chalk from 'chalk';
 import { CallistaUnit } from '../datasources/DeakinSync/types';
+import pick from 'lodash/pick';
 
 export const currentSubjectsResolver = {
 	currentSubjects: async (_: any, args: any, context: ServerContext): Promise<Subject[]> => {
@@ -21,7 +22,7 @@ export const currentSubjectsResolver = {
 						unitCode: unit.code,
 						name: unit.name,
 						targetGrade: project.target_grade,
-						url: [`https://ontrack.deakin.edu.au/#/projects/${item.id}/dashboard/`]
+						urls: [`https://ontrack.deakin.edu.au/#/projects/${item.id}/dashboard/`]
 					};
 				}));
 
@@ -34,16 +35,32 @@ export const currentSubjectsResolver = {
 						unitCode: item.code,
 						name: item.name,
 						targetGrade: 3,
-						url: [item.url]
+						urls: [item.url]
 					};
 				});
 
-				const items = [...otItems, ...dsItems];
+				const allResults = [...otItems, ...dsItems];
 
-				return items.sort((a, b) => a.unitCode.localeCompare(b.unitCode));
+				// Some, if not all, units will exist in both locations; they need to be consolidated into one object without duplicates.
+				// All units should be in DeakinSync, whereas some may not be in OnTrack - that's why this adds OT data to DS data, not the other way around
+				const consolidatedResults = dsItems.map((dsItem: Subject) => {
+					// Match by name because if the unit is combined undergrad/postgrad, the codes won't match between the two systems
+					const otItem = otItems.find(item => item.name === dsItem.name);
+					if(!otItem) {
+						return dsItem;
+					}
+
+					return {
+						...pick(dsItem, ['unitCode']),
+						...pick(otItem, ['projectId', 'unitId', 'name', 'targetGrade']),
+						urls: dsItem.urls.concat(otItem.urls)
+					};
+				});
+
+				return consolidatedResults.sort((a, b) => a.unitCode.localeCompare(b.unitCode));
 			}
 			else {
-				throw new GraphQLError('No projects found', { extensions: {
+				throw new GraphQLError('No projects or units found', { extensions: {
 					code: 404,
 					stacktrace: './server/src/resolvers/currentSubjects.ts'
 				} });
@@ -51,7 +68,14 @@ export const currentSubjectsResolver = {
 		}
 		catch (error) {
 			console.error(chalk.red(error.message));
-			throw new GraphQLError(error.message);
+			console.log(error.extensions);
+			throw new GraphQLError(error.message, {
+				extensions: {
+					code: error.extensions.response.status,
+					url: error.extensions.response.url,
+					stacktrace: `${error.extensions.response.url} in ./server/src/resolvers/currentSubjects.ts`
+				}
+			});
 		}
 	}
 };

@@ -16,6 +16,7 @@ export type Subject = {
 	name: string;
 	targetGrade: number;
 	color?: string;
+	urls: string[];
 }
 
 export type Assignment = {
