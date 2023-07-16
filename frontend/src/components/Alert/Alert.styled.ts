@@ -6,7 +6,7 @@ export const AlertWrapper = styled.div<{type: StatusColor}>`
 	border-left-width: ${({ theme }): string => theme.spacing.sm};
 	border-radius: 0.25rem;
 	width: 100%;
-	padding: ${({ theme }): string => theme.spacing.md};
+	padding: ${({ theme }): string => theme.spacing.sm};
 	background: ${({ theme }): string => theme.colors.contentBackground};
     margin-bottom: ${({ theme }): string => theme.spacing.sm};
 	
@@ -17,5 +17,9 @@ export const AlertWrapper = styled.div<{type: StatusColor}>`
 	strong {
 		font-weight: 600;
 		color: ${props => props.theme.colors[props.type]};
+	}
+	
+	span {
+		font-size: 0.9em;
 	}
 `;

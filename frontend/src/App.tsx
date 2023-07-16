@@ -1,19 +1,18 @@
-import React, { FC, useState, useContext, useEffect } from 'react';
+import React, { FC, useState, useContext, useMemo, useEffect } from 'react';
 import { AppContext } from './context/AppContextProvider.tsx';
 import Header from './components/Header/Header.tsx';
-import Alert from './components/Alert/Alert.tsx';
-import { AppWrapper, Panel, Row } from './components/common.styled.ts';
+import { AppWrapper, Row } from './components/common.styled.ts';
 import { lightTheme, darkTheme } from './theme.ts';
 import { ThemeProvider } from 'styled-components';
 import TabMenu from './components/TabMenu/TabMenu.tsx';
 import { MenuItem } from './types.ts';
 import { Outlet } from 'react-router-dom';
 import { Subject } from '@server/types.ts';
-import Messages from './components/Messages/Messages.tsx';
+import Footer from './components/Footer/Footer.tsx';
 
 const App: FC = (props) => {
 	const { theme, currentSubjects } = useContext(AppContext);
-	const defaultMenuItems: MenuItem[] = [{ route: '/', label: 'Home', color: '#FFF' }];
+	const defaultMenuItems: MenuItem[] = useMemo(() => [{ route: '/', label: 'Home', color: '#FFF' }], []);
 	const [menuItems, setMenuItems] = useState<MenuItem[]>(defaultMenuItems);
 
 	useEffect(() => {
@@ -23,17 +22,15 @@ const App: FC = (props) => {
 			color: subject.color ?? '#FFF'
 		}));
 		setMenuItems([...defaultMenuItems, ...items]);
-	}, [currentSubjects]);
+	}, [currentSubjects, defaultMenuItems]);
 
 	return (
 		<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
 			<AppWrapper>
 				<Header/>
 				<TabMenu items={menuItems}/>
-				<Panel>
-					<Messages/>
-					<Outlet/>
-				</Panel>
+				<Outlet/>
+				<Footer/>
 			</AppWrapper>
 		</ThemeProvider>
 	);

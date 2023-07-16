@@ -3,14 +3,13 @@ import { Row } from '../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { ThemeToggleButton } from '../ThemeToggle/ThemeToggle.styled.ts';
 import { NavLink } from 'react-router-dom';
+import { readableColor } from 'polished';
 
 export const HeaderWrapper = styled.header`
     padding-top: ${({ theme }): string => theme.spacing.md};
-    padding-bottom: ${({ theme }): string => theme.spacing.md};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
-        padding-top: ${({ theme }): string => theme.spacing.xl};
-        padding-bottom: ${({ theme }): string => theme.spacing.xl}
+        margin-bottom: -2rem;
     `)};
 	
 	${Row} {
@@ -19,15 +18,9 @@ export const HeaderWrapper = styled.header`
 		flex-wrap: wrap;
 	}
 	
-	form {
-		margin-left: auto;
-		width: auto;
-		flex-basis: auto;
-	}
-	
 	${ThemeToggleButton} {
         position: absolute;
-		top: -4.75rem;
+		top: -3.75rem;
         right: 0;
 		width: 3.5rem;
 		height: 4.5rem;
@@ -41,6 +34,7 @@ export const HeaderWrapper = styled.header`
 
 export const LogoNavLink = styled(NavLink)`
 	text-decoration: none;
+	display: block;
 
     h1 {
         display: flex;
@@ -60,8 +54,29 @@ export const LogoNavLink = styled(NavLink)`
             color: ${({ theme }): string => theme.colors.accent};
             transform: rotate(-15deg);
             position: relative;
-            bottom: -0.75rem;
+            bottom: -0.5rem;
             left: -2rem;
         }
     }
+`;
+
+export const LogoutLink = styled.button`
+	color: ${props => readableColor(props.theme.colors.contentBackground)};
+	position: absolute;
+	font-size: 0.8rem;
+	top: -0.75rem;
+	right: 5rem; // allow spacef or the theme toggle
+	cursor: pointer;
+	font-family: ${({ theme }): string => theme.fonts.body};
+	border: 0;
+	appearance: none;
+	background: transparent;
+	transition: all 0.3s ease;
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	
+	&:hover, &:focus-visible {
+		color: ${({ theme }): string => theme.colors.accent};
+		text-decoration-color: currentColor;
+	}
 `;

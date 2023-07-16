@@ -39,6 +39,8 @@ const exampleTabColorGen = (color: string) => [...Array(5)].map((x, index) => {
 });
 
 export const TabExampleRow = styled(Row)`
+	margin-bottom: 2rem;
+	
 	div {
 		width: 120px;
 		padding: 0.5rem 1rem;
@@ -67,6 +69,8 @@ const colorWheel = (color: string) => [...Array(25)].map((x, index) => {
 });
 
 export const ColorWheelRow = styled(Row)<{color: string}>`
+	margin-bottom: 2rem;
+	
 	div {
 		width: auto;
 		flex-grow: 1;

@@ -45,7 +45,7 @@ export const lightTheme = {
 	...baseTheme,
 	colors: {
 		...generateColors(lightModePrimary, lightModeGreen),
-		logo: '#3939FF',
+		logo: '#2424c4',
 		pageBackground: '#f6f5f5',
 		contentBackground: '#FFF',
 		reverse: '#100e17',

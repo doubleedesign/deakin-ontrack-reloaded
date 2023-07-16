@@ -1,12 +1,29 @@
 import styled from 'styled-components';
-import { Col, Panel } from '../common.styled.ts';
+import { Row } from '../common.styled.ts';
+import { meetsContrastGuidelines, shade, readableColor } from 'polished';
 
-export const PageContent = styled(Col).attrs({ as: 'main' })`
-	width: 100%;
-	flex-basis: 100%;
+export const SubjectHeaderRow = styled(Row).attrs({ as: 'header' })<{color: string}>`
 	
-	${Panel} {
-        background: ${({ theme }): string => theme.colors.contentBackground};
-		border-radius: ${({ theme }): string => theme.spacing.sm};
+	h2 {
+        span {
+            display: inline-block;
+	        line-height: 1;
+            background: ${props => props.color};
+            font-weight: 300;
+            padding: ${({ theme }): string => theme.spacing.sm};
+            margin-right: ${({ theme }): string => theme.spacing.sm};
+            color: ${props => meetsContrastGuidelines(shade(0.4, props.color), '#FFF').AA ? '#FFF' : readableColor(props.color)};
+	        position: relative;
+	        
+	        &:before {
+		        content: '';
+		        background: ${props => props.color};
+		        width: ${({ theme }): string => theme.spacing.lg};
+		        position: absolute;
+		        top: 0;
+		        bottom: 0;
+		        left: -${({ theme }): string => theme.spacing.lg};
+	        }
+        }
 	}
 `;

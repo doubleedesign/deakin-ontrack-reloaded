@@ -13,11 +13,15 @@ const Messages: FC = () => {
 				<Col>
 					{errors && errors.map((error, index) => {
 						console.error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`);
+						let messageOutput = `${error.extensions?.code} ${error.message}`;
+						if(error.extensions.url) {
+							messageOutput = messageOutput + `(at URL ${error.extensions?.url})`;
+						}
 						return (
 							<Alert key={`error-${index}`}
-					       type="error"
-					       message={`${error.extensions?.code} ${error.message}`}
-					       more={error.extensions?.note as string}
+							       type="error"
+							       message={messageOutput}
+							       more={error.extensions?.stacktrace as string}
 							/>
 						);
 					})}

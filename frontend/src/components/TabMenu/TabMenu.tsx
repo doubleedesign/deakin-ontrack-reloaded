@@ -17,10 +17,12 @@ const TabMenu: FC<TabMenuProps> = ({ items }) => {
 				{items.map((item) => (
 					<TabMenuListItem key={item.label} className={`tab-${slugify(item.label)}`}>
 						<TabMenuNavLink to={item.route} color={item.color}>
-							{item.label === 'Home' ?
-								<><FontAwesomeIcon icon={['fas', 'list-ul']}/><ScreenReaderText>Home</ScreenReaderText></>
-								: item.label
-							}
+							<span>
+								{item.label === 'Home' ?
+									<><FontAwesomeIcon icon={['fas', 'list-ul']}/><ScreenReaderText>Home</ScreenReaderText></>
+									: item.label
+								}
+							</span>
 						</TabMenuNavLink>
 					</TabMenuListItem>
 				))}

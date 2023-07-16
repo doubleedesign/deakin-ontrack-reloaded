@@ -1,15 +1,15 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { Panel, Row } from '../common.styled.ts';
-import { PageContent } from './SubjectPage.styled.ts';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AppContext } from '../../context/AppContextProvider.tsx';
 import { GraphQLError } from 'graphql/error';
 import { Subject } from '@server/types.ts';
+import Page from '../Page/Page.tsx';
+import { SubjectHeaderRow } from './SubjectPage.styled.ts';
+import { Col } from '../common.styled.ts';
 
 const SubjectPage: FC = () => {
 	const params = useParams();
 	const { currentSubjects, setErrors } = useContext(AppContext);
-	const navigate = useNavigate();
 	const [subject, setSubject] = useState<Subject>();
 
 	useEffect(() => {
@@ -29,14 +29,16 @@ const SubjectPage: FC = () => {
 				})]);
 			}
 		}
-	}, [params, currentSubjects]);
+	}, [params, currentSubjects, setErrors]);
 
 	return (
-		<Row>
-			<PageContent>
-
-			</PageContent>
-		</Row>
+		<Page color={subject?.color}>
+			<SubjectHeaderRow color={subject?.color ?? '#000'}>
+				<Col>
+					<h2><span>{subject?.unitCode}</span> {subject?.name}</h2>
+				</Col>
+			</SubjectHeaderRow>
+		</Page>
 	);
 };
 

@@ -10,3 +10,11 @@ body {
 	font-weight: 300;
 	overflow-x: hidden;
 }
+
+p {
+	margin-bottom: 0.5rem;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}

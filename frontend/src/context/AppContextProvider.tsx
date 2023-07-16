@@ -19,7 +19,6 @@ import { AuthResponse, MyQueryContext } from '../types.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
-	authenticated: boolean;
 	queryOptions: MyQueryContext | undefined,
 	currentSubjects: Subject[],
 	errors: GraphQLError[];
@@ -83,7 +82,9 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	// Authenticate with values saved in local storage on initial load
 	useEffect(() => {
-		authenticate(username, otToken, dsToken);
+		if(username !== '' && otToken !== '' && dsToken !== '') {
+			authenticate(username, otToken, dsToken);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -118,7 +119,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	return (
 		<AppContext.Provider value={{
-			theme, setTheme, setCredentials, authenticated: otAuthenticated, queryOptions, currentSubjects, errors, setErrors
+			theme, setTheme, setCredentials, queryOptions, currentSubjects, errors, setErrors
 		}}>
 			{children}
 		</AppContext.Provider>);
