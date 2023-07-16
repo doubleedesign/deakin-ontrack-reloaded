@@ -18,11 +18,10 @@ const Messages: FC = () => {
 							messageOutput = messageOutput + `(at URL ${error.extensions?.url})`;
 						}
 						return (
-							<Alert key={`error-${index}`}
-							       type="error"
-							       message={messageOutput}
-							       more={error.extensions?.stacktrace as string}
-							/>
+							<Alert key={`error-${index}`} type="error">
+								<p><strong>{messageOutput}</strong></p>
+								<p><span>{error.extensions?.stacktrace as string}</span></p>
+							</Alert>
 						);
 					})}
 				</Col>

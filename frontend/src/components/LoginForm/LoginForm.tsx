@@ -11,7 +11,7 @@ const LoginForm: FC = () => {
 	return (
 		<LoginFormWrapper>
 			<StyledForm onSubmit={(event) => setCredentials(event)}>
-				<Alert type="warning" message="Hey, I'm gonna need to see some ID."/>
+				<Alert type="warning"><p>Hey, I'm gonna need to see some ID.</p></Alert>
 				<div>
 					<label htmlFor="username">Username</label>
 					<input id="username" name="username" type="text" defaultValue={queryOptions?.context?.headers?.username}/>

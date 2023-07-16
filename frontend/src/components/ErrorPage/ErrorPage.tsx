@@ -11,8 +11,8 @@ const ErrorPage: FC = () => {
 	return (
 		<Page>
 			<Row>
-				<h1>{error?.statusText}</h1>
-				<Alert type="error" message="Well, this is an unfortunate turn of events."/>
+				<h2>Something went wrong</h2>
+				<Alert type="error"><p>Well, this is an unfortunate turn of events.</p></Alert>
 			</Row>
 		</Page>
 	);
