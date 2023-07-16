@@ -1,6 +1,7 @@
 import {
 	createContext,
 	useState,
+	useCallback,
 	useEffect,
 	FC,
 	PropsWithChildren,
@@ -13,6 +14,8 @@ import { CURRENT_SUBJECTS_QUERY } from '../graphql/queries.ts';
 import { Subject } from '@server/types.ts';
 import { lightTheme, darkTheme } from '../theme.ts';
 import { adjustHue, tint, complement } from 'polished';
+import { auth } from './auth.ts';
+import { AuthResponse, MyQueryContext } from '../types.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
@@ -25,18 +28,6 @@ export interface MyAppContext {
 	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
 }
 export const AppContext = createContext({} as MyAppContext);
-
-interface MyCredentials {
-	username: string | undefined;
-	'Auth-Token': string | undefined;
-	Authorization: string | undefined;
-}
-
-interface MyQueryContext {
-	context: {
-		headers: MyCredentials
-	}
-}
 
 const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	// OnTrack auth
@@ -57,106 +48,27 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>([]);
 
-	// TODO: Handle the mock API - only require auth if really accessing OnTrack
-	function authenticate(username: string, submittedOtToken: string, submittedDsToken: string) {
-		if(username && submittedDsToken) {
-			// Hit an endpoint that requires authentication but doesn't return much data, just to see if I can
-			fetch('https://ontrack.deakin.edu.au/api/unit_roles', {
-				method: 'GET',
-				headers: {
-					username: username,
-					'Auth-Token': submittedOtToken
-				} })
-				.then(response => {
-					if(response.status === 200) {
-						setUsername(username);
-						setOtToken(submittedOtToken);
-						setOtAuthenticated(true);
-						setErrors([]);
-					}
-					else {
-						clearAuthStatus();
-						throw new GraphQLError('Error authenticating with OnTrack', {
-							extensions: {
-								code: response.status,
-								stacktrace: './frontend/src/context/AppContextProvider.tsx'
-							}
-						});
-					}
-				})
-				.catch(error => {
-					clearAuthStatus();
-					setErrors([new GraphQLError(error.message, { extensions: {
-						code: 401,
-						stacktrace: './frontend/src/context/AppContextProvider.tsx'
-					} })]);
-				});
-		}
-		if(submittedDsToken) {
-			fetch('https://bff-sync.sync.deakin.edu.au/v1/authorised', {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${submittedDsToken}`
-				}
-			}).then(response => {
-				if(response.status === 200) {
-					setDsToken(submittedDsToken);
-					setDsAuthenticated(true);
-					setErrors([]);
-				}
-			}).catch(error => {
-				clearAuthStatus();
-				setErrors([new GraphQLError(error.message, { extensions: {
-					code: 401,
-					stacktrace: './frontend/src/context/AppContextProvider.tsx'
-				} })]);
-			});
+	// Function to call auth function and update state based on its results
+	const authenticate = useCallback((username: string, submittedOtToken: string, submittedDsToken: string) => {
+		const result: AuthResponse = auth.authenticate(username, submittedOtToken, submittedDsToken);
+
+		if(result.errors) {
+			clearAuthStatus();
+			setErrors(result.errors);
 		}
 		else {
-			clearAuthStatus();
-			setErrors([new GraphQLError('Hey, I\'m gonna need to see some ID.', {
-				extensions: {
-					code: 401,
-					note: 'Please enter your username and auth token for OnTrack and Bearer token for DeakinSync.',
-					stacktrace: './frontend/src/context/AppContextProvider.tsx',
-				}
-			})]);
+			setOtAuthenticated(true);
+			setDsAuthenticated(true);
+			setQueryOptions(auth.setupQueryHeaders(result));
 		}
-	}
-
-	function clearAuthStatus() {
-		setOtAuthenticated(false);
-		setQueryOptions(undefined);
-	}
-
-	// Authenticate with values saved in local storage on load
-	useEffect(() => {
-		authenticate(username, otToken, dsToken);
 	}, []);
 
-	// Set up query headers after authentication
-	useEffect(() => {
-		const creds = {
-			username: '',
-			'Auth-Token': '',
-			Authorization: ''
-		};
-
-		if(otAuthenticated) {
-			creds.username = username;
-			creds['Auth-Token'] = otToken;
-		}
-
-		if(dsAuthenticated) {
-			creds.Authorization = `Bearer ${dsToken}`;
-		}
-
-		setQueryOptions({
-			context: {
-				headers: creds
-			}
-		});
-	}, [otAuthenticated, otToken, dsAuthenticated, dsToken]);
+	// Function to clear auth-related state
+	function clearAuthStatus() {
+		setOtAuthenticated(false);
+		setDsAuthenticated(false);
+		setQueryOptions(undefined);
+	}
 
 	// Function to update credentials and re-authenticate that can be called on form submissions in other components
 	const setCredentials = (event: FormEvent<HTMLFormElement>) => {
@@ -169,8 +81,15 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		authenticate(username, otToken, dsToken);
 	};
 
+	// Authenticate with values saved in local storage on initial load
 	useEffect(() => {
-		if(otAuthenticated && queryOptions) {
+		authenticate(username, otToken, dsToken);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	// Once auth is all sorted: fetch current subjects, assign theme colours to them, and store them
+	useEffect(() => {
+		if(otAuthenticated && dsAuthenticated && queryOptions) {
 			const themeObject = theme === 'light' ? lightTheme : darkTheme;
 			getCurrentSubjects(queryOptions).then(response => {
 				if (response.data) {
@@ -187,7 +106,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 				// Stop lying to me about what fields can be there, TypeScript
 				// @ts-ignore
 				if (response?.errors) {
-					// @ts-ignore
+				// @ts-ignore
 					setErrors(response.errors);
 				}
 			});
@@ -195,10 +114,12 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		else {
 			setCurrentSubjects([]);
 		}
-	}, [otAuthenticated, queryOptions, theme]);
+	}, [dsAuthenticated, otAuthenticated, queryOptions, getCurrentSubjects, theme]);
 
 	return (
-		<AppContext.Provider value={{ theme, setTheme, setCredentials, authenticated: otAuthenticated, queryOptions, currentSubjects, errors, setErrors }}>
+		<AppContext.Provider value={{
+			theme, setTheme, setCredentials, authenticated: otAuthenticated, queryOptions, currentSubjects, errors, setErrors
+		}}>
 			{children}
 		</AppContext.Provider>);
 };
