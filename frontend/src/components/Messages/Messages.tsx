@@ -3,7 +3,7 @@ import { AppContext } from '../../context/AppContextProvider.tsx';
 import { Row, Col } from '../common.styled.ts';
 import Alert from '../Alert/Alert.tsx';
 import { MessagesWrapper } from './Messages.styled.ts';
-import LoginForm from '../LoginForm/LoginForm.tsx';
+import { StyledButton } from '../Button/Button.styled.ts';
 
 const Messages: FC = () => {
 	const { errors, setUserDrawerOpen } = useContext(AppContext);
@@ -20,14 +20,13 @@ const Messages: FC = () => {
 						}
 						return (
 							<Alert key={`error-${index}`} type="error">
-								<p><strong>{messageOutput}</strong></p>
-								{error?.extensions?.code === 401 ?
-									<>
-										<p>You might want to try re-entering your credentials.</p>
-										<button onClick={() => setUserDrawerOpen(true)}>Log in again</button>
-									</>
-									: ''}
-								<p><span>{error.extensions?.stacktrace as string}</span></p>
+								<div>
+									<p><strong>{messageOutput}</strong>&nbsp;</p>
+									<p><span>{error.extensions?.stacktrace as string}</span></p>
+								</div>
+								{[401, 403, 419].includes(error?.extensions?.code as number) &&
+									<StyledButton color="error" onClick={() => setUserDrawerOpen(true)}>Log in again</StyledButton>
+								}
 							</Alert>
 						);
 					})}

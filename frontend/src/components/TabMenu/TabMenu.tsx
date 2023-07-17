@@ -19,7 +19,10 @@ const TabMenu: FC<TabMenuProps> = ({ items }) => {
 						<TabMenuNavLink to={item.route} color={item.color}>
 							<span>
 								{item.label === 'Home' ?
-									<><FontAwesomeIcon icon={['fas', 'list-ul']}/><ScreenReaderText>Home</ScreenReaderText></>
+									<>
+										<FontAwesomeIcon icon={['fas', 'list-ul']}/>
+										<ScreenReaderText>Home</ScreenReaderText>
+									</>
 									: item.label
 								}
 							</span>

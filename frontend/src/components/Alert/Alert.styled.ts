@@ -9,9 +9,16 @@ export const AlertWrapper = styled.div<{type: StatusColor}>`
 	padding: ${({ theme }): string => theme.spacing.sm};
 	background: ${({ theme }): string => theme.colors.contentBackground};
     margin-bottom: ${({ theme }): string => theme.spacing.sm};
+	display: flex;
+	align-items: flex-start;
 	
 	&:last-child {
         margin-bottom: ${({ theme }): string => theme.spacing.lg};
+	}
+	
+	div {
+		flex-grow: 0;
+		flex-shrink: 1;
 	}
 	
 	strong {
@@ -22,5 +29,10 @@ export const AlertWrapper = styled.div<{type: StatusColor}>`
 	span {
 		font-size: 0.8em;
 		opacity: 0.75;
+	}
+	
+	button {
+		flex-grow: 1;
+		flex-shrink: 0;
 	}
 `;

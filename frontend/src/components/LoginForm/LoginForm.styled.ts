@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledForm } from '../common.styled.ts';
+import { StyledForm } from '../Form/Form.styled.ts';
 
 export const LoginFormWrapper = styled.div`
 	width: 100%;
@@ -9,5 +9,9 @@ export const LoginFormWrapper = styled.div`
 	
 	${StyledForm} {
         width: 25rem;
+	}
+	
+	[data-lastpass-icon-root] {
+		margin: 0;
 	}
 `;

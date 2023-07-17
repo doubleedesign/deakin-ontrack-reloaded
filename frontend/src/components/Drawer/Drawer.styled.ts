@@ -33,4 +33,8 @@ export const DrawerContent = styled.div`
 		top: 0;
 		right: 0;
     }
+
+    h2 {
+        margin-bottom: ${({ theme }): string => theme.spacing.lg};
+    }
 `;

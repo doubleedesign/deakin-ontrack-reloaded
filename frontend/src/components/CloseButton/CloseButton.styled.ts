@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { readableColor } from 'polished';
 
 export const CloseButtonElement = styled.button`
 	cursor: pointer;
@@ -9,6 +10,7 @@ export const CloseButtonElement = styled.button`
 	border: 1px solid transparent;
 	transition: all 0.3s ease;
 	border-radius: 0.25rem;
+	color: ${props => readableColor(props.theme.colors.contentBackground)};
 	
 	&:hover, &:focus-visible {
 		background: ${({ theme }): string => theme.colors.pageBackground};
