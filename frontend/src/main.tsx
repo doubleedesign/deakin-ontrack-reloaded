@@ -9,10 +9,10 @@ import SubjectPage from './components/SubjectPage/SubjectPage.tsx';
 import Dashboard from './components/Dashboard/Dashboard.tsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faS, faLightbulb, faListUl } from '@fortawesome/pro-solid-svg-icons';
-import { fal, faLightbulbOn } from '@fortawesome/pro-light-svg-icons';
+import { fal, faLightbulbOn, faXmark } from '@fortawesome/pro-light-svg-icons';
 import ErrorPage from './components/ErrorPage/ErrorPage.tsx';
 import UITest from './components/UITest/UITest.tsx';
-library.add(fal, faS, faLightbulb, faLightbulbOn, faListUl);
+library.add(fal, faS, faLightbulb, faLightbulbOn, faListUl, faXmark);
 
 const client = new ApolloClient({
 	uri: 'http://localhost:5000',

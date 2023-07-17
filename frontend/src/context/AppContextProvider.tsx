@@ -25,6 +25,8 @@ export interface MyAppContext {
 	setErrors: Dispatch<SetStateAction<GraphQLError[]>>;
 	theme: 'light' | 'dark';
 	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
+	userDrawerOpen: boolean;
+	setUserDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 export const AppContext = createContext({} as MyAppContext);
 
@@ -44,6 +46,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	// Everything else
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [theme, setTheme] = useState<'light' | 'dark'>('light');
+	const [userDrawerOpen, setUserDrawerOpen] = useState<boolean>(false);
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>([]);
 
@@ -119,7 +122,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	return (
 		<AppContext.Provider value={{
-			theme, setTheme, setCredentials, queryOptions, currentSubjects, errors, setErrors
+			theme, setTheme, userDrawerOpen, setUserDrawerOpen, setCredentials, queryOptions, currentSubjects, errors, setErrors
 		}}>
 			{children}
 		</AppContext.Provider>);

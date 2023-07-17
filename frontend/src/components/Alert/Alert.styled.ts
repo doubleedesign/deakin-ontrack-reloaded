@@ -20,6 +20,7 @@ export const AlertWrapper = styled.div<{type: StatusColor}>`
 	}
 	
 	span {
-		font-size: 0.9em;
+		font-size: 0.8em;
+		opacity: 0.75;
 	}
 `;

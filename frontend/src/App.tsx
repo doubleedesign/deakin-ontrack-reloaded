@@ -9,10 +9,12 @@ import { MenuItem } from './types.ts';
 import { Outlet } from 'react-router-dom';
 import { Subject } from '@server/types.ts';
 import Footer from './components/Footer/Footer.tsx';
+import UserDrawer from './components/UserDrawer/UserDrawer.tsx';
 
 const App: FC = (props) => {
 	const { theme, currentSubjects } = useContext(AppContext);
-	const defaultMenuItems: MenuItem[] = useMemo(() => [{ route: '/', label: 'Home', color: '#FFF' }], []);
+	const themeObject = theme === 'light' ? lightTheme : darkTheme;
+	const defaultMenuItems: MenuItem[] = useMemo(() => [{ route: '/', label: 'Home', color: themeObject.colors.logo }], []);
 	const [menuItems, setMenuItems] = useState<MenuItem[]>(defaultMenuItems);
 
 	useEffect(() => {
@@ -26,10 +28,11 @@ const App: FC = (props) => {
 
 	return (
 		<ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-			<AppWrapper>
+			<AppWrapper id="AppWrapper">
 				<Header/>
 				<TabMenu items={menuItems}/>
 				<Outlet/>
+				<UserDrawer/>
 				<Footer/>
 			</AppWrapper>
 		</ThemeProvider>
