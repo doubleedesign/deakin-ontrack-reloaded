@@ -32,26 +32,47 @@ Other important information:
 5. In a second terminal window, go into the frontend folder with `cd frontend` and run `npm run dev`
    - Open the URL shown in your terminal.
 
-### Getting your OnTrack auth token
+### Getting your auth tokens
 
+#### OnTrack
 You can find the auth token by logging into OnTrack with your browser dev tools open and either:
 - going to the Network tab and inspecting the request headers for any of the API calls, or
-- going to the Storage tab and finding the token in the `doubtfire_user` object.
+- going to the Storage tab and finding the token in the `doubtfire_user` object in local storage.
 
 Or, you can semi-automate this process using a browser extension such as [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) or [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) to run a custom script to automatically copy it to the clipboard when you load or refresh OnTrack. Here's the one I use with GreaseMonkey:
 
 ```js
+// ==UserScript==
+// @name     Copy OnTrack auth token to clipboard
+// @version  1
+// @match 	 https://ontrack.deakin.edu.au/*
+// ==/UserScript==
+
 const data = window.localStorage.getItem('doubtfire_user'); 
 const token = JSON.parse(data).authenticationToken;
 navigator.clipboard.writeText(token);
 alert("Copied auth token: " + token);
 ```
 
+#### DeakinSync
+Works very similarly to getting the OnTrack token, except you're looking for an `Authorization: Bearer ####` header or the `auth_token` value in session storage. Or you can use GreaseMonkey/TamperMonkey for this too: 
+```js
+// ==UserScript==
+// @name     Copy DeakinSync bearer token to clipboard
+// @version  1
+// @match 	 https://sync.deakin.edu.au/*
+// ==/UserScript==
+
+const token = window.sessionStorage.getItem('access_token'); 
+navigator.clipboard.writeText(token);
+alert("Copied bearer token: " + token);
+```
+
 ### Making your own version
 
 You are welcome to fork this repo and modify it to find your own way of managing your OnTrack units, and I would love to see what you come up with! Alternatively if you pretty much use my app as-is but have any suggestions or fixes/tweaks, pull requests are also welcome.
 
-There is a [Mock API](mockapi/README.md) included that you can use for developing with fake data.
+There is a work-in-progress [Mock API](mockapi/README.md) included that you can use for developing with fake data.
 
 :warning: If you would like to use this repo as a starting point for your own app, I would really appreciate it if you definitely actually _fork_ it (don't download and copy) on GitHub. This is so it will show up in the list of forks and I (and others) can learn from your work as well, and can form part of giving me due credit by making what you used from my project clear in the commit history.
 
