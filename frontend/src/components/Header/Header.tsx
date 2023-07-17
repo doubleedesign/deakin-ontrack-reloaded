@@ -1,16 +1,12 @@
-import React, { FC, useCallback, useContext } from 'react';
-import { HeaderWrapper, LogoNavLink, LogoutLink } from './Header.styled';
-import { Col, Row } from '../common.styled.ts';
+import React, { FC, useContext } from 'react';
+import { HeaderLinkButton, HeaderUserLinks, HeaderWrapper, LogoNavLink } from './Header.styled';
+import { Col, Row, ScreenReaderText } from '../common.styled.ts';
 import ThemeToggle from '../ThemeToggle/ThemeToggle.tsx';
 import { AppContext } from '../../context/AppContextProvider.tsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Header: FC = () => {
-	const { queryOptions } = useContext(AppContext);
-
-	const logOut = useCallback(function(event: any) {
-		event.preventDefault();
-		alert('Still gotta build the logout functionality!');
-	}, []);
+	const { queryOptions, setUserDrawerOpen, clearCredentials } = useContext(AppContext);
 
 	return (
 		<HeaderWrapper>
@@ -20,7 +16,13 @@ const Header: FC = () => {
 						<h1><img src="/ontrack-reloaded.svg" alt=""/>OnTrack <span>Reloaded</span></h1>
 					</LogoNavLink>
 				</Col>
-				{queryOptions && <LogoutLink onClick={logOut}>Log out</LogoutLink>}
+				<HeaderUserLinks>
+					<HeaderLinkButton onClick={() => setUserDrawerOpen(true)}>
+						<FontAwesomeIcon icon={['fas', 'user-gear']}/>
+						<ScreenReaderText>Close panel</ScreenReaderText>
+					</HeaderLinkButton>
+					{queryOptions && <HeaderLinkButton onClick={clearCredentials}>Log out</HeaderLinkButton>}
+				</HeaderUserLinks>
 				<ThemeToggle/>
 			</Row>
 		</HeaderWrapper>

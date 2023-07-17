@@ -16,9 +16,11 @@ import { lightTheme, darkTheme } from '../theme.ts';
 import { adjustHue, tint, complement } from 'polished';
 import { auth } from './auth.ts';
 import { AuthResponse, MyQueryContext } from '../types.ts';
+import { useNavigate } from 'react-router-dom';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => void;
+	clearCredentials: () => void;
 	queryOptions: MyQueryContext | undefined,
 	currentSubjects: Subject[],
 	errors: GraphQLError[];
@@ -55,7 +57,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		const result: AuthResponse = auth.authenticate(username, submittedOtToken, submittedDsToken);
 
 		if(result.errors) {
-			clearAuthStatus();
+			clearCredentials();
 			setErrors(result.errors);
 		}
 		else {
@@ -70,10 +72,15 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	}, []);
 
 	// Function to clear auth-related state
-	function clearAuthStatus() {
+	function clearCredentials() {
 		setOtAuthenticated(false);
 		setDsAuthenticated(false);
 		setQueryOptions(undefined);
+		setUsername('');
+		setOtToken('');
+		setDsToken('');
+
+		window.location.href = '/';
 	}
 
 	// Function to update credentials and re-authenticate that can be called on form submissions in other components
@@ -126,7 +133,12 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	return (
 		<AppContext.Provider value={{
-			theme, setTheme, userDrawerOpen, setUserDrawerOpen, setCredentials, queryOptions, currentSubjects, errors, setErrors
+			theme, setTheme,
+			userDrawerOpen, setUserDrawerOpen,
+			setCredentials, clearCredentials,
+			queryOptions,
+			currentSubjects,
+			errors, setErrors
 		}}>
 			{children}
 		</AppContext.Provider>);

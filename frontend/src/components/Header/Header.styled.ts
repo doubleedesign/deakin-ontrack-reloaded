@@ -60,12 +60,15 @@ export const LogoNavLink = styled(NavLink)`
     }
 `;
 
-export const LogoutLink = styled.button`
+export const HeaderUserLinks = styled.div`
+    position: absolute;
+    top: -0.75rem;
+    right: 5rem; // allow space for the theme toggle
+`;
+
+export const HeaderLinkButton = styled.button`
 	color: ${props => readableColor(props.theme.colors.contentBackground)};
-	position: absolute;
 	font-size: 0.8rem;
-	top: -0.75rem;
-	right: 5rem; // allow spacef or the theme toggle
 	cursor: pointer;
 	font-family: ${({ theme }): string => theme.fonts.body};
 	border: 0;
@@ -74,6 +77,16 @@ export const LogoutLink = styled.button`
 	transition: all 0.3s ease;
 	text-decoration: underline;
 	text-decoration-color: transparent;
+	padding: 0 ${({ theme }): string => theme.spacing.sm};
+	border-right: 1px solid currentColor;
+	
+	&:last-child {
+		border: 0;
+	}
+	
+	svg {
+		font-size: 1rem;
+	}
 	
 	&:hover, &:focus-visible {
 		color: ${({ theme }): string => theme.colors.accent};
