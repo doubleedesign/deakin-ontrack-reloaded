@@ -7,13 +7,18 @@ export const typeDefs = gql`
 		allAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
 	}
 	
+	type SubjectURL {
+		label: String
+		url: String
+	}
+	
 	type Subject {
 		projectId: Int
 		unitId: Int
 		unitCode: String
         name: String
 		targetGrade: Int,
-		urls: [String]
+		urls: [SubjectURL]
 	}
 	
 	type Assignment {

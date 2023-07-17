@@ -22,7 +22,9 @@ export const currentSubjectsResolver = {
 						unitCode: unit.code,
 						name: unit.name,
 						targetGrade: project.target_grade,
-						urls: [`https://ontrack.deakin.edu.au/#/projects/${item.id}/dashboard/`]
+						urls: [
+							{ label: 'OnTrack', url: `https://ontrack.deakin.edu.au/#/projects/${item.id}/dashboard/` }
+						]
 					};
 				}));
 
@@ -35,11 +37,11 @@ export const currentSubjectsResolver = {
 						unitCode: item.code,
 						name: item.name,
 						targetGrade: 3,
-						urls: [item.url]
+						urls: [
+							{ label: 'CloudDeakin', url: item.url }
+						]
 					};
 				});
-
-				const allResults = [...otItems, ...dsItems];
 
 				// Some, if not all, units will exist in both locations; they need to be consolidated into one object without duplicates.
 				// All units should be in DeakinSync, whereas some may not be in OnTrack - that's why this adds OT data to DS data, not the other way around

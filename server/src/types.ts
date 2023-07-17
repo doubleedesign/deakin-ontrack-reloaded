@@ -9,6 +9,11 @@ export type ServerContext = {
 	}
 }
 
+type SubjectUrl = {
+	label: string;
+	url: string;
+}
+
 export type Subject = {
 	projectId: number;
 	unitId: number;
@@ -16,7 +21,7 @@ export type Subject = {
 	name: string;
 	targetGrade: number;
 	color?: string;
-	urls: string[];
+	urls: SubjectUrl[];
 }
 
 export type Assignment = {

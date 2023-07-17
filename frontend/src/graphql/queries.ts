@@ -9,7 +9,11 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject
 	        unitId,
             unitCode,
 	        name,
-	        targetGrade
+	        targetGrade,
+	        urls {
+		        label,
+		        url
+	        }
         }
     }
 `;

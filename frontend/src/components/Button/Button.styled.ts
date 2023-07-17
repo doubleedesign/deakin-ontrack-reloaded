@@ -26,12 +26,24 @@ export const StyledButton = styled.button<ButtonProps>`
 	line-height: 1.6;
 	text-decoration: underline;
 	text-decoration-color: transparent;
+	margin-right: ${({ theme }): string => theme.spacing.sm};
+	
+	svg {
+		padding-left: ${({ theme }): string => theme.spacing.sm};
+	}
 	
 	&:hover, &:focus, &:active {
-		background: ${({ color, theme }): string => darken(0.1, theme.colors[color])};
+		background: ${({ color, theme }): string => darken(0.15, theme.colors[color])};
 	}
 	
 	&:focus {
         text-decoration-color: currentColor;
 	}
 `;
+
+interface LinkProps {
+	href: string;
+	target?: string;
+}
+
+export const StyledButtonLink = styled(StyledButton).attrs({ as: 'a' })<LinkProps>``;
