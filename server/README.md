@@ -7,7 +7,9 @@ The OnTrack API is structured as follows. I have used this terminology in the On
 - **Projects** are like an instance of a unit, an individual enrolment or attempt.
 - **Units** are the general definitions of units, like what you would find in the university handbook (as well as other administrative data).
 
-What is useful to a student, a user of this  app, is a combination of data from both of these things. I have used the term **Subject** to represent this. While it's not what we typically refer to them as at Deakin, in terms of the code I find it clearer to use an entirely separate phrase.
+I have also set up the server to get enrolment info from DeakinSync so that non-OnTrack units can be listed in the app, as well as links to the CloudDeakin unit sites. This API returns the `CallistaUnit` type (Callista is the software that powers Student Connect). 
+
+What is useful to a student, a user of this  app, is a combination of data from all of these things. I have used the term **Subject** to represent this. While it's not what we typically refer to them as at Deakin, in terms of the code I find it clearer to use an entirely separate phrase.
 
 Similarly, the OnTrack API also has:
 
