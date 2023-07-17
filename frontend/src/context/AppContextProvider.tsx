@@ -59,9 +59,13 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 			setErrors(result.errors);
 		}
 		else {
+			setUsername(result?.credentials!.username);
 			setOtAuthenticated(true);
+			setOtToken(result?.credentials!.otToken);
 			setDsAuthenticated(true);
+			setDsToken(result?.credentials!.dsToken);
 			setQueryOptions(auth.setupQueryHeaders(result));
+			setUserDrawerOpen(false);
 		}
 	}, []);
 
