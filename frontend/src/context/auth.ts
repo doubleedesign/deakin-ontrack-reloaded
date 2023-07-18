@@ -38,8 +38,8 @@ export const auth = {
 
 		const trimmedOtToken = submittedOtToken.trim();
 		// Make sure "Bearer" won't be included twice, and it doesn't matter if it's submitted with it or not
-		const trimmedDsToken = submittedDsToken ? submittedDsToken.replace('Bearer', '').trim() : '';
-		const trimmedCdToken = submittedCdToken ? submittedCdToken.replace('Bearer', '').trim() : '';
+		const trimmedDsToken = submittedDsToken ? submittedDsToken.replaceAll('Bearer', '').trim() : '';
+		const trimmedCdToken = submittedCdToken ? submittedCdToken.replaceAll('Bearer', '').trim() : '';
 
 		try {
 			const otResponse = await this.authenticateOne('OnTrack', 'https://ontrack.deakin.edu.au/api/unit_roles', {
@@ -112,8 +112,8 @@ export const auth = {
 				headers: {
 					username: auth?.credentials?.find(cred => cred.systemName === 'OnTrack')?.username || undefined,
 					onTrack: auth?.credentials?.find(cred => cred.systemName === 'OnTrack')?.token || undefined,
-					deakinSync: dsToken ? `Bearer ${dsToken}` : undefined,
-					cloudDeakin: cdToken ? `Bearer ${cdToken}` : undefined,
+					deakinSync: dsToken ? `${dsToken}` : undefined,
+					cloudDeakin: cdToken ? `${cdToken}` : undefined,
 				}
 			}
 		};

@@ -71,15 +71,15 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 		// Save credentials for GraphQL query headers
 		setQueryOptions(auth.setupQueryHeaders(result));
-		
+
 		// Update local storage
 		setUsername(username);
 		result.credentials && result.credentials.find(cred => cred.systemName === 'OnTrack')
-			? setOtToken(submittedOtToken) : setOtToken(null);
+			? setOtToken(submittedOtToken.trim()) : setOtToken(null);
 		result.credentials && result.credentials.find(cred => cred.systemName === 'DeakinSync')
-			? setDsToken(submittedDsToken) : setDsToken(null);
+			? setDsToken(submittedDsToken.replaceAll('Bearer', '').trim()) : setDsToken(null);
 		result.credentials && result.credentials.find(cred => cred.systemName === 'CloudDeakin')
-			? setCdToken(submittedCdToken) : setCdToken(null);
+			? setCdToken(submittedCdToken.replaceAll('Bearer', '').trim()) : setCdToken(null);
 
 
 		// Close the panel if all creds are valid
