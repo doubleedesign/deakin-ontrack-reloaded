@@ -69,7 +69,7 @@ navigator.clipboard.writeText(token);
 alert("Copied bearer token: " + token);
 ```
 
-### CloudDeakin (aka D2L/Brightspace)
+#### CloudDeakin (aka D2L/Brightspace)
 Slightly fiddlier; you have to go into the network tab and find the most recent `token` request on the D2L subdomain and get the token itself from the response. 
 ![D2L token example](https://github.com/doubleedesign/deakin-ontrack-reloaded/assets/563583/117c2ea1-8247-44a8-9d6e-1921d1fbf94d)
 
