@@ -4,10 +4,11 @@ import { StatusColor } from '../../types.ts';
 
 interface AlertProps {
 	type: StatusColor;
+	size?: string;
 }
 
-const Alert: FC<PropsWithChildren<AlertProps>> = ({ children, type }) => (
-	<AlertWrapper type={type} data-component-id="Alert">
+const Alert: FC<PropsWithChildren<AlertProps>> = ({ children, type, size }) => (
+	<AlertWrapper data-component-id="Alert" type={type} size={size}>
 		{children}
 	</AlertWrapper>
 );

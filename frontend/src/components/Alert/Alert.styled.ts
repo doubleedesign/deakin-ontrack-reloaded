@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import { StatusColor } from '../../types.ts';
 
-export const AlertWrapper = styled.div<{type: StatusColor}>`
+export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	border: 1px solid ${props => props.theme.colors[props.type]};
 	border-left-width: ${({ theme }): string => theme.spacing.sm};
 	border-radius: 0.25rem;
 	width: 100%;
-	padding: ${({ theme }): string => theme.spacing.sm};
-	background: ${({ theme }): string => theme.colors.contentBackground};
+	padding: ${props => props.size === 'small' ? props.theme.spacing.xs : props.theme.spacing.sm};
+	background: ${props => props.size === 'small' ? 'transparent' : props.theme.colors.contentBackground};
     margin-bottom: ${({ theme }): string => theme.spacing.sm};
 	display: flex;
 	align-items: flex-start;
+	font-size: ${props => props?.size === 'small' ? '0.8rem' : 'inherit'};
 	
 	&:last-child {
         margin-bottom: ${({ theme }): string => theme.spacing.lg};
@@ -32,7 +33,8 @@ export const AlertWrapper = styled.div<{type: StatusColor}>`
 	}
 	
 	button {
-		flex-grow: 1;
+		flex-grow: 0;
 		flex-shrink: 0;
+		margin-left: auto;
 	}
 `;

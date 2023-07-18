@@ -7,14 +7,13 @@ import LoginForm from '../LoginForm/LoginForm.tsx';
 import { darkTheme, lightTheme } from '../../theme.ts';
 
 const Dashboard: FC = () => {
-	const { currentSubjects, queryOptions, theme } = useContext(AppContext);
+	const { currentSubjects, authenticated, queryOptions, theme, userDrawerOpen } = useContext(AppContext);
 	const themeObject = theme === 'light' ? lightTheme : darkTheme;
 
 	return (
 		<Page color={themeObject.colors.logo}>
 			<Row>
-				{ !queryOptions && <LoginForm /> }
-
+				{ (authenticated?.authenticated.length !== 3 && !userDrawerOpen) && <LoginForm /> }
 				{ queryOptions && currentSubjects && currentSubjects.map(subject => {
 					return <SubjectSummary key={subject.projectId} subject={subject}/>;
 				})}

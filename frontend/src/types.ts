@@ -1,22 +1,24 @@
 import { GraphQLError } from 'graphql/error';
 
+export type SystemName = 'OnTrack' | 'DeakinSync' | 'CloudDeakin';
+
+export type DeakinCredential = {
+	systemName: SystemName;
+	token: string;
+	username?: string;
+}
+
 export type AuthResponse = {
 	status: number;
-	credentials: {
-		username: string;
-		otToken: string;
-		dsToken: string;
-	} | null,
+	credentials: DeakinCredential[] | null,
 	errors: GraphQLError[] | null
 }
 
 export type MyCredentials = {
 	username: string | undefined;
-	tokens: {
-		onTrack: string | undefined; // 'Auth-Token' request header
-		deakinSync: string | undefined; // Bearer token
-		cloudDeakin: string | undefined; // Bearer token
-	}
+	onTrack: string | undefined; // 'Auth-Token' request header
+	deakinSync: string | undefined; // Bearer token
+	cloudDeakin: string | undefined; // Bearer token
 }
 
 export type MyQueryContext = {

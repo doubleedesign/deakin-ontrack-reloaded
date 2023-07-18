@@ -8,11 +8,11 @@ import App from './App.tsx';
 import SubjectPage from './components/SubjectPage/SubjectPage.tsx';
 import Dashboard from './components/Dashboard/Dashboard.tsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare } from '@fortawesome/pro-solid-svg-icons';
+import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { fal, faLightbulbOn, faXmark } from '@fortawesome/pro-light-svg-icons';
 import ErrorPage from './components/ErrorPage/ErrorPage.tsx';
 import UITest from './components/UITest/UITest.tsx';
-library.add(fal, faS, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare);
+library.add(fal, faS, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation);
 
 const client = new ApolloClient({
 	uri: 'http://localhost:5000',
