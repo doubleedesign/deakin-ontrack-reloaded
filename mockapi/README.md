@@ -1,5 +1,7 @@
 # OnTrack Reloaded: Mock API
 
+⚠️ **This is incomplete.** At the time of writing, I have not yet accounted for the addition of DeakinSync and CloudDeakin datasources.
+
 This is a REST API for development use. It contains fake data that models the kind of data the OnTrack API returns, which can be useful for developing and testing with randomised but predictable data rather than only your own enrolments.
 
 Currently, the provided data contains (and the generator is set up to create) four current unit enrolments, with task definitions made up of a mixture of "good" examples (subjective, I know) and units with common problems. 
