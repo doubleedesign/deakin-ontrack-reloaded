@@ -32,8 +32,8 @@ function startServer() {
 		context: async ({ req, res }) => {
 			return ({
 				datasources: {
-					onTrack: new Ontrack(<string>req.headers.username, <string>req.headers['auth-token'], otURL),
-					deakinSync: new DeakinSync(<string>req.headers.authorization, dsURL)
+					onTrack: new Ontrack(<string>req.headers.username, <string>req.headers.ontrack, otURL),
+					deakinSync: new DeakinSync(<string>req.headers.deakinsync, dsURL)
 				}
 			});
 		},

@@ -66,6 +66,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 			setOtToken(result?.credentials!.otToken);
 			setDsAuthenticated(true);
 			setDsToken(result?.credentials!.dsToken);
+			// TODO: CloudDeakin token
 			setQueryOptions(auth.setupQueryHeaders(result));
 			setUserDrawerOpen(false);
 		}

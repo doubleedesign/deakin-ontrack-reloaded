@@ -76,7 +76,7 @@ export const auth = {
 				credentials: {
 					username: username,
 					otToken: trimmedOtToken,
-					dsToken: trimmedDsToken,
+					dsToken: trimmedDsToken
 				},
 				errors: null
 			};
@@ -91,8 +91,11 @@ export const auth = {
 			context: {
 				headers: {
 					username: auth?.credentials?.username,
-					'Auth-Token': auth?.credentials?.otToken,
-					Authorization: `Bearer ${auth?.credentials?.dsToken}`
+					tokens: {
+						onTrack: auth?.credentials?.otToken,
+						deakinSync: `Bearer ${auth?.credentials?.dsToken}`,
+						cloudDeakin: undefined // TODO
+					}
 				}
 			} };
 	}

@@ -12,8 +12,11 @@ export type AuthResponse = {
 
 export type MyCredentials = {
 	username: string | undefined;
-	'Auth-Token': string | undefined;
-	Authorization: string | undefined;
+	tokens: {
+		onTrack: string | undefined; // 'Auth-Token' request header
+		deakinSync: string | undefined; // Bearer token
+		cloudDeakin: string | undefined; // Bearer token
+	}
 }
 
 export type MyQueryContext = {
