@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import { Ontrack } from './datasources/OnTrack/ontrack';
 import { typeDefs } from './schema';
 import { currentSubjectsResolver } from './resolvers/currentSubjects';
-import { allUpcomingAssignmentsResolver } from './resolvers/upcomingAssignments';
 import { assignmentsForSubjectResolver } from './resolvers/assignmentsForSubject';
 import { DeakinSync } from './datasources/DeakinSync/deakinsync';
 import { CloudDeakin } from './datasources/CloudDeakin/clouddeakin';
@@ -14,7 +13,6 @@ const graphQLServer = new ApolloServer({
 	resolvers: {
 		Query: {
 			...currentSubjectsResolver,
-			...allUpcomingAssignmentsResolver,
 			...assignmentsForSubjectResolver
 		}
 	}

@@ -18,20 +18,6 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject
     }
 `;
 
-export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{allUpcomingAssignments: Assignment[]}> = gql`
-    query UpcomingAssignmentsQuery {
-        allUpcomingAssignments {
-            id,
-            name,
-            description,
-	        target_date,
-            due_date,
-            unitId,
-            projectId
-        }
-    }
-`;
-
 export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsForSubject: Assignment[]}> = gql`
     query AssignmentsForSubjectQuery($projectId: Int, $unitId: Int) {
         allAssignmentsForSubject(projectId: $projectId, unitId: $unitId) {
