@@ -7,6 +7,7 @@ import { currentSubjectsResolver } from './resolvers/currentSubjects';
 import { allUpcomingAssignmentsResolver } from './resolvers/upcomingAssignments';
 import { assignmentsForSubjectResolver } from './resolvers/assignmentsForSubject';
 import { DeakinSync } from './datasources/DeakinSync/deakinsync';
+import { CloudDeakin } from './datasources/CloudDeakin/clouddeakin';
 
 const graphQLServer = new ApolloServer({
 	typeDefs,
@@ -22,9 +23,10 @@ const graphQLServer = new ApolloServer({
 function startServer() {
 	let otURL = 'https://ontrack.deakin.edu.au';
 	const dsURL = 'https://bff-sync.sync.deakin.edu.au';
+	const cdURL = 'https://d2l.deakin.edu.au';
 	if(process.env.NODE_ENV.trim() == 'development') {
 		otURL = 'http://localhost:6001';
-		// TODO: Mock DeakinSync
+		// TODO: Mock DeakinSync and CloudDeakin
 	}
 
 	startStandaloneServer(graphQLServer, {
@@ -33,7 +35,8 @@ function startServer() {
 			return ({
 				datasources: {
 					onTrack: new Ontrack(<string>req.headers.username, <string>req.headers.ontrack, otURL),
-					deakinSync: new DeakinSync(<string>req.headers.deakinsync, dsURL)
+					deakinSync: new DeakinSync(<string>req.headers.deakinsync, dsURL),
+					cloudDeakin: new CloudDeakin(<string>req.headers.clouddeakin, cdURL)
 				}
 			});
 		},

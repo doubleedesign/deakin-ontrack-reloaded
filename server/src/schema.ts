@@ -25,6 +25,7 @@ export const typeDefs = gql`
 		id: Int
 		unitId: Int
 		projectId: Int
+		type: String
 		abbreviation: String
 		name: String
 		description: String
