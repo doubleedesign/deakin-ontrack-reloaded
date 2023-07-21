@@ -6,7 +6,6 @@ import { StyledButton } from '../Button/Button.styled.ts';
 import { SystemName } from '../../types.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
-
 const LoginForm: FC = () => {
 	const { setCredentials, authenticated, setUserDrawerOpen } = useContext(AppContext);
 	const { value: username } = useLocalStorage<string | null>('otr_username', null);
@@ -16,13 +15,13 @@ const LoginForm: FC = () => {
 
 	async function handleCredentials(event: React.FormEvent<HTMLFormElement>) {
 		const result = await setCredentials(event);
-		if(result?.authenticated.length >= 3) {
+		if(Object.values(result?.isAuthenticated).every(item => item === true)) {
 			setUserDrawerOpen(false);
 		}
 	}
 
 	function getClassName(system: SystemName) {
-		if(authenticated && authenticated?.authenticated.includes(system)) {
+		if(authenticated && authenticated?.isAuthenticated[system] === true) {
 			return 'success';
 		}
 		if(authenticated && authenticated?.errors.find(error => error.extensions.systemName === system)) {
@@ -40,7 +39,7 @@ const LoginForm: FC = () => {
 	}
 
 	function success(system: SystemName) {
-		return authenticated && authenticated?.authenticated.includes(system);
+		return authenticated && authenticated?.isAuthenticated[system] === true;
 	}
 
 	return (

@@ -20,7 +20,14 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	div {
 		flex-grow: 0;
 		flex-shrink: 1;
+		padding-right: ${({ theme }): string => theme.spacing.lg};
 	}
+
+    p {
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
 	
 	strong {
 		font-weight: 600;

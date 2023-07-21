@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql/error';
-import { AuthResponse, DeakinCredential, MyCredentials, MyQueryContext, SystemName } from '../types.ts';
+import { AuthResponse, DeakinCredential, MyQueryContext, SystemName } from '../types.ts';
 
 export const auth = {
 

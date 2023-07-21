@@ -2,9 +2,16 @@ import gql from 'graphql-tag';
 
 export const typeDefs = gql`
 	type Query {
+		persistentCacheStatus: PersistentCacheStatus
 		currentSubjects: [Subject]
 		allUpcomingAssignments: [Assignment]
 		allAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
+	}
+	
+	type PersistentCacheStatus {
+		DeakinSync: String
+		CloudDeakin: String
+		OnTrack: String
 	}
 	
 	type SubjectURL {

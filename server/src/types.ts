@@ -11,6 +11,12 @@ export type ServerContext = {
 	}
 }
 
+export type PersistentCacheStatus = {
+	DeakinSync: Date;
+	CloudDeakin: Date;
+	OnTrack: Date;
+}
+
 type SubjectUrl = {
 	label: string;
 	url: string;

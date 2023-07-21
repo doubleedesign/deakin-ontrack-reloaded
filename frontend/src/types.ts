@@ -14,6 +14,11 @@ export type AuthResponse = {
 	errors: GraphQLError[] | null
 }
 
+export type AuthStatus = {
+	isAuthenticated: {[K in SystemName]: boolean},
+	errors: GraphQLError[]
+}
+
 export type MyCredentials = {
 	username: string | undefined;
 	onTrack: string | undefined; // 'Auth-Token' request header

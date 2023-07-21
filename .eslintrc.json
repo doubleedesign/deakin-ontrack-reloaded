@@ -35,8 +35,8 @@
 		"max-len": [
 			"warn",
 			{
-				"comments": 160,
-				"code": 140,
+				"comments": 150,
+				"code": 150,
 				"tabWidth": 4
 			}
 		],

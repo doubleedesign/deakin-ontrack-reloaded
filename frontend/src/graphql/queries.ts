@@ -1,6 +1,16 @@
 import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
-import { Assignment, Subject } from '@server/types.ts';
+import { PersistentCacheStatus, Assignment, Subject } from '@server/types.ts';
+
+export const PERSISTENT_CACHE_STATUS_QUERY: TypedDocumentNode<{persistentCacheStatus: PersistentCacheStatus}> = gql`
+    query PersistentCacheStatus {
+        persistentCacheStatus {
+            DeakinSync,
+	        CloudDeakin,
+	        OnTrack
+        }
+    }
+`;
 
 export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject[]}> = gql`
     query CurrentSubjectsQuery {

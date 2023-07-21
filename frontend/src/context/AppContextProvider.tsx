@@ -15,22 +15,35 @@ import { Subject } from '@server/types.ts';
 import { lightTheme, darkTheme } from '../theme.ts';
 import { adjustHue, tint, complement } from 'polished';
 import { auth } from './auth.ts';
-import { AuthResponse, MyQueryContext, SystemName } from '../types.ts';
+import { AuthResponse, AuthStatus, MyQueryContext, SystemName } from '../types.ts';
 
 export interface MyAppContext {
-	setCredentials: (event: FormEvent<HTMLFormElement>) => Promise<{ authenticated: SystemName[], errors: GraphQLError[] }>;
+	setCredentials: (event: FormEvent<HTMLFormElement>) => Promise<AuthStatus>;
 	clearCredentials: () => void;
-	authenticated: { authenticated: SystemName[], errors: GraphQLError[] } | undefined;
+	authenticated: AuthStatus;
 	queryOptions: MyQueryContext | undefined,
 	currentSubjects: Subject[],
 	errors: GraphQLError[];
 	setErrors: Dispatch<SetStateAction<GraphQLError[]>>;
+	infoMessages: string[];
+	setInfoMessages: Dispatch<SetStateAction<string[]>>;
+	warningMessages: string[];
+	setWarningMessages: Dispatch<SetStateAction<string[]>>;
 	theme: 'light' | 'dark';
 	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
 	userDrawerOpen: boolean;
 	setUserDrawerOpen: Dispatch<SetStateAction<boolean>>;
 }
 export const AppContext = createContext({} as MyAppContext);
+
+const emptyAuthStatus: AuthStatus = {
+	isAuthenticated: {
+		DeakinSync: false,
+		CloudDeakin: false,
+		OnTrack: false
+	},
+	errors: []
+};
 
 const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	// Auth tokens
@@ -41,9 +54,11 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 	// All the auth together to query my GraphQL BFF
 	const [queryOptions, setQueryOptions] = useState<MyQueryContext | undefined>(undefined);
-	const [authenticated, setAuthenticated] = useState<{authenticated: SystemName[], errors: GraphQLError[]}>();
+	const [authenticated, setAuthenticated] = useState<AuthStatus>(emptyAuthStatus);
 
 	// Everything else
+	const [infoMessages, setInfoMessages] = useState<string[]>([]);
+	const [warningMessages, setWarningMessages] = useState<string[]>([]);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [theme, setTheme] = useState<'light' | 'dark'>('light');
 	const [userDrawerOpen, setUserDrawerOpen] = useState<boolean>(false);
@@ -54,7 +69,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	// Function to clear auth-related state
 	const clearCredentials = useCallback(() => {
 		setQueryOptions(undefined);
-		setAuthenticated(undefined);
+		setAuthenticated(emptyAuthStatus);
 		setUsername(null);
 		setOtToken(null);
 		setDsToken(null);
@@ -63,10 +78,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 
 	// Function to call auth function and update state based on its results
-	const authenticate = useCallback(async (username: string, submittedOtToken: string, submittedDsToken: string, submittedCdToken: string): Promise<{
-		authenticated: SystemName[];
-		errors: GraphQLError[]
-	}> => {
+	const authenticate = useCallback(async (username: string, submittedOtToken: string, submittedDsToken: string, submittedCdToken: string): Promise<AuthStatus> => {
 		const result: AuthResponse = await auth.authenticateAll(username, submittedOtToken, submittedDsToken, submittedCdToken);
 
 		// Save credentials for GraphQL query headers
@@ -81,27 +93,30 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		result.credentials && result.credentials.find(cred => cred.systemName === 'CloudDeakin')
 			? setCdToken(submittedCdToken.replaceAll('Bearer', '').trim()) : setCdToken(null);
 
-
-		// Close the panel if all creds are valid
-		result?.credentials?.length === 4 && setUserDrawerOpen(false);
-
 		// Return info about authenticated systems to the caller,
 		// for things like highlighting form fields with invalid credentials
 		const data = {
-			authenticated: result?.credentials?.map(cred => cred.systemName) || [],
+			isAuthenticated: {
+				OnTrack: result?.credentials?.some(cred => cred.systemName === 'OnTrack') || false,
+				DeakinSync: result?.credentials?.some(cred => cred.systemName === 'DeakinSync') || false,
+				CloudDeakin: result?.credentials?.some(cred => cred.systemName === 'CloudDeakin') || false,
+			},
 			errors: result.errors || []
 		};
 
+		// Close the panel if all creds are valid
+		if(Object.values(data.isAuthenticated).every(item => item === true)) {
+			setUserDrawerOpen(false);
+		}
+
+		// Update state and return result to caller because it might want to do more stuff
 		setAuthenticated(data);
 		return data;
 	}, [setCdToken, setDsToken, setOtToken, setUsername]);
 
 
 	// Function to update credentials and re-authenticate that can be called on form submissions in other components
-	const setCredentials = useCallback(async (event: FormEvent<HTMLFormElement>): Promise<{
-		authenticated: SystemName[];
-		errors: GraphQLError[]
-	}> => {
+	const setCredentials = useCallback(async (event: FormEvent<HTMLFormElement>): Promise<AuthStatus> => {
 		event.preventDefault();
 		const creds = new FormData(event.currentTarget);
 		const username = creds.get('username') as string;
@@ -155,7 +170,9 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 			setCredentials, clearCredentials,
 			queryOptions,
 			currentSubjects,
-			errors, setErrors
+			errors, setErrors,
+			warningMessages, setWarningMessages,
+			infoMessages, setInfoMessages
 		}}>
 			{children}
 		</AppContext.Provider>);

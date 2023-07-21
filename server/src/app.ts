@@ -3,6 +3,7 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import chalk from 'chalk';
 import { Ontrack } from './datasources/OnTrack/ontrack';
 import { typeDefs } from './schema';
+import { persistentCacheResolver } from './resolvers/persistentCache';
 import { currentSubjectsResolver } from './resolvers/currentSubjects';
 import { assignmentsForSubjectResolver } from './resolvers/assignmentsForSubject';
 import { DeakinSync } from './datasources/DeakinSync/deakinsync';
@@ -12,6 +13,7 @@ const graphQLServer = new ApolloServer({
 	typeDefs,
 	resolvers: {
 		Query: {
+			...persistentCacheResolver,
 			...currentSubjectsResolver,
 			...assignmentsForSubjectResolver
 		}
