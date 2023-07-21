@@ -71,13 +71,14 @@ export const currentSubjectsResolver = {
 		catch (error) {
 			console.error(chalk.red(error.message));
 			console.log(error.extensions);
+			/*
 			throw new GraphQLError(error.message, {
 				extensions: {
 					code: error.extensions.response.status,
 					url: error.extensions.response.url,
 					stacktrace: `${error.extensions.response.url} in ./server/src/resolvers/currentSubjects.ts`
 				}
-			});
+			}); */
 		}
 	}
 };

@@ -28,7 +28,7 @@ export class DeakinSync extends RESTDataSource {
 				const cached = fs.readFileSync('./src/cache/enrolled-units.json');
 				return JSON.parse(cached.toString());
 			}
-			catch(e) {
+			catch {
 				throw error;
 			}
 		}

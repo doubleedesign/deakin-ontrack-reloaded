@@ -72,7 +72,6 @@ export const auth = {
 			authenticated.push(dsResponse as DeakinCredential);
 		}
 		catch(error) {
-			console.log(error);
 			if(error instanceof SyntaxError) {
 				// Living on the edge, might refactor later
 				// This is not really a GraphQL error, but having it masquerade as one is easier (at least for now)
