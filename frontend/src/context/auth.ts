@@ -5,7 +5,7 @@ export const auth = {
 
 	// Note: Each call should hit an endpoint that requires authentication but doesn't return much data, just to see if I can
 	authenticateOne: async function(name: SystemName, url: string, headers: any): Promise<DeakinCredential> {
-		const response = await fetch(url, {
+		const response: Response = await fetch(url, {
 			method: 'GET',
 			headers: headers
 		});
@@ -18,10 +18,20 @@ export const auth = {
 			};
 		}
 		else {
+			const more = await response.json();
+			let message = response.statusText;
+			if(response.statusText === 'status code 419') {
+				if(more?.detail || more?.error) {
+					message = `${more?.detail || more?.error}`;
+				}
+			}
+			else if(more?.detail || more?.error) {
+				message = `${message}: ${more?.detail || more?.error}`;
+			}
 			throw new GraphQLError(`${response.statusText} - ${name}`, {
 				extensions: {
 					code: response.status,
-					statusText: response.statusText,
+					statusText: message,
 					systemName: name,
 					stacktrace: './frontend/src/context/auth.ts'
 				}
@@ -31,6 +41,7 @@ export const auth = {
 
 
 	// TODO: Handle the mock API - only require auth if really accessing the real systems
+	// eslint-disable-next-line max-len
 	authenticateAll: async function (username: string, submittedOtToken: string, submittedDsToken: string, submittedCdToken: string): Promise<AuthResponse> {
 		const errors: GraphQLError[] = [];
 		const authenticated: DeakinCredential[] = [];
@@ -61,7 +72,22 @@ export const auth = {
 			authenticated.push(dsResponse as DeakinCredential);
 		}
 		catch(error) {
-			errors.push(error as GraphQLError);
+			console.log(error);
+			if(error instanceof SyntaxError) {
+				// Living on the edge, might refactor later
+				// This is not really a GraphQL error, but having it masquerade as one is easier (at least for now)
+				errors.push(new GraphQLError(error.message, {
+					extensions: {
+						code: 400,
+						statusText: 'Syntax error',
+						systemName: 'DeakinSync',
+						stacktrace: './frontend/src/context/auth.ts'
+					}
+				}));
+			}
+			else {
+				errors.push(error as GraphQLError);
+			}
 		}
 
 		try {

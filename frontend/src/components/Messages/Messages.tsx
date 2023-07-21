@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client';
 import { PERSISTENT_CACHE_STATUS_QUERY } from '../../graphql/queries.ts';
 
 const Messages: FC = () => {
-	const { errors, setErrors, authenticated, setUserDrawerOpen } = useContext(AppContext);
+	const { errors, authenticated, setUserDrawerOpen } = useContext(AppContext);
 	const cacheStatus = useQuery(PERSISTENT_CACHE_STATUS_QUERY, { fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache' });
 	const [cacheMessages, setCacheMessages] = useState<ReactNode[]>([]);
 
@@ -29,7 +29,7 @@ const Messages: FC = () => {
 									day: 'numeric',
 									month: 'long',
 									year: 'numeric'
-								}).format(cachedDate)}.</span></p>
+								}).format(cachedDate)}. This data may not be complete or current.</span></p>
 							</div>
 							<StyledButton color="warning" onClick={() => setUserDrawerOpen(true)}>Authenticate</StyledButton>
 						</Alert>
@@ -58,7 +58,7 @@ const Messages: FC = () => {
 						return message;
 					})}
 					{errors && errors.map((error, index) => {
-						console.error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`);
+						console.error(new Error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`).message);
 						let messageOutput = `${error.extensions?.code} ${error.message}`;
 						if(error.extensions.url) {
 							messageOutput = messageOutput + `(at URL ${error.extensions?.url})`;

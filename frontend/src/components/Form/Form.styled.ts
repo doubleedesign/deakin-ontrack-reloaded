@@ -1,10 +1,45 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { readableColor } from 'polished';
+
+const inputStatusClasses = () => {
+	return ['success', 'warning', 'error'].map(className => {
+		return css`
+            div.${className} {
+                input {
+                    border-color: ${({ theme }): string => theme.colors[className]};
+
+                    &:focus, &:focus-visible {
+                        box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors[className]};
+                    }
+                }
+
+                svg {
+                    color: ${({ theme }): string => theme.colors[className]};;
+                }
+	            
+	            .${className}-message {
+                    color: ${({ theme }): string => theme.colors[className]};
+                    font-weight: 600;
+                    display: block;
+                    width: 100%;
+                    font-size: 0.8rem;
+                    padding: ${({ theme }): string => theme.spacing.xs};
+                    text-align: right;
+
+                    & + svg {
+                        bottom: 2rem;
+                    }
+	            }
+            }
+		`;
+	});
+};
 
 export const StyledForm = styled.form.attrs({ 'data-component-id': 'StyledForm' })`
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
+    ${inputStatusClasses};
 	
     div {
 	    width: 100%;
@@ -29,48 +64,6 @@ export const StyledForm = styled.form.attrs({ 'data-component-id': 'StyledForm' 
             position: absolute;
             bottom: 0.5rem;
             right: 0.5rem;
-	    }
-	    
-	    &.success {
-            input {
-                border-color: ${({ theme }): string => theme.colors.success};
-	            
-	            &:focus, &:focus-visible {
-                   box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors.success};
-	            }
-            }
-
-            svg {
-                color: ${({ theme }): string => theme.colors.success};;
-            }
-	    }
-	    
-	    &.error {
-		    input {
-			    border-color: ${({ theme }): string => theme.colors.error};
-
-                &:focus, &:focus-visible {
-                    box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors.error};
-                }
-		    }
-		    
-		    svg {
-			    color: ${({ theme }): string => theme.colors.error};;
-		    }
-	    }
-	    
-	    .error-message {
-		    color: ${({ theme }): string => theme.colors.error};
-		    font-weight: 600;
-		    display: block;
-		    width: 100%;
-		    font-size: 0.8rem;
-		    padding: ${({ theme }): string => theme.spacing.xs};
-		    text-align: right;
-		    
-		    & + svg {
-			    bottom: 2rem;
-		    }
 	    }
     }
 
