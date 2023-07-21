@@ -10,7 +10,6 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	background: ${props => props.size === 'small' ? 'transparent' : props.theme.colors.contentBackground};
     margin-bottom: ${({ theme }): string => theme.spacing.sm};
 	display: flex;
-	align-items: flex-start;
 	font-size: ${props => props?.size === 'small' ? '0.8rem' : 'inherit'};
 	
 	&:last-child {
@@ -24,9 +23,14 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	}
 
     p {
-        &:last-of-type {
-            margin-bottom: 0;
-        }
+	    margin: ${({ theme }): string => theme.spacing.xs} 0;
+	    
+	    &:only-child {
+		    display: flex;
+		    height: 100%;
+		    align-items: center;
+		    margin: 0;
+	    }
     }
 	
 	strong {
@@ -40,6 +44,7 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	}
 	
 	button {
+		align-self: flex-start;
 		flex-grow: 0;
 		flex-shrink: 0;
 		margin-left: auto;

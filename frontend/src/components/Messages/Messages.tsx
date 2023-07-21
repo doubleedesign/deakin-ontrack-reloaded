@@ -6,7 +6,6 @@ import { MessagesWrapper } from './Messages.styled.ts';
 import { StyledButton } from '../Button/Button.styled.ts';
 import { useQuery } from '@apollo/client';
 import { PERSISTENT_CACHE_STATUS_QUERY } from '../../graphql/queries.ts';
-import { GraphQLError } from 'graphql/error';
 
 const Messages: FC = () => {
 	const { errors, setErrors, authenticated, setUserDrawerOpen } = useContext(AppContext);
@@ -21,7 +20,7 @@ const Messages: FC = () => {
 				const cachedDate = cacheStatus?.data?.persistentCacheStatus[systemName];
 				if(cachedDate) {
 					messages.push(
-						<>
+						<Alert type="warning" key={`warning-${systemName}`}>
 							<div>
 								<p><strong>{systemName} is not authenticated.</strong></p>
 								<p><span>Data is being loaded from a file saved on {new Intl.DateTimeFormat('en-AU', {
@@ -33,17 +32,17 @@ const Messages: FC = () => {
 								}).format(cachedDate)}.</span></p>
 							</div>
 							<StyledButton color="warning" onClick={() => setUserDrawerOpen(true)}>Authenticate</StyledButton>
-						</>
+						</Alert>
 					);
 				}
 				else {
 					messages.push(
-						<>
+						<Alert type="error" key={`error-${systemName}`}>
 							<div>
 								<p><strong>{systemName} is not authenticated, and there is no saved file to load from.</strong></p>
 							</div>
-							<StyledButton color="warning" onClick={() => setUserDrawerOpen(true)}>Authenticate</StyledButton>
-						</>
+							<StyledButton color="error" onClick={() => setUserDrawerOpen(true)}>Authenticate</StyledButton>
+						</Alert>
 					);
 				}
 			}
@@ -56,7 +55,7 @@ const Messages: FC = () => {
 			<Row>
 				<Col>
 					{cacheMessages && cacheMessages.map((message: React.ReactNode | undefined, index: number) => {
-						return <Alert key={`cacheMessage-${index}`} type="warning">{message}</Alert>;
+						return message;
 					})}
 					{errors && errors.map((error, index) => {
 						console.error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`);
