@@ -1,7 +1,7 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { SystemName } from '../../types.ts';
+import { SystemName } from '../../../types.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppContext } from '../../context/AppContextProvider.tsx';
+import { AppContext } from '../../../context/AppContextProvider.tsx';
 
 interface LoginFormFieldProps {
 	name: string;

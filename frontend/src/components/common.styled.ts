@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { darken, meetsContrastGuidelines, readableColor, shade } from 'polished';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 
 export const AppWrapper = styled.div`

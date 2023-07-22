@@ -15,7 +15,7 @@ import { Subject } from '@server/types.ts';
 import { lightTheme, darkTheme } from '../theme.ts';
 import { adjustHue, tint, complement } from 'polished';
 import { auth } from './auth.ts';
-import { AuthResponse, AuthStatus, MyQueryContext, SystemName } from '../types.ts';
+import { AuthResponse, AuthStatus, DrawerStatus, MyQueryContext } from '../types.ts';
 
 export interface MyAppContext {
 	setCredentials: (event: FormEvent<HTMLFormElement>) => Promise<AuthStatus>;
@@ -31,8 +31,8 @@ export interface MyAppContext {
 	setWarningMessages: Dispatch<SetStateAction<string[]>>;
 	theme: 'light' | 'dark';
 	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
-	userDrawerOpen: boolean;
-	setUserDrawerOpen: Dispatch<SetStateAction<boolean>>;
+	drawerOpen: DrawerStatus;
+	setDrawerOpen: Dispatch<SetStateAction<DrawerStatus>>;
 }
 export const AppContext = createContext({} as MyAppContext);
 
@@ -61,7 +61,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [warningMessages, setWarningMessages] = useState<string[]>([]);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [theme, setTheme] = useState<'light' | 'dark'>('light');
-	const [userDrawerOpen, setUserDrawerOpen] = useState<boolean>(false);
+	const [drawerOpen, setDrawerOpen] = useState<DrawerStatus>(false);
 	const [getCurrentSubjects] = useLazyQuery(CURRENT_SUBJECTS_QUERY, { fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
 	const [currentSubjects, setCurrentSubjects] = useState<Subject[]>([]);
 
@@ -106,7 +106,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 
 		// Close the panel if all creds are valid
 		if(Object.values(data.isAuthenticated).every(item => item === true)) {
-			setUserDrawerOpen(false);
+			setDrawerOpen(false);
 		}
 
 		// Update state and return result to caller because it might want to do more stuff
@@ -165,7 +165,7 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	return (
 		<AppContext.Provider value={{
 			theme, setTheme,
-			userDrawerOpen, setUserDrawerOpen,
+			drawerOpen, setDrawerOpen,
 			authenticated,
 			setCredentials, clearCredentials,
 			queryOptions,

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Col, Row } from '../common.styled.ts';
+import { Col, Row } from '../../common.styled.ts';
 import { meetsContrastGuidelines, shade, readableColor } from 'polished';
 
 export const SubjectHeaderRow = styled(Row).attrs({ as: 'header' })<{color: string}>`

@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useContext } from 'react';
-import { ThemeToggleButton } from './ThemeToggle.styled';
+import { ThemeToggleButton } from './ThemeToggle.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppContext } from '../../context/AppContextProvider.tsx';
-import { ScreenReaderText } from '../common.styled.ts';
+import { AppContext } from '../../../context/AppContextProvider.tsx';
+import { ScreenReaderText } from '../../common.styled.ts';
 
 const ThemeToggle: FC = () => {
 	const { theme, setTheme } = useContext(AppContext);

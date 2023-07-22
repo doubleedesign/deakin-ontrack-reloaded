@@ -19,6 +19,8 @@ export type AuthStatus = {
 	errors: GraphQLError[]
 }
 
+export type DrawerStatus = 'settings' | 'notifications' | false;
+
 export type MyCredentials = {
 	username: string | undefined;
 	onTrack: string | undefined; // 'Auth-Token' request header

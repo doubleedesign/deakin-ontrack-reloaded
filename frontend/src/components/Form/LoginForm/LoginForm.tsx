@@ -1,10 +1,10 @@
 import React, { FC, useContext } from 'react';
-import { LoginFormWrapper } from './LoginForm.styled';
-import { AppContext } from '../../context/AppContextProvider.tsx';
-import { StyledForm } from '../Form/Form.styled.ts';
+import { LoginFormWrapper } from './LoginForm.styled.ts';
+import { AppContext } from '../../../context/AppContextProvider.tsx';
+import { StyledForm } from '../Form.styled.ts';
 import { LoginFormField } from './LoginFormField.tsx';
-import { StyledButton } from '../Button/Button.styled.ts';
-import { useLocalStorage } from '../../hooks/useLocalStorage.ts';
+import { StyledButton } from '../../Button/Button.styled.ts';
+import { useLocalStorage } from '../../../hooks/useLocalStorage.ts';
 
 const LoginForm: FC = () => {
 	const { setCredentials } = useContext(AppContext);

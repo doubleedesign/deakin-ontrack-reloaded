@@ -2,13 +2,19 @@ import styled from 'styled-components';
 import { darken, meetsContrastGuidelines, readableColor, shade } from 'polished';
 interface ButtonProps {
 	color: string;
+	rounded?: boolean;
+}
+
+interface LinkProps {
+	href: string;
+	target?: string;
 }
 
 export const StyledButton = styled.button<ButtonProps>`
     appearance: none;
     font-family: ${({ theme }): string => theme.fonts.body};
 	font-weight: 600;
-	border-radius: 0.25rem;
+	border-radius: ${props => props.rounded ? '3rem' : '0.25rem'};
     background: ${({ color, theme }): string => theme.colors[color]};
     color: ${({ color, theme }): string => {
 		const scores = meetsContrastGuidelines(shade(0.1, theme.colors[color]), '#FFF');
@@ -41,9 +47,40 @@ export const StyledButton = styled.button<ButtonProps>`
 	}
 `;
 
-interface LinkProps {
-	href: string;
-	target?: string;
-}
+export const StyledIconButton = styled(StyledButton)`
+    padding: ${({ theme }): string => theme.spacing.sm} ${({ theme }): string => theme.spacing.md};
+	
+	svg {
+		margin: 0;
+		padding: 0;
+		font-size: 1.25rem;
+	}
+`;
 
-export const StyledButtonLink = styled(StyledButton).attrs({ as: 'a' })<LinkProps>``;
+export const LinkStyledAsButton = styled(StyledButton).attrs({ as: 'a' })<LinkProps>`
+
+`;
+
+export const ButtonStyledAsLink = styled.button`
+    color: ${props => readableColor(props.theme.colors.contentBackground)};
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: ${({ theme }): string => theme.fonts.body};
+    border: 0;
+    appearance: none;
+    background: transparent;
+    transition: all 0.3s ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    padding: 0 ${({ theme }): string => theme.spacing.sm};
+
+    svg {
+        font-size: 1rem;
+    }
+
+    &:hover, &:focus-visible {
+        color: ${({ theme }): string => theme.colors.accent};
+        text-decoration-color: currentColor;
+    }
+`;
+

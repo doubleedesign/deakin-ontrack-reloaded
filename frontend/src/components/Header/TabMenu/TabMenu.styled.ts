@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { Row, Col } from '../common.styled.ts';
+import { Row, Col } from '../../common.styled.ts';
 import { meetsContrastGuidelines, readableColor, shade, darken, lighten } from 'polished';
 
 export const TabMenuWrapper = styled(Row).attrs({ as: 'nav' })`

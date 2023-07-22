@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledForm } from '../Form/Form.styled.ts';
+import { StyledForm } from '../Form.styled.ts';
 
 export const LoginFormWrapper = styled.div`
 	width: 100%;

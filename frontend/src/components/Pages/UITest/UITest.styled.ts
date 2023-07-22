@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { complement, adjustHue, readableColor, lighten, darken, shade, desaturate, tint } from 'polished';
-import { Col, Row } from '../common.styled.ts';
+import { Col, Row } from '../../common.styled.ts';
 
 const names = ['primary', 'secondary', 'accent', 'success', 'info', 'warning', 'error'];
 

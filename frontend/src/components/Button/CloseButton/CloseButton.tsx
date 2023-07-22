@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { CloseButtonElement } from './CloseButton.styled';
+import { CloseButtonElement } from './CloseButton.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ScreenReaderText } from '../common.styled.ts';
+import { ScreenReaderText } from '../../common.styled.ts';
 
 interface CloseButtonProps {
 	onClick: () => any;

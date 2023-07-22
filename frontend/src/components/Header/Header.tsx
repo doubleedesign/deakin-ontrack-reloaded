@@ -1,12 +1,14 @@
 import React, { FC, useContext } from 'react';
-import { HeaderLinkButton, HeaderUserLinks, HeaderWrapper, LogoNavLink } from './Header.styled';
 import { Col, Row, ScreenReaderText } from '../common.styled.ts';
-import ThemeToggle from '../ThemeToggle/ThemeToggle.tsx';
 import { AppContext } from '../../context/AppContextProvider.tsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { HeaderUserLinkItem, HeaderUserLinks, HeaderWrapper, LogoNavLink } from './Header.styled';
+import { ButtonStyledAsLink } from '../Button/Button.styled.ts';
+import NotificationToggle from './NotificationToggle/NotificationToggle.tsx';
+import ThemeToggle from './ThemeToggle/ThemeToggle.tsx';
 
 const Header: FC = () => {
-	const { queryOptions, setUserDrawerOpen, clearCredentials } = useContext(AppContext);
+	const { queryOptions, setDrawerOpen, clearCredentials } = useContext(AppContext);
 
 	return (
 		<HeaderWrapper>
@@ -17,13 +19,26 @@ const Header: FC = () => {
 					</LogoNavLink>
 				</Col>
 				<HeaderUserLinks>
-					<HeaderLinkButton onClick={() => setUserDrawerOpen(true)}>
-						<FontAwesomeIcon icon={['fas', 'user-gear']}/>
-						<ScreenReaderText>Close panel</ScreenReaderText>
-					</HeaderLinkButton>
-					{queryOptions && <HeaderLinkButton onClick={clearCredentials}>Log out</HeaderLinkButton>}
+					<ul>
+						<HeaderUserLinkItem hasDivider={true}>
+							<ButtonStyledAsLink onClick={() => setDrawerOpen('settings')}>
+								<FontAwesomeIcon icon={['fas', 'user-gear']}/>
+								<ScreenReaderText>Close panel</ScreenReaderText>
+							</ButtonStyledAsLink>
+						</HeaderUserLinkItem>
+						{queryOptions &&
+							<HeaderUserLinkItem>
+								<ButtonStyledAsLink onClick={clearCredentials}>Log out</ButtonStyledAsLink>
+							</HeaderUserLinkItem>
+						}
+						<HeaderUserLinkItem>
+							<NotificationToggle/>
+						</HeaderUserLinkItem>
+						<HeaderUserLinkItem>
+							<ThemeToggle/>
+						</HeaderUserLinkItem>
+					</ul>
 				</HeaderUserLinks>
-				<ThemeToggle/>
 			</Row>
 		</HeaderWrapper>
 	);

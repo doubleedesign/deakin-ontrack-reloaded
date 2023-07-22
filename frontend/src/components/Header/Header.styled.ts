@@ -1,34 +1,19 @@
 import styled, { css } from 'styled-components';
 import { Row } from '../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
-import { ThemeToggleButton } from '../ThemeToggle/ThemeToggle.styled.ts';
+import { ThemeToggleButton } from './ThemeToggle/ThemeToggle.styled.ts';
 import { NavLink } from 'react-router-dom';
-import { readableColor } from 'polished';
 
 export const HeaderWrapper = styled.header`
-    padding-top: ${({ theme }): string => theme.spacing.md};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
-        margin-bottom: -2rem;
+        margin-bottom: -2.25rem;
     `)};
 	
 	${Row} {
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
-	}
-	
-	${ThemeToggleButton} {
-        position: absolute;
-		top: -3.75rem;
-        right: 0;
-		width: 3.5rem;
-		height: 4.5rem;
-		border-radius: 50px;
-		padding-top: 1.5rem;
-        display: flex;
-        align-items: flex-end;
-        padding-bottom: 0.4rem;
 	}
 `;
 
@@ -40,6 +25,11 @@ export const LogoNavLink = styled(NavLink)`
         display: flex;
         align-items: center;
         color: ${({ theme }): string => theme.colors.logo};
+
+        ${props => breakpointUp(props.theme.breakpoints.lg, css`
+	        position: relative;
+	        bottom: -1rem;
+	    `)};
 
         img {
             height: 3rem;
@@ -60,36 +50,34 @@ export const LogoNavLink = styled(NavLink)`
     }
 `;
 
-export const HeaderUserLinks = styled.div`
-    position: absolute;
+export const HeaderUserLinks = styled.nav`
+	padding-bottom: ${({ theme }): string => theme.spacing.md};
+    position: relative;
     top: -0.75rem;
-    right: 5rem; // allow space for the theme toggle
+	
+	ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+	}
 `;
 
-export const HeaderLinkButton = styled.button`
-	color: ${props => readableColor(props.theme.colors.contentBackground)};
-	font-size: 0.8rem;
-	cursor: pointer;
-	font-family: ${({ theme }): string => theme.fonts.body};
-	border: 0;
-	appearance: none;
-	background: transparent;
-	transition: all 0.3s ease;
-	text-decoration: underline;
-	text-decoration-color: transparent;
-	padding: 0 ${({ theme }): string => theme.spacing.sm};
-	border-right: 1px solid currentColor;
-	
-	&:last-child {
-		border: 0;
-	}
-	
-	svg {
-		font-size: 1rem;
-	}
-	
-	&:hover, &:focus-visible {
-		color: ${({ theme }): string => theme.colors.accent};
-		text-decoration-color: currentColor;
-	}
+export const HeaderUserLinkItem = styled.li<{hasDivider?: boolean}>`
+    border-right: ${props => props.hasDivider ? '1px solid currentColor' : ''};
+    list-style: none;
+    line-height: 1;
+
+    ${ThemeToggleButton} {
+        width: 3.5rem;
+        height: 4.5rem;
+        border-radius: 50px;
+        padding-top: 1.5rem;
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 0.4rem;
+	    position: relative;
+	    top: -1.25rem;
+	    margin-left: ${({ theme }): string => theme.spacing.md};
+    }
+}
 `;

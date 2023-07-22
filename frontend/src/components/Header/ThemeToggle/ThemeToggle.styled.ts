@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { readableColor } from 'polished';
 
 export const ThemeToggleButton = styled.button`
 	appearance: none;

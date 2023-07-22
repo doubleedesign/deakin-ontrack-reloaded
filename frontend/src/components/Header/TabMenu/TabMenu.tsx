@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { TabMenuWrapper, TabMenuList, TabMenuListItem, TabMenuNavLink } from './TabMenu.styled';
-import { MenuItem } from '../../types.ts';
-import { slugify } from '../../utils.ts';
+import { TabMenuWrapper, TabMenuList, TabMenuListItem, TabMenuNavLink } from './TabMenu.styled.ts';
+import { MenuItem } from '../../../types.ts';
+import { slugify } from '../../../utils.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ScreenReaderText } from '../common.styled.ts';
+import { ScreenReaderText } from '../../common.styled.ts';
 
 interface TabMenuProps {
 	items: MenuItem[]

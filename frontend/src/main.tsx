@@ -5,13 +5,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppContextProvider from './context/AppContextProvider.tsx';
 import './global.css';
 import App from './App.tsx';
-import SubjectPage from './components/SubjectPage/SubjectPage.tsx';
-import Dashboard from './components/Dashboard/Dashboard.tsx';
+import SubjectPage from './components/Pages/SubjectPage/SubjectPage.tsx';
+import Dashboard from './components/Pages/Dashboard/Dashboard.tsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { fal, faLightbulbOn, faXmark } from '@fortawesome/pro-light-svg-icons';
-import ErrorPage from './components/ErrorPage/ErrorPage.tsx';
-import UITest from './components/UITest/UITest.tsx';
+import ErrorPage from './components/Pages/ErrorPage/ErrorPage.tsx';
+import UITest from './components/Pages/UITest/UITest.tsx';
 library.add(fal, faS, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation);
 
 const client = new ApolloClient({
