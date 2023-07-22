@@ -25,7 +25,7 @@ const Messages: FC = () => {
 									<p><span>{error.extensions?.stacktrace as string}</span></p>
 								</div>
 								{[401, 403, 419].includes(error?.extensions?.code as number) &&
-										<StyledButton color="error" onClick={() => setDrawerOpen('settings')}>Authenticate</StyledButton>
+									<StyledButton color="error" onClick={() => setDrawerOpen('settings')}>Authenticate</StyledButton>
 								}
 							</Alert>
 						);

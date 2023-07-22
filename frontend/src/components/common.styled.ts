@@ -15,9 +15,9 @@ export const AppWrapper = styled.div`
 `;
 
 // TODO: Work out how to make container queries work!
-export const Container = styled.div`
-	container-name: nearest-container;
-	container-type: size;
+export const Container = styled.section`
+	container: layout inline-size;
+    container-name: nearest-container;
 `;
 
 export const Row = styled.div.attrs({ 'data-component-id': 'Row' })`

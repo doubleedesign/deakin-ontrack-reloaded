@@ -4,6 +4,7 @@ import { breakpointUp } from '@doubleedesign/styled-media-queries';
 export const DrawerWrapper = styled.aside<{open: boolean}>`
     background: ${({ theme }): string => theme.colors.contentBackground};
     padding: ${({ theme }): string => theme.spacing.md};
+	box-sizing: border-box;
 	height: 100vh;
     position: absolute;
     top: 0;
@@ -14,19 +15,18 @@ export const DrawerWrapper = styled.aside<{open: boolean}>`
     transform: ${props => props.open ? 'translateX(0)' : 'translateX(25rem)' };
     transition: all 0.3s ease;
 	z-index: 1000;
+
+    ${props => breakpointUp(props.theme.breakpoints.lg, css`
+       	padding: ${props => props.theme.spacing.lg};
+    `)};
 `;
 
 export const DrawerContent = styled.div`
-	padding: ${({ theme }): string => theme.spacing.md};
 	background: ${({ theme }): string => theme.colors.contentBackground};
 	position: relative;
 	z-index: 600;
 	height: 100%;
 	width: 100%;
-	
-    ${props => breakpointUp(props.theme.breakpoints.lg, css`
-       	padding: ${props => props.theme.spacing.lg};
-    `)};
 	
 	[data-component-id="CloseButton"] {
 		position: absolute;
@@ -36,5 +36,6 @@ export const DrawerContent = styled.div`
 
     h2 {
         margin-bottom: ${({ theme }): string => theme.spacing.lg};
+	    margin-top: 0;
     }
 `;

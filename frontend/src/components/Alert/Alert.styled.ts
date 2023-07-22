@@ -10,6 +10,7 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	background: ${props => props.size === 'small' ? 'transparent' : props.theme.colors.contentBackground};
     margin-bottom: ${({ theme }): string => theme.spacing.sm};
 	display: flex;
+	flex-wrap: wrap;
 	font-size: ${props => props?.size === 'small' ? '0.8rem' : 'inherit'};
 	
 	&:last-child {
@@ -17,9 +18,13 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	}
 	
 	div {
-		flex-grow: 0;
-		flex-shrink: 1;
+		flex-grow: 1;
 		padding-right: ${({ theme }): string => theme.spacing.lg};
+
+	    @container nearest-container (min-width: 720px) {
+	        flex-grow: 0;
+	        flex-shrink: 1;
+	    }
 	}
 
     p {
@@ -48,5 +53,6 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 		flex-grow: 0;
 		flex-shrink: 0;
 		margin-left: auto;
+		margin-top: ${({ theme }): string => theme.spacing.md};
 	}
 `;
