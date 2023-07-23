@@ -15,19 +15,33 @@ export const assignmentsForSubjectResolver = {
 				if (projectDetails) {
 					const unitDetails: UnitDetail = await context.datasources.onTrack.getUnitDetails(projectDetails.unit_id);
 
-					return projectDetails.tasks.map((task: Task) => {
-						const taskDef: TaskDefinition = unitDetails.task_definitions.find((taskDef: TaskDefinition) => {
-							return taskDef.id === task.task_definition_id;
-						});
+					return unitDetails.task_definitions.map((taskDef: TaskDefinition) => {
+						const task = projectDetails.tasks.find(task => task.task_definition_id === taskDef.id);
 
-						return {
-							unitId: projectDetails.unit_id,
-							projectId: args.projectId,
-							...pick(task, ['status', 'submission_date', 'completion_date']),
-							...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
-							maxPoints: taskDef.max_quality_pts,
-							awardedPoints: task.quality_pts
-						};
+						console.log(task);
+
+						if(task) {
+							return {
+								unitId: projectDetails.unit_id,
+								projectId: args.projectId,
+								...pick(task, ['status', 'submission_date', 'completion_date']),
+								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+								maxPoints: taskDef.max_quality_pts,
+								awardedPoints: task.quality_pts
+							};
+						}
+						else {
+							return {
+								unitId: projectDetails.unit_id,
+								projectId: args.projectId,
+								status: 'not_started',
+								submission_date: undefined,
+								completion_date: undefined,
+								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+								maxPoints: taskDef.max_quality_pts,
+								awardedPoints: 0
+							};
+						}
 					});
 				}
 			}
