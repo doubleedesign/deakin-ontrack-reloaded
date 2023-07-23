@@ -13,17 +13,18 @@ export function useSortedAssignments(projectId: number) {
 
 	useEffect(() => {
 		if(!loading && data) {
-			const grouped = groupBy(data.allAssignmentsForSubject, 'status');
+			const ordered = data.allAssignmentsForSubject.sort((a, b) => Date.parse(a.due_date) - Date.parse(b.due_date));
+			const grouped = groupBy(ordered, 'status');
 			// eslint-disable-next-line max-len
 			const sortOrder = ['discuss', 'fix_and_resubmit', 'working_on_it', 'not_started', 'need_help', 'time_exceeded', 'complete', 'feedback_exceeded'];
 
-			const ordered = Object.entries(grouped).sort(([keyA, valuesA], [keyB, valuesB]) => {
+			const orderedGroups = Object.entries(grouped).sort(([keyA, valuesA], [keyB, valuesB]) => {
 				if (!sortOrder.includes(keyA)) return 1;
 				if (!sortOrder.includes(keyB)) return -1;
 				return sortOrder.indexOf(keyA) - sortOrder.indexOf(keyB);
 			});
 
-			setAssignmentGroups(Object.fromEntries(ordered));
+			setAssignmentGroups(Object.fromEntries(orderedGroups));
 		}
 	}, [data, loading]);
 
