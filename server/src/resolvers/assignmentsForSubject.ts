@@ -8,12 +8,12 @@ export const assignmentsForSubjectResolver = {
 	allAssignmentsForSubject: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
 		try {
 			const onTrackUnits = await context.datasources.onTrack.getCurrentProjects();
-			const isOnTrackUnit = onTrackUnits.find(unit => unit.id === args.projectId);
+			const isOnTrackUnit = onTrackUnits.find(item => item.id === args.projectId);
 
 			if(isOnTrackUnit) {
 				const projectDetails: ProjectDetail = await context.datasources.onTrack.getProjectDetails(args.projectId);
 				if (projectDetails) {
-					const unitDetails: UnitDetail = await context.datasources.onTrack.getUnitDetails(args.unitId);
+					const unitDetails: UnitDetail = await context.datasources.onTrack.getUnitDetails(projectDetails.unit_id);
 
 					return projectDetails.tasks.map((task: Task) => {
 						const taskDef: TaskDefinition = unitDetails.task_definitions.find((taskDef: TaskDefinition) => {
@@ -21,7 +21,7 @@ export const assignmentsForSubjectResolver = {
 						});
 
 						return {
-							unitId: args.unitId,
+							unitId: projectDetails.unit_id,
 							projectId: args.projectId,
 							...pick(task, ['status', 'submission_date', 'completion_date']),
 							...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
@@ -36,14 +36,14 @@ export const assignmentsForSubjectResolver = {
 				if(cloudAssignments) {
 					return cloudAssignments.map((item: BrightspaceAssignment) => {
 						return {
-							unitId: args.unitId,
+							unitId: args.projectId,
 							projectId: args.projectId,
 							id: item.Id,
 							type: 'CloudDeakin',
 							name: item.Name,
-							abbreviation: undefined,
+							abbreviation: '',
 							description: undefined,
-							status: undefined, // TODO
+							status: 'not_started', // TODO
 							due_date: item.DueDate,
 							target_date: item.DueDate,
 							submission_date: undefined, // TODO

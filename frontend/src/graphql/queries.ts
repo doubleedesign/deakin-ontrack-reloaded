@@ -31,7 +31,9 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject
 export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsForSubject: Assignment[]}> = gql`
     query AssignmentsForSubjectQuery($projectId: Int, $unitId: Int) {
         allAssignmentsForSubject(projectId: $projectId, unitId: $unitId) {
+	        id,
             abbreviation,
+	        description,
             name,
             due_date,
             status
