@@ -12,6 +12,7 @@ import StatusGroupedAssignments from './StatusGroupedAssignments/StatusGroupedAs
 import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
 import Select from 'react-select';
 import loginForm from '../../Form/LoginForm/LoginForm.tsx';
+import Messages from '../../Messages/Messages.tsx';
 
 const targetGrades = [
 	{ value: 0, label: 'Pass' },
@@ -98,6 +99,8 @@ const SubjectPage: FC = () => {
 					<StyledButton color={viewMode === 'cluster' ? color : '#dedede'} onClick={() => setViewMode('cluster')}>Cluster</StyledButton>
 				</SubjectViewToggle>
 			</SubjectViewToggleRow>
+
+			<Messages/>
 
 			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}
 			{viewMode === 'cluster' && <ClusteredAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}

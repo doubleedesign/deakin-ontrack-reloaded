@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
-import { complement, adjustHue, readableColor, lighten, darken, shade, desaturate, tint } from 'polished';
+import { complement, adjustHue, readableColor, lighten, darken, shade, desaturate, tint, parseToRgb } from 'polished';
 import { Col, Row } from '../../common.styled.ts';
 
-const names = ['primary', 'secondary', 'accent', 'success', 'info', 'warning', 'error'];
+const names = ['success', 'info', 'warning', 'error'];
 
 const namedColorBlocks = (theme: any) => names.map((item) => css`
 	&.${item} {
-		background: ${theme.colors[item] ?? theme.colors[item]};
-		color: ${readableColor(theme.colors[item]) ?? readableColor(theme.colors[item])};
+		background: ${theme.colors[item]};
+		color: ${readableColor(theme.colors[item])};
 	}
 `);
 
@@ -27,8 +27,8 @@ export const ColorBox = styled(Col)`
 
 const exampleTabColorGen = (color: string) => [...Array(5)].map((x, index) => {
 	const genColor = index % 2 === 0
-		? adjustHue(30 * index, tint(0.2, color))
-		: complement(adjustHue(30 * index, tint(0.2, color)));
+		? adjustHue(360 - (index * 15), color)
+		: adjustHue((index * 15) + 245, color);
 
 	return css`
         div:nth-of-type(${index+1}) {
@@ -40,6 +40,7 @@ const exampleTabColorGen = (color: string) => [...Array(5)].map((x, index) => {
 
 export const TabExampleRow = styled(Row)`
 	margin-bottom: 2rem;
+	margin-top: 1rem;
 	
 	div {
 		width: 120px;
@@ -49,7 +50,7 @@ export const TabExampleRow = styled(Row)`
 		font-weight: 600;
 	}
 	
-    ${props => exampleTabColorGen(props.theme.colors.secondary)};
+    ${props => exampleTabColorGen('#a007a6')};
 `;
 
 const colorWheel = (color: string) => [...Array(25)].map((x, index) => {
@@ -70,6 +71,7 @@ const colorWheel = (color: string) => [...Array(25)].map((x, index) => {
 
 export const ColorWheelRow = styled(Row)<{color: string}>`
 	margin-bottom: 2rem;
+	margin-top: 1rem;
 	
 	div {
 		width: auto;

@@ -85,7 +85,7 @@ export const ButtonStyledAsLink = styled.button`
     }
 
     &:hover, &:focus-visible {
-        color: ${({ theme }): string => theme.colors.accent};
+        color: ${({ theme }): string => theme.colors.info};
         text-decoration-color: currentColor;
     }
 `;

@@ -12,11 +12,7 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	display: flex;
 	flex-wrap: wrap;
 	font-size: ${props => props?.size === 'small' ? '0.8rem' : 'inherit'};
-	
-	&:last-child {
-        margin-bottom: ${({ theme }): string => theme.spacing.lg};
-	}
-	
+
 	div {
 		flex-grow: 1;
 		padding-right: ${({ theme }): string => theme.spacing.lg};

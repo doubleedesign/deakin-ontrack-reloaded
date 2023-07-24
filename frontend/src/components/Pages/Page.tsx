@@ -9,7 +9,6 @@ interface PageProps {
 const Page: FC<PropsWithChildren<PageProps>> = ({ color, children }) => {
 	return (
 		<PageWrapper data-component-id="Page" color={color ?? '#000'}>
-			<Messages/>
 			{children}
 		</PageWrapper>
 	);

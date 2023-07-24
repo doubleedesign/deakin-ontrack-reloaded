@@ -83,8 +83,8 @@ export const StyledForm = styled.form.attrs({ 'data-component-id': 'StyledForm' 
 
 		    &:focus, &:focus-visible {
 			    outline: none;
-			    border-color: ${({ theme }): string => theme.colors.secondary};
-			    box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors.secondary};
+			    border-color: ${({ theme }): string => theme.colors.info};
+			    box-shadow: 0 0 0.25rem 0 ${({ theme }): string => theme.colors.info};
 		    }
 	    }
     }

@@ -6,7 +6,7 @@ import { MessagesWrapper } from './Messages.styled.ts';
 import { StyledButton } from '../Button/Button.styled.ts';
 
 const Messages: FC = () => {
-	const { errors, setDrawerOpen } = useContext(AppContext);
+	const { errors, infoMessages, warningMessages, setDrawerOpen } = useContext(AppContext);
 
 	return (
 		<MessagesWrapper data-component-id="Messages">
@@ -27,6 +27,30 @@ const Messages: FC = () => {
 								{[401, 403, 419].includes(error?.extensions?.code as number) &&
 									<StyledButton color="error" onClick={() => setDrawerOpen('settings')}>Authenticate</StyledButton>
 								}
+							</Alert>
+						);
+					})}
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					{warningMessages && warningMessages.map(message => {
+						return (
+							<Alert type="warning">
+								<p><strong>{message[0]}</strong></p>
+								<p><span>{message?.slice(1).join()}</span></p>
+							</Alert>
+						);
+					})}
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					{infoMessages && infoMessages.map(message => {
+						return (
+							<Alert type="info">
+								<p><strong>{message[0]}</strong></p>
+								<p><span>{message?.slice(1).join()}</span></p>
 							</Alert>
 						);
 					})}

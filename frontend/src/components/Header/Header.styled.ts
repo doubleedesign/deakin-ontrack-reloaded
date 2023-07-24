@@ -3,6 +3,7 @@ import { Row } from '../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { ThemeToggleButton } from './ThemeToggle/ThemeToggle.styled.ts';
 import { NavLink } from 'react-router-dom';
+import { lighten } from 'polished';
 
 export const HeaderWrapper = styled.header`
 
@@ -41,7 +42,7 @@ export const LogoNavLink = styled(NavLink)`
         span {
             font-family: ${({ theme }): string => theme.fonts.accent};
             display: inline-block;
-            color: ${({ theme }): string => theme.colors.accent};
+            color: ${({ theme }): string => lighten(0.1, theme.colors.accent)};
             transform: rotate(-15deg);
             position: relative;
             bottom: -0.5rem;

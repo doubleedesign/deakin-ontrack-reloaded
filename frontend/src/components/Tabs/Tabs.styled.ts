@@ -6,8 +6,6 @@ export const TabSection = styled(Row)`
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	padding-top: ${({ theme }): string => theme.spacing.xl};
-	padding-bottom: ${({ theme }): string => theme.spacing.xl};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         flex-wrap: nowrap;

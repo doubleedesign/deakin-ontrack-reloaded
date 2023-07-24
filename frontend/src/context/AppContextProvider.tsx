@@ -13,7 +13,7 @@ import { useLazyQuery } from '@apollo/client';
 import { CURRENT_SUBJECTS_QUERY } from '../graphql/queries.ts';
 import { Subject } from '@server/types.ts';
 import { lightTheme, darkTheme } from '../theme.ts';
-import { adjustHue, tint, complement } from 'polished';
+import { adjustHue, tint, complement, shade, darken } from 'polished';
 import { auth } from './auth.ts';
 import { AuthResponse, AuthStatus, DrawerStatus, MyQueryContext } from '../types.ts';
 
@@ -25,10 +25,10 @@ export interface MyAppContext {
 	currentSubjects: Subject[],
 	errors: GraphQLError[];
 	setErrors: Dispatch<SetStateAction<GraphQLError[]>>;
-	infoMessages: string[];
-	setInfoMessages: Dispatch<SetStateAction<string[]>>;
-	warningMessages: string[];
-	setWarningMessages: Dispatch<SetStateAction<string[]>>;
+	infoMessages: string[][];
+	setInfoMessages: Dispatch<SetStateAction<string[][]>>;
+	warningMessages: string[][];
+	setWarningMessages: Dispatch<SetStateAction<string[][]>>;
 	theme: 'light' | 'dark';
 	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
 	drawerOpen: DrawerStatus;
@@ -57,8 +57,8 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 	const [authenticated, setAuthenticated] = useState<AuthStatus>(emptyAuthStatus);
 
 	// Everything else
-	const [infoMessages, setInfoMessages] = useState<string[]>([]);
-	const [warningMessages, setWarningMessages] = useState<string[]>([]);
+	const [infoMessages, setInfoMessages] = useState<string[][]>([]);
+	const [warningMessages, setWarningMessages] = useState<string[][]>([]);
 	const [errors, setErrors] = useState<GraphQLError[]>([]);
 	const [theme, setTheme] = useState<'light' | 'dark'>('light');
 	const [drawerOpen, setDrawerOpen] = useState<DrawerStatus>(false);
@@ -143,8 +143,8 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 						return {
 							...item,
 							color: index % 2 === 0
-								? adjustHue(30 * index, tint(0.2, themeObject.colors.secondary))
-								: complement(adjustHue(30 * index, tint(0.2, themeObject.colors.secondary)))
+								? adjustHue(360 - (index * 15), themeObject.colors.accent)
+								: adjustHue((index * 15) + 245, themeObject.colors.accent)
 						};
 					}));
 					setErrors([]);

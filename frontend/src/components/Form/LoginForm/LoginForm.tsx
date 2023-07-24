@@ -21,7 +21,7 @@ const LoginForm: FC = () => {
 				<LoginFormField system="DeakinSync" name="dsToken" label="DeakinSync bearer token"  defaultValue={dsToken || ''}/>
 				<LoginFormField system="CloudDeakin" name="cdToken" label="CloudDeakin bearer token" defaultValue={cdToken || ''}/>
 				<div>
-					<StyledButton type="submit" color="primary">Let's go</StyledButton>
+					<StyledButton type="submit" color="logo">Let's go</StyledButton>
 				</div>
 			</StyledForm>
 		</LoginFormWrapper>

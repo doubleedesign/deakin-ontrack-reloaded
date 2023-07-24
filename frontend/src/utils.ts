@@ -19,9 +19,9 @@ export function object_key_first(obj: object) {
 export function getColorForStatus(status: string) {
 	switch(status) {
 		case 'working_on_it':
-			return 'secondary';
+			return 'info';
 		case 'not_started':
-			return 'primary';
+			return 'info';
 		case 'discuss':
 		case 'fix_and_resubmit':
 			return 'warning';

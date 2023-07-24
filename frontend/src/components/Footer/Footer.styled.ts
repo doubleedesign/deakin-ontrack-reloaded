@@ -15,7 +15,7 @@ export const FooterWrapper = styled.footer`
 		transition: color 0.3s ease;
 		
 		&:hover, &:focus, &:active {
-			color: ${({ theme }): string => theme.colors.accent};
+			color: ${({ theme }): string => theme.colors.info};
 		}
 	}
 `;

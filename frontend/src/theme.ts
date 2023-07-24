@@ -1,4 +1,4 @@
-import { adjustHue, darken, lighten, shade, tint, desaturate, complement, readableColor } from 'polished';
+import { adjustHue, darken, lighten, shade, tint, desaturate, complement, readableColor, saturate } from 'polished';
 
 const baseTheme = {
 	fonts: {
@@ -22,30 +22,18 @@ const baseTheme = {
 	}
 };
 
-const lightModePrimary = '#00a7d9';
-const lightModeGreen = '#71d900';
-const darkModePrimary = desaturate(0.2, tint(0.2, lightModePrimary));
-const darkModeGreen = tint(0.3, desaturate(0.1, lightModeGreen));
-
-function generateColors(baseColor: string, baseGreen: string) {
-	return {
-		primary: baseColor,
-		secondary: shade(0.2, adjustHue(75, baseColor)),
-		accent: tint(0.3, adjustHue(120, baseColor)),
-		// Always start with a shade of green for the 'status color' calculations,
-		// so the results are more likely to make sense
-		success: tint(0.1, baseGreen),
-		error: adjustHue(255, baseGreen),
-		warning: lighten(0.05, adjustHue(315, baseGreen)),
-		info: adjustHue(120, baseGreen),
-	};
-}
+const lightmodeBaseColor = '#2424c4';
+const darkmodeBaseColor = '#5b5bf6';
 
 export const lightTheme = {
 	...baseTheme,
 	colors: {
-		...generateColors(lightModePrimary, lightModeGreen),
-		logo: '#2424c4',
+		logo: lightmodeBaseColor,
+		success: adjustHue(255, lightmodeBaseColor),
+		error: saturate(0.2, adjustHue(105, lightmodeBaseColor)),
+		info: saturate(0.2, adjustHue(330, lightmodeBaseColor)),
+		warning: saturate(0.2, lighten(0.05, adjustHue(165, lightmodeBaseColor))),
+		accent: '#a007a6', // for tabs
 		pageBackground: '#f6f5f5',
 		contentBackground: '#FFF',
 		reverse: '#100e17',
@@ -61,8 +49,12 @@ export const lightTheme = {
 export const darkTheme = {
 	...baseTheme,
 	colors: {
-		...generateColors(darkModePrimary, darkModeGreen),
-		logo: '#5b5bf6',
+		logo: darkmodeBaseColor,
+		success: lighten(0.2, tint(0.2, lightTheme.colors.success)),
+		warning: lighten(0.2, tint(0.2, lightTheme.colors.warning)),
+		info: lighten(0.1, tint(0.1, lightTheme.colors.info)),
+		error: lighten(0.2, tint(0.2, lightTheme.colors.error)),
+		accent: tint(0.2,'#a007a6'), // for tabs
 		pageBackground: '#100e17',
 		contentBackground: '#1c1928',
 		reverse: '#e7e7e7',
