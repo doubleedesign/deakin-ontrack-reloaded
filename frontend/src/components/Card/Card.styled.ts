@@ -22,7 +22,6 @@ export const CardWrapper = styled.div<{color: string}>`
 	}
 
     h3 {
-        color: ${props => props.theme.colors[props.color]};
 	    font-size: 1.125rem;
 	    margin-bottom: ${({ theme }): string => theme.spacing.xs};
     }

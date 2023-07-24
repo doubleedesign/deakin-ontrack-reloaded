@@ -21,12 +21,12 @@ export function getColorForStatus(status: string) {
 		case 'working_on_it':
 			return 'secondary';
 		case 'not_started':
-			return 'info';
+			return 'primary';
 		case 'discuss':
-			return 'warning';
 		case 'fix_and_resubmit':
-			return 'error';
+			return 'warning';
 		case 'need_help':
+		case 'ready_for_feedback':
 			return 'info';
 		case 'time_exceeded':
 		case 'feedback_exceeded':
@@ -36,4 +36,15 @@ export function getColorForStatus(status: string) {
 		default:
 			return 'bodyText';
 	}
+}
+
+export function isHexColor(str: string): boolean {
+	const matches = str.match(/[0-9A-Fa-f]{6}/g);
+	if(!matches) {
+		return false;
+	}
+	else if(matches.length > 0) {
+		return true;
+	}
+	return false;
 }

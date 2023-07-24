@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { darken, meetsContrastGuidelines, readableColor, shade } from 'polished';
+import { isHexColor } from '../../utils.ts';
 interface ButtonProps {
 	color: string;
 	rounded?: boolean;
@@ -15,13 +16,20 @@ export const StyledButton = styled.button<ButtonProps>`
     font-family: ${({ theme }): string => theme.fonts.body};
 	font-weight: 600;
 	border-radius: ${props => props.rounded ? '3rem' : '0.25rem'};
-    background: ${({ color, theme }): string => theme.colors[color]};
-    color: ${({ color, theme }): string => {
-		const scores = meetsContrastGuidelines(shade(0.1, theme.colors[color]), '#FFF');
+    background: ${props => isHexColor(props.color) ? props.color : props.theme.colors[props.color]};
+    color: ${props => {
+		let theColor: string;
+		if(isHexColor(props.color)) {
+			theColor = props.color;
+		}
+		else {
+			theColor = props.theme.colors[props.color];
+		}
+		const scores = meetsContrastGuidelines(shade(0.1, (theColor)), '#FFF');
 		if(scores.AALarge) {
 			return '#FFF';
 		}
-		return readableColor(shade(0.1, theme.colors[color]));
+		return readableColor(shade(0.1, (theColor)));
 	}};
     font-size: 0.9rem;
 	border: 0;
@@ -39,7 +47,7 @@ export const StyledButton = styled.button<ButtonProps>`
 	}
 	
 	&:hover, &:focus, &:active {
-		background: ${({ color, theme }): string => darken(0.15, theme.colors[color])};
+		background: ${props => darken(0.15, isHexColor(props.color) ? props.color : props.theme.colors[props.color])};
 	}
 	
 	&:focus {
@@ -57,9 +65,7 @@ export const StyledIconButton = styled(StyledButton)`
 	}
 `;
 
-export const LinkStyledAsButton = styled(StyledButton).attrs({ as: 'a' })<LinkProps>`
-
-`;
+export const LinkStyledAsButton = styled(StyledButton).attrs({ as: 'a' })<LinkProps>``;
 
 export const ButtonStyledAsLink = styled.button`
     color: ${props => readableColor(props.theme.colors.contentBackground)};

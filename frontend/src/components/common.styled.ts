@@ -25,7 +25,7 @@ export const Row = styled.div.attrs({ 'data-component-id': 'Row' })`
 	flex-wrap: wrap;
 	width: 100%;
 	flex-basis: 100%;
-    max-width: 1280px;
+    max-width: 1140px;
 	margin: 0 auto;
 	padding: 0 ${({ theme }): string => theme.spacing.sm};
 	position: relative;
