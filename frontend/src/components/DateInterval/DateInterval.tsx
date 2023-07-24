@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { DateIntervalWrapper } from './DateInterval.styled';
-import { eachWeekOfInterval, intervalToDuration } from 'date-fns';
+import { isSameDay, eachWeekOfInterval, intervalToDuration, isBefore } from 'date-fns';
 
 interface DateIntervalProps {
 	date: string;
@@ -8,26 +8,33 @@ interface DateIntervalProps {
 }
 
 const DateInterval: FC<DateIntervalProps> = ({ date, color }) => {
-	const dateData: Date = new Date(Date.parse(date));
+	const dueDate: Date = new Date(Date.parse(date));
+	const today = new Date();
 	let timeStatement = '';
 	let note = '';
 
 	const timeLeft = intervalToDuration({
-		start: new Date(),
-		end: dateData
+		start: today,
+		end: dueDate
 	});
 
 	if(timeLeft.months && timeLeft.months > 0) {
 		const weeksLeft = eachWeekOfInterval({
-			start: new Date(),
-			end: dateData
+			start: today,
+			end: dueDate
 		}).length - 1;
 
 		timeStatement = `Due in about ${weeksLeft} weeks`;
 	}
 	else {
+		if(isSameDay(today, dueDate)) {
+			timeStatement = 'Due today';
+		}
+		else if(isBefore(dueDate, today)) {
+			timeStatement = 'Overdue';
+		}
 		// @ts-ignore
-		if(timeLeft.days < 1) {
+		else if(timeLeft.days < 1) {
 			timeStatement = 'Due tomorrow';
 		}
 		else if(timeLeft.days === 1) {
@@ -36,7 +43,7 @@ const DateInterval: FC<DateIntervalProps> = ({ date, color }) => {
 		// @ts-ignore
 		else if(timeLeft.days < 7) {
 			timeStatement = `Due in about ${timeLeft.days} days`;
-			note = `(on ${dateData.toLocaleDateString('en-AU', { weekday: 'long' })})`;
+			note = `(on ${dueDate.toLocaleDateString('en-AU', { weekday: 'long' })})`;
 		}
 		// @ts-ignore
 		else if(timeLeft.days > 14) {
