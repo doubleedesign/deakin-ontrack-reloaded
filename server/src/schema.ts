@@ -24,6 +24,8 @@ export const typeDefs = gql`
 		unitCode: String
         name: String
 		targetGrade: Int,
+		startDate: String,
+		endDate: String
 		urls: [SubjectURL]
 	}
 	

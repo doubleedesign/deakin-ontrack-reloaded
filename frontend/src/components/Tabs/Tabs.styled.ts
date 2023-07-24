@@ -6,6 +6,7 @@ export const TabSection = styled(Row)`
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
+	margin-bottom: ${props => props.theme.spacing.lg};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         flex-wrap: nowrap;
@@ -58,13 +59,22 @@ export const TabNavButton = styled.button.attrs((props: EachTabProps) => ({
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+    flex-wrap: wrap;
 	background: ${({ theme }): string => shade(0.07, theme.colors.contentBackground)};
 	color: ${({ theme }): string => readableColor(theme.colors.contentBackground)};
 	position: relative;
-	height: 52px;
+	height: 68px;
 	
 	&:hover, &:focus-visible {
 		text-decoration-color: currentColor;
+	}
+	
+	span {
+		display: block;
+		font-weight: 300;
+		font-size: 0.875em;
+		width: 100%;
+		flex-basis: 100%;
 	}
 	
 	svg {
@@ -92,14 +102,14 @@ export const TabNavButton = styled.button.attrs((props: EachTabProps) => ({
 		&:before {
 			position: absolute;
 			top: 0;
-            border-width: 26px 0 0 1rem;
+            border-width: 34px 0 0 1rem;
             border-color: transparent transparent transparent ${props => props.color ? props.theme.colors[props.color] : 'unset'};
 		}
 
         &:after {
             position: absolute;
             bottom: 0;
-            border-width: 26px 1rem 0 0;
+            border-width: 34px 1rem 0 0;
             border-color: ${props => props.color ? props.theme.colors[props.color] : 'unset'} transparent transparent transparent;
         }
 	}

@@ -1,4 +1,5 @@
 import { GraphQLError } from 'graphql/error';
+import { Assignment } from '@server/types.ts';
 
 export type SystemName = 'OnTrack' | 'DeakinSync' | 'CloudDeakin';
 
@@ -41,3 +42,9 @@ export type MenuItem = {
 }
 
 export type StatusColor = 'error' | 'warning' | 'success' | 'info';
+
+export type AssignmentCluster = {
+	label: string;
+	endDate: Date;
+	assignments: Assignment[];
+}

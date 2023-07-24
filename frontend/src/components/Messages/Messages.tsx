@@ -13,7 +13,7 @@ const Messages: FC = () => {
 			<Row>
 				<Col>
 					{errors && errors.map((error, index) => {
-						console.error(new Error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`).message);
+						//console.error(new Error(`${error.extensions?.code} ${error.message} ${error.extensions?.stacktrace as string}`).message);
 						let messageOutput = `${error.extensions?.code} ${error.message}`;
 						if(error.extensions.url) {
 							messageOutput = messageOutput + `(at URL ${error.extensions?.url})`;

@@ -28,6 +28,8 @@ export type Subject = {
 	unitCode: string;
 	name: string;
 	targetGrade: number;
+	startDate: string;
+	endDate: string;
 	color?: string;
 	urls: SubjectUrl[];
 }

@@ -6,7 +6,7 @@ import Alert from '../../Alert/Alert.tsx';
 
 const ErrorPage: FC = () => {
 	const error: any = useRouteError();
-	console.error(error);
+	//console.error(error);
 
 	return (
 		<Page>

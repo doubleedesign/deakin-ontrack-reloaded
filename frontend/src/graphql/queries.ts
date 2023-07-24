@@ -20,6 +20,8 @@ export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject
             unitCode,
 	        name,
 	        targetGrade,
+	        startDate,
+	        endDate,
 	        urls {
 		        label,
 		        url

@@ -1,25 +1,28 @@
 import React, { FC, useEffect, useState } from 'react';
 import { TabContent, TabNav, TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection } from '../../../Tabs/Tabs.styled.ts';
-import { getColorForStatus, object_key_first, ucfirst } from '../../../../utils.ts';
-import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
+import { getColorForStatus, object_key_first, slugify } from '../../../../utils.ts';
 import { Row } from '../../../common.styled.ts';
-import { Assignment } from '@server/types.ts';
+import { Assignment, Subject } from '@server/types.ts';
 import Card from '../../../Card/Card.tsx';
 import { useClusteredAssignments } from '../../../../hooks/useClusteredAssignments.ts';
+import { AssignmentCluster } from '../../../../types.ts';
+import { closestTo, isSameDay } from 'date-fns';
 
 interface ClusteredAssignmentsProps {
-	projectId: number;
-	targetGrade: number;
+	subject: Subject;
+	targetGrade: number; // local to this app, doesn't alter actual OnTrack setting/results
 }
 
-const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ projectId, targetGrade }) => {
-	const { assignmentGroups } = useClusteredAssignments(projectId, targetGrade);
-	const [openTab, setOpenTab] = useState<string>('');
+const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ subject, targetGrade }) => {
+	const { assignmentGroups } = useClusteredAssignments(subject, targetGrade);
+	const [openTab, setOpenTab] = useState<string>();
 
 	useEffect(() => {
-		if(assignmentGroups) {
-			// @ts-ignore
-			setOpenTab(object_key_first(assignmentGroups));
+		if(assignmentGroups && assignmentGroups[0].label) {
+			const today = new Date();
+			const closestDate = closestTo(today, assignmentGroups.map((group: AssignmentCluster) => group.endDate));
+			const closestWeek = assignmentGroups.find((group: AssignmentCluster) => isSameDay(group.endDate, closestDate as Date));
+			setOpenTab(slugify(closestWeek.label) || '');
 		}
 	}, [assignmentGroups]);
 
@@ -27,14 +30,21 @@ const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ projectId, target
 		<TabSection id="assignmentTabs">
 			<TabNav>
 				<TabNavList>
-					{assignmentGroups && Object.keys(assignmentGroups).map(key => {
+					{assignmentGroups && assignmentGroups.map((group: AssignmentCluster) => {
 						return (
-							<TabNavItem key={key}>
-								<TabNavButton tabKey={key}
-									              color={getColorForStatus(key)}
-									              aria-selected={openTab === key}
-									              onClick={() => setOpenTab(key)}>
-									{key}
+							<TabNavItem key={slugify(group.label)}>
+								<TabNavButton tabKey={slugify(group.label)}
+									              color={getColorForStatus(group.label)}
+									              aria-selected={openTab === slugify(group.label)}
+									              onClick={() => setOpenTab(slugify(group.label))}>
+									{group.label}
+									<span>
+										Ends {group.endDate.toLocaleDateString('en-AU', {
+											day: 'numeric',
+											weekday: 'long',
+											month: 'long'
+										})}
+									</span>
 								</TabNavButton>
 							</TabNavItem>
 						);
@@ -42,11 +52,11 @@ const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ projectId, target
 				</TabNavList>
 			</TabNav>
 			<TabPanels>
-				{assignmentGroups && Object.entries(assignmentGroups).map(([status, assignments]) => {
+				{assignmentGroups && assignmentGroups.map((group: AssignmentCluster) => {
 					return (
-						<TabContent key={status} tabKey={status} open={openTab === status}>
+						<TabContent key={slugify(group.label)} tabKey={slugify(group.label)} open={openTab === slugify(group.label)}>
 							<Row>
-								{(assignments as Assignment[]).map((assignment: Assignment) => {
+								{(group.assignments as Assignment[]).map((assignment: Assignment) => {
 									return (
 										<Card key={assignment.id}
 											      title={`${assignment.abbreviation} ${assignment.name}`}

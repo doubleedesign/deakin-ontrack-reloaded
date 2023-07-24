@@ -4,15 +4,14 @@ import { AppContext } from '../../../context/AppContextProvider.tsx';
 import { GraphQLError } from 'graphql/error';
 import { Subject } from '@server/types.ts';
 import Page from '../Page.tsx';
-import { SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow, TargetGradeToggle } from './SubjectPage.styled.ts';
+import { SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow } from './SubjectPage.styled.ts';
 import { Col, Row, ScreenReaderText } from '../../common.styled.ts';
 import { LinkStyledAsButton, StyledButton } from '../../Button/Button.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Select from 'react-select';
+import Messages from '../../Messages/Messages.tsx';
 import StatusGroupedAssignments from './StatusGroupedAssignments/StatusGroupedAssignments.tsx';
 import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
-import Select from 'react-select';
-import loginForm from '../../Form/LoginForm/LoginForm.tsx';
-import Messages from '../../Messages/Messages.tsx';
 
 const targetGrades = [
 	{ value: 0, label: 'Pass' },
@@ -106,7 +105,7 @@ const SubjectPage: FC = () => {
 			<Messages/>
 
 			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}
-			{viewMode === 'cluster' && <ClusteredAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}
+			{subject && viewMode === 'cluster' && <ClusteredAssignments subject={subject} targetGrade={targetGrade.value}/>}
 		</Page>
 	);
 };

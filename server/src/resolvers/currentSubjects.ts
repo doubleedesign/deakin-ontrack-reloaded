@@ -22,6 +22,8 @@ export const currentSubjectsResolver = {
 						unitCode: unit.code,
 						name: unit.name,
 						targetGrade: project.target_grade,
+						startDate: item.unit.start_date,
+						endDate: item.unit.end_date,
 						urls: [
 							{ label: 'OnTrack', url: `https://ontrack.deakin.edu.au/#/projects/${item.id}/dashboard/` }
 						]
@@ -37,6 +39,8 @@ export const currentSubjectsResolver = {
 						unitCode: item.code,
 						name: item.name,
 						targetGrade: 3,
+						startDate: undefined,
+						endDate: undefined,
 						urls: [
 							{ label: 'CloudDeakin', url: item.url }
 						]
@@ -54,7 +58,7 @@ export const currentSubjectsResolver = {
 
 					return {
 						...pick(dsItem, ['unitCode']),
-						...pick(otItem, ['projectId', 'unitId', 'name', 'targetGrade']),
+						...pick(otItem, ['projectId', 'unitId', 'name', 'targetGrade', 'startDate', 'endDate']),
 						urls: dsItem.urls.concat(otItem.urls)
 					};
 				});

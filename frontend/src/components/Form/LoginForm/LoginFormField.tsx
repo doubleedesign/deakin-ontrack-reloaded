@@ -29,12 +29,12 @@ export const LoginFormField: FC<LoginFormFieldProps> = ({ name, system, label, d
 			});
 
 			if(warning) {
-				console.error(`${system} authentication error: ${warning}`);
+				//console.error(`${system} authentication error: ${warning}`);
 				setFieldStatus('warning');
 				setMessage(`${error?.extensions.statusText}`);
 			}
 			else if(error) {
-				console.error(new Error(`${system} authentication error ${error?.extensions?.code}: ${error?.extensions?.statusText}`).message);
+				//console.error(new Error(`${system} authentication error ${error?.extensions?.code}: ${error?.extensions?.statusText}`).message);
 				setFieldStatus('error');
 				setMessage(`${error?.extensions.statusText}`);
 			}

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { TabContent, TabNav, TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection } from '../../../Tabs/Tabs.styled.ts';
 import { getColorForStatus, object_key_first, ucfirst } from '../../../../utils.ts';
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
@@ -6,17 +6,20 @@ import { Row } from '../../../common.styled.ts';
 import { Assignment } from '@server/types.ts';
 import Card from '../../../Card/Card.tsx';
 import { useSortedAssignments } from '../../../../hooks/useSortedAssignments.ts';
+import { AppContext } from '../../../../context/AppContextProvider.tsx';
 
 interface StatusGroupedAssignmentsProps {
 	projectId: number;
-	targetGrade: number;
+	targetGrade: number; // local to this app, doesn't alter actual OnTrack setting/results
 }
 
 const StatusGroupedAssignments: FC<StatusGroupedAssignmentsProps> = ({ projectId, targetGrade }) => {
+	const { setWarningMessages } = useContext(AppContext);
 	const { assignmentGroups } = useSortedAssignments(projectId, targetGrade);
 	const [openTab, setOpenTab] = useState<string>('');
 
 	useEffect(() => {
+		setWarningMessages([]);
 		if(assignmentGroups) {
 			// @ts-ignore
 			setOpenTab(object_key_first(assignmentGroups));
