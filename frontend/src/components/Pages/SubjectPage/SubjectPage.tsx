@@ -2,26 +2,31 @@ import React, { FC, useContext, useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from '../../../context/AppContextProvider.tsx';
 import { GraphQLError } from 'graphql/error';
-import { Assignment, Subject } from '@server/types.ts';
+import { Subject } from '@server/types.ts';
 import Page from '../Page.tsx';
-import { SubjectHeaderRow } from './SubjectPage.styled.ts';
+import { SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow, TargetGradeToggle } from './SubjectPage.styled.ts';
 import { Col, Row, ScreenReaderText } from '../../common.styled.ts';
-import { LinkStyledAsButton } from '../../Button/Button.styled.ts';
+import { LinkStyledAsButton, StyledButton } from '../../Button/Button.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSortedAssignments } from '../../../hooks/useSortedAssignments.ts';
-import Card from '../../Card/Card.tsx';
-import DateTag from '../../DateTag/DateTag.tsx';
-import { getColorForStatus, object_key_first, ucfirst } from '../../../utils.ts';
-import { TabSection, TabNav, TabNavList, TabNavItem, TabNavButton, TabContent, TabPanels } from '../../Tabs/Tabs.styled.ts';
-import DateInterval from '../../DateInterval/DateInterval.tsx';
-import IconForStatus from '../../IconForStatus/IconForStatus.tsx';
+import StatusGroupedAssignments from './StatusGroupedAssignments/StatusGroupedAssignments.tsx';
+import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
+import Select from 'react-select';
+import loginForm from '../../Form/LoginForm/LoginForm.tsx';
+
+const targetGrades = [
+	{ value: 0, label: 'Pass' },
+	{ value: 1, label: 'Credit' },
+	{ value: 2, label: 'Distinction' },
+	{ value: 3, label: 'High Distinction' },
+];
 
 const SubjectPage: FC = () => {
 	const params = useParams();
 	const { currentSubjects, setErrors } = useContext(AppContext);
 	const [subject, setSubject] = useState<Subject>();
-	const { assignmentGroups } = useSortedAssignments(Number(params.projectId));
-	const [openTab, setOpenTab] = useState<string>('');
+	const [viewMode, setViewMode] = useState<'status'|'cluster'>('cluster');
+	const [targetGrade, setTargetGrade] = useState(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
+	const [color, setColor] = useState<string>('#333333');
 
 	useEffect(() => {
 		if(params.projectId && currentSubjects) {
@@ -29,6 +34,9 @@ const SubjectPage: FC = () => {
 			const found = currentSubjects.find(subject => subject.projectId.toString() === params.projectId.toString());
 			if(found) {
 				setSubject(found);
+				if(found.color) {
+					setColor(found.color);
+				}
 				setErrors([]);
 			}
 			else {
@@ -43,11 +51,11 @@ const SubjectPage: FC = () => {
 	}, [params, currentSubjects, setErrors]);
 
 	useEffect(() => {
-		if(assignmentGroups) {
+		if(subject && subject.targetGrade) {
 			// @ts-ignore
-			setOpenTab(object_key_first(assignmentGroups));
+			setTargetGrade(targetGrades.find(item => item.value === subject.targetGrade));
 		}
-	}, [assignmentGroups]);
+	}, [subject]);
 
 
 	return (
@@ -72,43 +80,27 @@ const SubjectPage: FC = () => {
 					})}
 				</Col>
 			</SubjectHeaderRow>
-			<TabSection id="assignmentTabs">
-				<TabNav>
-					<TabNavList>
-						{assignmentGroups && Object.keys(assignmentGroups).map(key => {
-							return (
-								<TabNavItem key={key}>
-									<TabNavButton tabKey={key} color={getColorForStatus(key)} aria-selected={openTab === key} onClick={() => setOpenTab(key)}>
-										<IconForStatus status={key}/>
-										{ucfirst(key.replaceAll('_', ' '))}
-									</TabNavButton>
-								</TabNavItem>
-							);
-						})}
-					</TabNavList>
-				</TabNav>
-				<TabPanels>
-					{assignmentGroups && Object.entries(assignmentGroups).map(([status, assignments]) => {
-						return (
-							<TabContent key={status} tabKey={status} open={openTab === status}>
-								<Row>
-									{(assignments as Assignment[]).map((assignment: Assignment) => {
-										return (
-											<Card key={assignment.id}
-											      title={`${assignment.abbreviation} ${assignment.name}`}
-											      status={assignment.status}
-											      dueDate={assignment.due_date}
-											>
-												<p>{assignment.description}</p>
-											</Card>
-										);
-									})}
-								</Row>
-							</TabContent>
-						);
-					})}
-				</TabPanels>
-			</TabSection>
+
+			<SubjectViewToggleRow>
+				<SubjectViewToggle color={color} current={targetGrade.value}>
+					<p>Target grade:</p>
+					<Select
+						value={targetGrade}
+						onChange={(selected) => setTargetGrade(selected)}
+						options={targetGrades}
+						className="selectBox"
+						unstyled
+					/>
+				</SubjectViewToggle>
+				<SubjectViewToggle color={color}>
+					<p>View by:</p>
+					<StyledButton color={viewMode === 'status' ? color : '#dedede'} onClick={() => setViewMode('status')}>Status</StyledButton>
+					<StyledButton color={viewMode === 'cluster' ? color : '#dedede'} onClick={() => setViewMode('cluster')}>Cluster</StyledButton>
+				</SubjectViewToggle>
+			</SubjectViewToggleRow>
+
+			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}
+			{viewMode === 'cluster' && <ClusteredAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}
 		</Page>
 	);
 };

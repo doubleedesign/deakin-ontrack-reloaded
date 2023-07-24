@@ -18,8 +18,6 @@ export const assignmentsForSubjectResolver = {
 					return unitDetails.task_definitions.map((taskDef: TaskDefinition) => {
 						const task = projectDetails.tasks.find(task => task.task_definition_id === taskDef.id);
 
-						console.log(task);
-
 						if(task) {
 							return {
 								unitId: projectDetails.unit_id,
