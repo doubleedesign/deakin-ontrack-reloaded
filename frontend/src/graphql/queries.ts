@@ -37,7 +37,9 @@ export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsFor
             name,
             target_date,
             status,
-	        target_grade
+	        target_grade,
+	        submission_date,
+	        completion_date
         }
     }
 `;
