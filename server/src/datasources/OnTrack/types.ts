@@ -61,7 +61,7 @@ export type LearningOutcome = {
 }
 
 // eslint-disable-next-line max-len
-export type TaskStatus = 'not_started' | 'complete' | 'fix_and_resubmit' | 'feedback_exceeded' | 'discuss' | 'time_exceeded' | 'working_on_it' | 'need_help';
+export type TaskStatus = 'not_started' | 'ready_for_feedback' | 'complete' | 'fix_and_resubmit' | 'feedback_exceeded' | 'discuss' | 'time_exceeded' | 'working_on_it' | 'need_help';
 
 type TaskCommon = {
 	id: number;

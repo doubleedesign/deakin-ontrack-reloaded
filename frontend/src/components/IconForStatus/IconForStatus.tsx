@@ -12,6 +12,8 @@ const IconForStatus: FC<IconForStatusProps> = ({ status }) => {
 		switch(status) {
 			case 'working_on_it':
 				return <FontAwesomeIcon icon={['fad', 'loader']}/>;
+			case 'ready_for_feedback':
+				return <FontAwesomeIcon icon={['fas', 'hourglass-half']}/>;
 			case 'not_started':
 				return <FontAwesomeIcon icon={['fas', 'triangle-exclamation']}/>;
 			case 'discuss':
