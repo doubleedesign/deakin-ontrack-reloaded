@@ -17,13 +17,19 @@ export const assignmentsForSubjectResolver = {
 
 					return unitDetails.task_definitions.map((taskDef: TaskDefinition) => {
 						const task = projectDetails.tasks.find(task => task.task_definition_id === taskDef.id);
+						let myTargetDate = taskDef.target_date;
 
 						if(task) {
+							if(task.extensions > 0) {
+								myTargetDate = task.due_date;
+							}
+							
 							return {
 								unitId: projectDetails.unit_id,
 								projectId: args.projectId,
+								target_date: myTargetDate,
 								...pick(task, ['status', 'submission_date', 'completion_date']),
-								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'target_grade', 'weighting', 'is_graded']),
+								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_grade', 'weighting', 'is_graded']),
 								maxPoints: taskDef.max_quality_pts,
 								awardedPoints: task.quality_pts
 							};
