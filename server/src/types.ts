@@ -46,6 +46,7 @@ export type Assignment = {
 	submission_date: string;
 	completion_date: string;
 	weighting: number;
+	target_grade: number;
 	is_graded: boolean;
 	maxPoints: number;
 	awardedPoints: number;

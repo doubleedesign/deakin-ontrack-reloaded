@@ -25,7 +25,7 @@ export const assignmentsForSubjectResolver = {
 								unitId: projectDetails.unit_id,
 								projectId: args.projectId,
 								...pick(task, ['status', 'submission_date', 'completion_date']),
-								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'target_grade', 'weighting', 'is_graded']),
 								maxPoints: taskDef.max_quality_pts,
 								awardedPoints: task.quality_pts
 							};
@@ -37,7 +37,7 @@ export const assignmentsForSubjectResolver = {
 								status: 'not_started',
 								submission_date: undefined,
 								completion_date: undefined,
-								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'weighting', 'is_graded']),
+								...pick(taskDef, ['id', 'due_date', 'abbreviation', 'name', 'description', 'target_date', 'target_grade', 'weighting', 'is_graded']),
 								maxPoints: taskDef.max_quality_pts,
 								awardedPoints: 0
 							};
@@ -60,6 +60,7 @@ export const assignmentsForSubjectResolver = {
 							status: 'not_started', // TODO
 							due_date: item.DueDate,
 							target_date: item.DueDate,
+							target_grade: 0, // Assume all CloudDeakin assignments are required for a pass
 							submission_date: undefined, // TODO
 							completion_date: undefined, // TODO
 							maxPoints: item.Assessment.ScoreDenominator,

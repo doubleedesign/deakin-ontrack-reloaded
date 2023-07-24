@@ -40,6 +40,7 @@ export const typeDefs = gql`
 		due_date: String
         submission_date: String
 		completion_date: String
+		target_grade: Int
 		weighting: Int
 		isGraded: Boolean
 		maxPoints: Int
