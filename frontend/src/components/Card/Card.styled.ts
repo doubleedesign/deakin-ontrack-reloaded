@@ -10,6 +10,7 @@ export const CardWrapper = styled.div<{color: string}>`
     box-shadow: 0 0 0.5rem 0 ${props => transparentize(0.6, shade(0.5, props.theme.colors[props.color]))};
 	display: flex;
     font-size: 0.9rem;
+	border: 1px solid ${props => transparentize(0.25, props.theme.colors.reverseSubtle)};
 	
 	[data-component-id="IconForStatus"] {
 		font-size: 1.5rem;

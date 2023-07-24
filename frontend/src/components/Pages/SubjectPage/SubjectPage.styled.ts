@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
 import { Col, Row } from '../../common.styled.ts';
-import { meetsContrastGuidelines, shade, readableColor, tint } from 'polished';
+import { meetsContrastGuidelines, shade, readableColor, tint, transparentize } from 'polished';
 import { isHexColor } from '../../../utils.ts';
 
 export const SubjectHeaderRow = styled(Row).attrs({ as: 'header' })<{color: string}>`
 	padding: ${props => props.theme.spacing.lg} 0;
 	justify-content: space-between;
 	align-items: center;
-	background: ${props => tint(0.9, props.color)};
+	background: ${props => transparentize(0.9, props.color)};
 	
 	${Col} {
 		flex-grow: 0;
