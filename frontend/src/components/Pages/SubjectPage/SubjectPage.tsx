@@ -23,13 +23,16 @@ const targetGrades = [
 
 const SubjectPage: FC = () => {
 	const params = useParams();
-	const { currentSubjects, setErrors } = useContext(AppContext);
+	const { currentSubjects, setErrors, setWarningMessages, setInfoMessages } = useContext(AppContext);
 	const [subject, setSubject] = useState<Subject>();
 	const [viewMode, setViewMode] = useState<'status'|'cluster'>('cluster');
 	const [targetGrade, setTargetGrade] = useState(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
 	const [color, setColor] = useState<string>('#333333');
 
 	useEffect(() => {
+		setWarningMessages([]);
+		setInfoMessages([]);
+		setErrors([]);
 		if(params.projectId && currentSubjects) {
 			// @ts-ignore
 			const found = currentSubjects.find(subject => subject.projectId.toString() === params.projectId.toString());
@@ -49,7 +52,7 @@ const SubjectPage: FC = () => {
 				})]);
 			}
 		}
-	}, [params, currentSubjects, setErrors]);
+	}, [params, currentSubjects, setErrors, setWarningMessages, setInfoMessages]);
 
 	useEffect(() => {
 		if(subject && subject.targetGrade) {
