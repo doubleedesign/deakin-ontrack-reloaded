@@ -127,15 +127,16 @@ export const SubjectViewToggle = styled(Col).attrs({ 'data-component-id': 'Subje
 	
 	button {
 		margin-right: 0;
+		border-radius: 0;
 		
 		&:first-of-type {
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
 		}
 		
 		&:last-of-type {
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
+            border-top-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
 		}
 	}
 `;

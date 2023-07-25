@@ -13,19 +13,16 @@ import Messages from '../../Messages/Messages.tsx';
 import StatusGroupedAssignments from './StatusGroupedAssignments/StatusGroupedAssignments.tsx';
 import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
 import DateGroupedAssignments from './DateGroupedAssignments/DateGroupedAssignments.tsx';
+import GradeGroupedAssignments from './GradeGroupedAssignments/GradeGroupedAssignments.tsx';
+import { targetGrades } from '../../../constants.ts';
 
-const targetGrades = [
-	{ value: 0, label: 'Pass' },
-	{ value: 1, label: 'Credit' },
-	{ value: 2, label: 'Distinction' },
-	{ value: 3, label: 'High Distinction' },
-];
+
 
 const SubjectPage: FC = () => {
 	const params = useParams();
 	const { currentSubjects, setErrors, setWarningMessages, setInfoMessages } = useContext(AppContext);
 	const [subject, setSubject] = useState<Subject>();
-	const [viewMode, setViewMode] = useState<'status'|'cluster'|'date'>('cluster');
+	const [viewMode, setViewMode] = useState<'status'|'cluster'|'date'|'grade'>('cluster');
 	const [targetGrade, setTargetGrade] = useState<SingleValue<{value: number, label: string}>>(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
 	const [color, setColor] = useState<string>('#333333');
 
@@ -98,17 +95,19 @@ const SubjectPage: FC = () => {
 				</SubjectViewToggle>
 				<SubjectViewToggle color={color}>
 					<p>View by:</p>
-					<StyledButton color={viewMode === 'status' ? color : '#dedede'} onClick={() => setViewMode('status')}>Status</StyledButton>
 					<StyledButton color={viewMode === 'cluster' ? color : '#dedede'} onClick={() => setViewMode('cluster')}>Cluster</StyledButton>
+					<StyledButton color={viewMode === 'status' ? color : '#dedede'} onClick={() => setViewMode('status')}>Status</StyledButton>
 					<StyledButton color={viewMode === 'date' ? color : '#dedede'} onClick={() => setViewMode('date')}>Due date</StyledButton>
+					<StyledButton color={viewMode === 'grade' ? color : '#dedede'} onClick={() => setViewMode('grade')}>Target grade</StyledButton>
 				</SubjectViewToggle>
 			</SubjectViewToggleRow>
 
 			<Messages/>
 
-			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade?.value || 2}/>}
 			{subject && viewMode === 'cluster' && <ClusteredAssignments subject={subject} targetGrade={targetGrade?.value || 2}/>}
-			{subject && viewMode === 'date' && <DateGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade?.value || 2}/>}
+			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade?.value || 2}/>}
+			{viewMode === 'date' && <DateGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade?.value || 2}/>}
+			{viewMode === 'grade' && <GradeGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade?.value || 2}/>}
 		</Page>
 	);
 };
