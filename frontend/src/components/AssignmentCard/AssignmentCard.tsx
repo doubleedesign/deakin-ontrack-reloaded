@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { CardWrapper } from './Card.styled';
+import { CardWrapper } from './AssignmentCard.styled.ts';
 import IconForStatus from '../IconForStatus/IconForStatus.tsx';
 import { getColorForStatus } from '../../utils.ts';
 import DateInterval from '../DateInterval/DateInterval.tsx';
@@ -12,9 +12,9 @@ interface CardProps {
 	dueDate: string;
 }
 
-const Card: FC<PropsWithChildren<CardProps>> = ({ title, status, dueDate, children }) => {
+const AssignmentCard: FC<PropsWithChildren<CardProps>> = ({ title, status, dueDate, children }) => {
 	return (
-		<CardWrapper color={getColorForStatus(status)} data-component-id="Card">
+		<CardWrapper color={getColorForStatus(status)} data-component-id="AssignmentCard">
 			<IconForStatus status={status}/>
 			<div>
 				<h3>{title}</h3>
@@ -28,4 +28,4 @@ const Card: FC<PropsWithChildren<CardProps>> = ({ title, status, dueDate, childr
 	);
 };
 
-export default Card;
+export default AssignmentCard;

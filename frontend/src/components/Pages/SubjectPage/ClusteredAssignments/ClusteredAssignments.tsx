@@ -3,7 +3,7 @@ import { TabContent, TabNav, TabNavButton, TabNavItem, TabNavList, TabPanels, Ta
 import { getColorForStatus, object_key_first, slugify } from '../../../../utils.ts';
 import { Row } from '../../../common.styled.ts';
 import { Assignment, Subject } from '@server/types.ts';
-import Card from '../../../Card/Card.tsx';
+import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { useClusteredAssignments } from '../../../../hooks/useClusteredAssignments.ts';
 import { AssignmentCluster } from '../../../../types.ts';
 import { closestTo, isSameDay } from 'date-fns';
@@ -58,13 +58,13 @@ const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ subject, targetGr
 							<Row>
 								{(group.assignments as Assignment[]).map((assignment: Assignment) => {
 									return (
-										<Card key={assignment.id}
-											      title={`${assignment.abbreviation} ${assignment.name}`}
-											      status={assignment.status}
-											      dueDate={assignment.target_date}
+										<AssignmentCard key={assignment.id}
+										                title={`${assignment.abbreviation} ${assignment.name}`}
+										                status={assignment.status}
+										                dueDate={assignment.target_date}
 										>
 											<p>{assignment.description}</p>
-										</Card>
+										</AssignmentCard>
 									);
 								})}
 							</Row>

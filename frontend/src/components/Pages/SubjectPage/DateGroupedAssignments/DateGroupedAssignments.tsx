@@ -3,7 +3,7 @@ import { TabContent, TabNav, TabNavButton, TabNavItem, TabNavList, TabPanels, Ta
 import { getColorForStatus, object_key_first, ucfirst } from '../../../../utils.ts';
 import { Row } from '../../../common.styled.ts';
 import { Assignment } from '@server/types.ts';
-import Card from '../../../Card/Card.tsx';
+import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { useDateGroupedAssignments } from '../../../../hooks/useDateGroupedAssignments.ts';
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
@@ -52,13 +52,13 @@ const DateGroupedAssignments: FC<DateGroupedAssignmentsProps> = ({ projectId, ta
 							<Row>
 								{(assignments as Assignment[]).map((assignment: Assignment) => {
 									return (
-										<Card key={assignment.id}
-										      title={`${assignment.abbreviation} ${assignment.name}`}
-										      status={assignment.status}
-										      dueDate={assignment.target_date}
+										<AssignmentCard key={assignment.id}
+										                title={`${assignment.abbreviation} ${assignment.name}`}
+										                status={assignment.status}
+										                dueDate={assignment.target_date}
 										>
 											<p>{assignment.description}</p>
-										</Card>
+										</AssignmentCard>
 									);
 								})}
 							</Row>

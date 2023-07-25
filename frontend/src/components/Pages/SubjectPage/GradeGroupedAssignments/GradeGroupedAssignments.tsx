@@ -4,7 +4,7 @@ import { getColorForStatus, object_key_first, ucfirst } from '../../../../utils.
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { Row } from '../../../common.styled.ts';
 import { Assignment } from '@server/types.ts';
-import Card from '../../../Card/Card.tsx';
+import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
 import { useGradeGroupedAssignments } from '../../../../hooks/useGradeGroupedAssignments.ts';
 import { targetGrades } from '../../../../constants.ts';
@@ -53,13 +53,13 @@ const GradeGroupedAssignments: FC<StatusGroupedAssignmentsProps> = ({ projectId,
 							<Row>
 								{(assignments as Assignment[]).map((assignment: Assignment) => {
 									return (
-										<Card key={assignment.id}
-											      title={`${assignment.abbreviation} ${assignment.name}`}
-											      status={assignment.status}
-											      dueDate={assignment.target_date}
+										<AssignmentCard key={assignment.id}
+										                title={`${assignment.abbreviation} ${assignment.name}`}
+										                status={assignment.status}
+										                dueDate={assignment.target_date}
 										>
 											<p>{assignment.description}</p>
-										</Card>
+										</AssignmentCard>
 									);
 								})}
 							</Row>
