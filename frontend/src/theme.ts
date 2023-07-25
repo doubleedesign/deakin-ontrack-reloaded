@@ -39,6 +39,7 @@ export const lightTheme = {
 		reverse: '#100e17',
 		reverseSubtle: '#827d8f',
 		bodyText: '#100e17',
+		light: shade(0.07, '#FFF'),
 		themeToggle: '#d9d9d9',
 		themeToggleHover: 'rgba(0,0,0,0.8)',
 		themeToggleColor: 'rgba(255,255,255,0.5)'
@@ -60,6 +61,7 @@ export const darkTheme = {
 		reverse: '#e7e7e7',
 		reverseSubtle: '#414146',
 		bodyText: '#e7e7e7',
+		light: 'rgba(255,255,255,0.1)',
 		themeToggle: 'rgba(255,255,255,0.2)',
 		themeToggleHover: 'rgba(255,255,255,0.2)',
 		themeToggleColor: '#fac84c'
