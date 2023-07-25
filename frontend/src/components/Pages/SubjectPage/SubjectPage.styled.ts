@@ -106,7 +106,7 @@ export const SubjectViewToggle = styled(Col).attrs({ 'data-component-id': 'Subje
 		${props => props?.current && css`
 			[id*="option-${props.current}"] {
                 // @ts-ignore
-                background: ${props => props.color};
+                background: ${props => props.theme.color};
                 color: ${props => {
 		let theColor: string;
 		if(isHexColor(props.color)) {
