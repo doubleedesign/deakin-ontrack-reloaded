@@ -8,7 +8,7 @@ import { SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow } from './Sub
 import { Col, Row, ScreenReaderText } from '../../common.styled.ts';
 import { LinkStyledAsButton, StyledButton } from '../../Button/Button.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 import Messages from '../../Messages/Messages.tsx';
 import StatusGroupedAssignments from './StatusGroupedAssignments/StatusGroupedAssignments.tsx';
 import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
@@ -25,7 +25,7 @@ const SubjectPage: FC = () => {
 	const { currentSubjects, setErrors, setWarningMessages, setInfoMessages } = useContext(AppContext);
 	const [subject, setSubject] = useState<Subject>();
 	const [viewMode, setViewMode] = useState<'status'|'cluster'>('cluster');
-	const [targetGrade, setTargetGrade] = useState(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
+	const [targetGrade, setTargetGrade] = useState<SingleValue<{value: number, label: string}>>(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
 	const [color, setColor] = useState<string>('#333333');
 
 	useEffect(() => {
@@ -85,7 +85,7 @@ const SubjectPage: FC = () => {
 			</SubjectHeaderRow>
 
 			<SubjectViewToggleRow>
-				<SubjectViewToggle color={color} current={targetGrade.value}>
+				<SubjectViewToggle color={color} current={targetGrade?.value}>
 					<p>Target grade:</p>
 					<Select
 						value={targetGrade}
@@ -104,8 +104,8 @@ const SubjectPage: FC = () => {
 
 			<Messages/>
 
-			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade.value}/>}
-			{subject && viewMode === 'cluster' && <ClusteredAssignments subject={subject} targetGrade={targetGrade.value}/>}
+			{viewMode === 'status' && <StatusGroupedAssignments projectId={Number(params.projectId)} targetGrade={targetGrade?.value || 2}/>}
+			{subject && viewMode === 'cluster' && <ClusteredAssignments subject={subject} targetGrade={targetGrade?.value || 2}/>}
 		</Page>
 	);
 };
