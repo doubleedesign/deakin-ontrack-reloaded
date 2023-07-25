@@ -4,7 +4,7 @@ import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
 import { Assignment } from '@server/types.ts';
 
-export function useSortedAssignments(projectId: number, targetGrade: number) {
+export function useStatusGroupedAssignments(projectId: number, targetGrade: number) {
 	const [assignmentGroups, setAssignmentGroups] = useState<any>();
 
 	const { error, loading, data } = useQuery(ASSIGNMENTS_FOR_SUBJECT_QUERY,  {

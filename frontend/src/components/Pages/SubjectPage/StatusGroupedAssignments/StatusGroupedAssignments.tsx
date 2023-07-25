@@ -5,7 +5,7 @@ import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { Row } from '../../../common.styled.ts';
 import { Assignment } from '@server/types.ts';
 import Card from '../../../Card/Card.tsx';
-import { useSortedAssignments } from '../../../../hooks/useSortedAssignments.ts';
+import { useStatusGroupedAssignments } from '../../../../hooks/useStatusGroupedAssignments.ts';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
 
 interface StatusGroupedAssignmentsProps {
@@ -15,7 +15,7 @@ interface StatusGroupedAssignmentsProps {
 
 const StatusGroupedAssignments: FC<StatusGroupedAssignmentsProps> = ({ projectId, targetGrade }) => {
 	const { setWarningMessages } = useContext(AppContext);
-	const { assignmentGroups } = useSortedAssignments(projectId, targetGrade);
+	const { assignmentGroups } = useStatusGroupedAssignments(projectId, targetGrade);
 	const [openTab, setOpenTab] = useState<string>('');
 
 	useEffect(() => {
