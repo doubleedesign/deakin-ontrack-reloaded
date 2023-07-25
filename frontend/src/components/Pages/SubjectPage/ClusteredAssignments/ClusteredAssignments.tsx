@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import { TabContent, TabNav, TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection } from '../../../Tabs/Tabs.styled.ts';
-import { getColorForStatus, object_key_first, slugify } from '../../../../utils.ts';
+import { TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection, TabNavWrapper, TabContentWrapper } from '../Tabs/Tabs.styled.ts';
+import { getColorForStatus, slugify } from '../../../../utils.ts';
 import { Row } from '../../../common.styled.ts';
 import { Assignment, Subject } from '@server/types.ts';
 import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
-import { useClusteredAssignments } from '../../../../hooks/useClusteredAssignments.ts';
+import { useClusteredAssignments } from '../sorting/useClusteredAssignments.ts';
 import { AssignmentCluster } from '../../../../types.ts';
 import { closestTo, isSameDay } from 'date-fns';
 
@@ -28,7 +28,7 @@ const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ subject, targetGr
 
 	return (
 		<TabSection id="assignmentTabs">
-			<TabNav>
+			<TabNavWrapper>
 				<TabNavList>
 					{assignmentGroups && assignmentGroups.map((group: AssignmentCluster) => {
 						return (
@@ -50,11 +50,11 @@ const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ subject, targetGr
 						);
 					})}
 				</TabNavList>
-			</TabNav>
+			</TabNavWrapper>
 			<TabPanels>
 				{assignmentGroups && assignmentGroups.map((group: AssignmentCluster) => {
 					return (
-						<TabContent key={slugify(group.label)} tabKey={slugify(group.label)} open={openTab === slugify(group.label)}>
+						<TabContentWrapper key={slugify(group.label)} tabKey={slugify(group.label)} open={openTab === slugify(group.label)}>
 							<Row>
 								{(group.assignments as Assignment[]).map((assignment: Assignment) => {
 									return (
@@ -68,7 +68,7 @@ const ClusteredAssignments: FC<ClusteredAssignmentsProps> = ({ subject, targetGr
 									);
 								})}
 							</Row>
-						</TabContent>
+						</TabContentWrapper>
 					);
 				})}
 			</TabPanels>

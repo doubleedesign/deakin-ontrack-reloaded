@@ -43,6 +43,12 @@ export type MenuItem = {
 
 export type StatusColor = 'error' | 'warning' | 'success' | 'info';
 
+export type SubjectViewMode = 'status' | 'cluster' | 'date' | 'grade';
+
+export type AssignmentGroup = {
+	[key: string]: Assignment[]
+}
+
 export type AssignmentCluster = {
 	label: string;
 	endDate: Date;

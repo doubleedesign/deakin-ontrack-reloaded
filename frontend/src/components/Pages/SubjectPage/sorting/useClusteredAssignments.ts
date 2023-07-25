@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../graphql/queries.ts';
+import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
 import { Assignment, Subject } from '@server/types.ts';
 import { add, closestTo, eachWeekOfInterval, isSameDay, sub } from 'date-fns';
-import { AppContext } from '../context/AppContextProvider.tsx';
-import { AssignmentCluster } from '../types.ts';
+import { AppContext } from '../../../../context/AppContextProvider.tsx';
+import { AssignmentCluster } from '../../../../types.ts';
 
 
 
@@ -52,13 +52,15 @@ export function useClusteredAssignments(subject: Subject, targetGrade: number) {
 	const { setWarningMessages } = useContext(AppContext);
 
 	useEffect(() => {
-		getAssignments({
-			fetchPolicy: 'no-cache',
-			variables: { projectId: subject.projectId }
-		}).then((response => {
-			setLoading(response.loading);
-			setAllAssignments(response?.data?.allAssignmentsForSubject);
-		}));
+		if(subject?.projectId) {
+			getAssignments({
+				fetchPolicy: 'no-cache',
+				variables: { projectId: subject?.projectId }
+			}).then((response => {
+				setLoading(response.loading);
+				setAllAssignments(response?.data?.allAssignmentsForSubject);
+			}));
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [subject]);
 

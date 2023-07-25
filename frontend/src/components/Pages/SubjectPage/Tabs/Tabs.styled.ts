@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Row, Col } from '../common.styled.ts';
+import { Row, Col } from '../../../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { readableColor, shade } from 'polished';
 export const TabSection = styled(Row)`
@@ -13,7 +13,7 @@ export const TabSection = styled(Row)`
     `)};
 `;
 
-export const TabNav = styled(Col).attrs({ as: 'nav' })`
+export const TabNavWrapper = styled(Col).attrs({ as: 'nav' })`
     width: 100%;
     flex-basis: 100%;
 
@@ -127,7 +127,7 @@ export const TabPanels = styled(Col).attrs({ as: 'div' })`
 `;
 
 // @ts-ignore
-export const TabContent = styled.div.attrs((props: EachTabProps) => ({
+export const TabContentWrapper = styled.div.attrs((props: EachTabProps) => ({
 	role: 'tabpanel',
 	id: `panel-${props.tabKey}`,
 	'aria-labelledby': `button-${props.tabKey}`,

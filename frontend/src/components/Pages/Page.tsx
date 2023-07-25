@@ -1,6 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
 import { PageWrapper } from './Page.styled';
-import Messages from '../Messages/Messages.tsx';
 
 interface PageProps {
 	color?: string;

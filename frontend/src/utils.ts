@@ -11,7 +11,7 @@ export function ucfirst(text: string) {
 
 export function object_key_first(obj: object) {
 	if(typeof obj !== 'object') {
-		return undefined;
+		return '';
 	}
 	return Object.keys(obj)[0];
 }
