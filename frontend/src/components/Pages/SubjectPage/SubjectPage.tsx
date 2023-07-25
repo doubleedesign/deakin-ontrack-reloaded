@@ -21,16 +21,14 @@ import ButtonGroup from '../../ButtonGroup/ButtonGroup.tsx';
 
 const SubjectPage: FC = () => {
 	const params = useParams();
-	const { currentSubjects, setErrors, setWarningMessages, setInfoMessages } = useContext(AppContext);
+	const { currentSubjects, setErrors, setWarningMessages, setInfoMessages, clearMessages } = useContext(AppContext);
 	const [subject, setSubject] = useState<Subject>();
 	const [viewMode, setViewMode] = useState<'status'|'cluster'|'date'|'grade'>('cluster');
 	const [targetGrade, setTargetGrade] = useState<SingleValue<{value: number, label: string}>>(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
 	const [color, setColor] = useState<string>('#333333');
 
 	useEffect(() => {
-		setWarningMessages([]);
-		setInfoMessages([]);
-		setErrors([]);
+		clearMessages();
 		if(params.projectId && currentSubjects) {
 			// @ts-ignore
 			const found = currentSubjects.find(subject => subject.projectId.toString() === params.projectId.toString());

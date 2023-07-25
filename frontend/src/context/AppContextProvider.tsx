@@ -29,6 +29,7 @@ export interface MyAppContext {
 	setInfoMessages: Dispatch<SetStateAction<string[][]>>;
 	warningMessages: string[][];
 	setWarningMessages: Dispatch<SetStateAction<string[][]>>;
+	clearMessages: () => void;
 	theme: 'light' | 'dark';
 	setTheme: Dispatch<SetStateAction<'light' | 'dark'>>;
 	drawerOpen: DrawerStatus;
@@ -75,6 +76,13 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 		setDsToken(null);
 		setCdToken(null);
 	}, [setCdToken, setDsToken, setOtToken, setUsername]);
+
+	// Function to clear all messages
+	function clearMessages() {
+		setErrors([]);
+		setInfoMessages([]);
+		setWarningMessages([]);
+	}
 
 
 	// Function to call auth function and update state based on its results
@@ -172,7 +180,8 @@ const AppContextProvider: FC<PropsWithChildren> = function({ children }) {
 			currentSubjects,
 			errors, setErrors,
 			warningMessages, setWarningMessages,
-			infoMessages, setInfoMessages
+			infoMessages, setInfoMessages,
+			clearMessages
 		}}>
 			{children}
 		</AppContext.Provider>);

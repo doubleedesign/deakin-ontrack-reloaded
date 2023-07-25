@@ -15,12 +15,12 @@ interface StatusGroupedAssignmentsProps {
 }
 
 const GradeGroupedAssignments: FC<StatusGroupedAssignmentsProps> = ({ projectId, targetGrade }) => {
-	const { setWarningMessages } = useContext(AppContext);
+	const { clearMessages } = useContext(AppContext);
 	const { assignmentGroups } = useGradeGroupedAssignments(projectId, targetGrade);
 	const [openTab, setOpenTab] = useState<string>('');
 
 	useEffect(() => {
-		setWarningMessages([]);
+		clearMessages();
 		if(assignmentGroups) {
 			// @ts-ignore
 			setOpenTab(object_key_first(assignmentGroups));

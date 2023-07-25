@@ -14,12 +14,12 @@ interface DateGroupedAssignmentsProps {
 }
 
 const DateGroupedAssignments: FC<DateGroupedAssignmentsProps> = ({ projectId, targetGrade }) => {
-	const { setWarningMessages } = useContext(AppContext);
+	const { clearMessages } = useContext(AppContext);
 	const { assignmentGroups } = useDateGroupedAssignments(projectId, targetGrade);
 	const [openTab, setOpenTab] = useState<string>();
 
 	useEffect(() => {
-		setWarningMessages([]);
+		clearMessages();
 		if(assignmentGroups) {
 			// @ts-ignore
 			setOpenTab(object_key_first(assignmentGroups));
