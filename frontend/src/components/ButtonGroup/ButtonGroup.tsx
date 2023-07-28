@@ -15,8 +15,15 @@ interface ButtonGroupProps {
 const ButtonGroup: FC<ButtonGroupProps> = ({ buttons }) => {
 	return (
 		<ButtonGroupWrapper>
-			{buttons.map((button: ButtonGroupItem) => {
-				return <StyledButton color={button.active ? 'logo' : 'light'} onClick={button.onClick}>{button.label}</StyledButton>;
+			{buttons.map((button: ButtonGroupItem, index: number) => {
+				return (
+					<StyledButton key={`button-${index}`}
+					              color={button.active ? 'logo' : 'light'}
+					              onClick={button.onClick}
+					>
+						{button.label}
+					</StyledButton>
+				);
 			})}
 		</ButtonGroupWrapper>
 	);

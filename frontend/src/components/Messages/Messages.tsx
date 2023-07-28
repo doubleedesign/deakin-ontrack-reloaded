@@ -34,9 +34,9 @@ const Messages: FC = () => {
 			</Row>
 			<Row>
 				<Col>
-					{warningMessages && warningMessages.map(message => {
+					{warningMessages && warningMessages.map((message, index) => {
 						return (
-							<Alert type="warning">
+							<Alert key={`warning-${index}`} type="warning">
 								<p><strong>{message[0]}</strong></p>
 								<p><span>{message?.slice(1).join()}</span></p>
 							</Alert>
