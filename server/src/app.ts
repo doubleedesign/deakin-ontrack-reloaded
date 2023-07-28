@@ -13,9 +13,11 @@ import * as http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import listEndpoints from 'express-list-endpoints';
+import { TypeChecker } from '@doubleedesign/type-checker';
 
 
 const app = express();
+app.use(cors());
 const httpServer = http.createServer(app);
 const graphQLServer = new ApolloServer({
 	typeDefs,
@@ -27,6 +29,13 @@ const graphQLServer = new ApolloServer({
 		}
 	},
 });
+
+app.post('/typecheck', cors<cors.CorsRequest>(), bodyParser.json({ limit: '50mb' }), (req, res) => {
+	const result = TypeChecker.getType(req.body);
+
+	res.json(result);
+});
+
 
 async function startServer() {
 	let otURL = 'https://ontrack.deakin.edu.au';
@@ -52,10 +61,6 @@ async function startServer() {
 			},
 		})
 	);
-
-	app.post('/typecheck', (req, res) => {
-		res.send('TODO');
-	});
 
 	await new Promise<void>((resolve) => httpServer.listen({ port: 5000 }, resolve));
 

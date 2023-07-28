@@ -3,20 +3,28 @@
 		"baseUrl": ".",
 		"outDir": "dist",
 		"composite": true,
-		"module": "ESNext",
 		"target": "ESNext",
-		"moduleResolution": "Node",
+		"module": "ESNext",
 		"lib": ["ESNext"],
+		"skipLibCheck": true,
+		"moduleResolution": "Node",
 		"esModuleInterop": true,
+		"allowImportingTsExtensions": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"declaration": true,
-		"isolatedModules": true,
-		"resolveJsonModule": true
 	},
 	"ts-node": {
 		"esm": true,
 		"experimentalSpecifierResolution": "node"
+	},
+	"typechecker": {
+		"types": [
+			"AssignmentGroup", "AssignmentCluster"
+		],
+		"locations": ["./src/types.ts"]
 	},
 	"include": ["**/*.ts", "**/*.js", "**/*.json"],
 	"exclude": [

@@ -11,7 +11,7 @@ import { GraphQLError } from 'graphql/error';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 import { useLazyQuery } from '@apollo/client';
 import { CURRENT_SUBJECTS_QUERY } from '../graphql/queries.ts';
-import { Subject } from '@server/types.ts';
+import { Subject } from '@server/types';
 import { lightTheme, darkTheme } from '../theme.ts';
 import { adjustHue, tint, complement, shade, darken } from 'polished';
 import { auth } from './auth.ts';

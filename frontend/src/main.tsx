@@ -16,7 +16,7 @@ import UITest from './components/Pages/UITest/UITest.tsx';
 library.add(fal, faS, faD, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation, faLoader, faComments, faWrench, faCommentsQuestion, faHourglassHalf);
 
 const client = new ApolloClient({
-	uri: 'http://localhost:5000',
+	uri: 'http://localhost:5000/graphql',
 	cache: new InMemoryCache(),
 	connectToDevTools: true
 });

@@ -6,7 +6,7 @@
 	"author": "Leesa Ward",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/doubleedesign/deakin-custom-ontrack-client"
+		"url": "https://github.com/doubleedesign/deakin-ontrack-reloaded"
 	},
 	"type": "module",
 	"scripts": {
@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@apollo/datasource-rest": "^6.0.1",
 		"@apollo/server": "^4.7.5",
+		"@doubleedesign/type-checker": "^0.1.1",
 		"@types/lodash": "^4.14.195",
 		"body-parser": "^1.20.2",
 		"chalk": "^5.3.0",

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
-import { PersistentCacheStatus, Assignment, Subject } from '@server/types.ts';
+import { PersistentCacheStatus, Assignment, Subject } from '@server/types';
 
 export const PERSISTENT_CACHE_STATUS_QUERY: TypedDocumentNode<{persistentCacheStatus: PersistentCacheStatus}> = gql`
     query PersistentCacheStatus {

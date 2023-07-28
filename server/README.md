@@ -162,7 +162,7 @@ Note that you would also need to  fill in your `username` and `Auth-Token` in th
 // frontend/src/graphql/queries.ts
 import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
-import { Assignment } from '@server/types.ts';
+import { Assignment } from '@server/types';
 
 export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsForSubject: Assignment[]}> = gql`
     query AssignmentsForSubjectQuery($projectId: Int, $unitId: Int) {

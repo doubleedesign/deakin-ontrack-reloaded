@@ -2,11 +2,10 @@ import { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
-import { Assignment, Subject } from '@server/types.ts';
+import { Assignment, Subject } from '@server/types';
 import { add, closestTo, eachWeekOfInterval, isSameDay, sub } from 'date-fns';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
-import { AssignmentCluster } from '../../../../types.ts';
-
+import { AssignmentCluster, AssignmentGroup } from '../../../../types.ts';
 
 
 function clusterGroups(assignments: Assignment[], subject: Subject) {
@@ -48,7 +47,7 @@ export function useClusteredAssignments(subject: Subject, targetGrade: number) {
 	const [getAssignments] = useLazyQuery(ASSIGNMENTS_FOR_SUBJECT_QUERY);
 	const [isLoading, setLoading] = useState<boolean>(true);
 	const [allAssignments, setAllAssignments] = useState<Assignment[]>();
-	const [assignmentGroups, setAssignmentGroups] = useState<any>();
+	const [assignmentGroups, setAssignmentGroups] = useState<AssignmentCluster[] | AssignmentGroup>();
 	const { setWarningMessages } = useContext(AppContext);
 
 	useEffect(() => {

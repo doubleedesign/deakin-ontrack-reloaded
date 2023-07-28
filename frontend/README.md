@@ -16,7 +16,7 @@ Queries can be added and used like the below example. Note that this assumes a r
 // src/frontend/graphql/queries.ts
 import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
-import { Assignment, Subject } from '@server/types.ts';
+import { Assignment, Subject } from '@server/types';
 
 export const CURRENT_SUBJECTS_QUERY: TypedDocumentNode<{currentSubjects: Subject[]}> = gql`
     query CurrentSubjectsQuery {

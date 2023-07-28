@@ -1,27 +1,46 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { TabContentWrapper, TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection } from './Tabs.styled.ts';
-import { getColorForStatus, object_key_first, ucfirst } from '../../../../utils.ts';
+import { getColorForStatus, object_key_first, slugify, ucfirst } from '../../../../utils.ts';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { targetGrades } from '../../../../constants.ts';
 import { Row } from '../../../common.styled.ts';
-import { Assignment, Subject } from '@server/types.ts';
+import { Assignment, Subject } from '@server/types';
 import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { AssignmentCluster, AssignmentGroup, SubjectViewMode } from '../../../../types.ts';
 
 interface TabProps {
-	items: AssignmentGroup | AssignmentCluster | undefined;
+	items: AssignmentGroup | AssignmentCluster[] | undefined;
 	viewMode: SubjectViewMode;
 }
 
 const Tabs: FC<TabProps> = ({ items, viewMode }) => {
-	const { clearMessages } = useContext(AppContext);
 	const [openTab, setOpenTab] = useState<string>('');
 
 	useEffect(() => {
-		clearMessages();
-		setOpenTab(items ? object_key_first(items) : '');
-	}, [clearMessages, items]);
+		if(items) {
+			setOpenTab(items ? object_key_first(items) : '');
+		}
+	}, [items]);
+
+	useEffect(() => {
+		fetch('http://localhost:5000/typecheck', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(Array.isArray(items) ? items[0] : items)
+		})
+			.then(response => {
+				return response.text();
+			})
+			.then(result => {
+				console.log(result);
+			})
+			.catch(error => {
+				console.log('error', error);
+			});
+	}, [items]);
 
 	function getTabLabel(key: string) {
 		if (viewMode === 'grade') {
@@ -30,27 +49,52 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 		else if(viewMode === 'cluster') {
 			return '// TODO';
 		}
+		else if(viewMode === 'date') {
+			return key; // TODO: Nicely formatted dates
+		}
 		else {
 			return ucfirst(key);
 		}
 	}
 
+	/*
 	return (
 		<TabSection>
 			<TabNavList>
-				{items && Object.keys(items).map(key => {
-					return (
-						<TabNavItem key={key}>
-							<TabNavButton tabKey={key}
+				{viewMode === 'cluster' ?
+					items?.map((cluster: AssignmentCluster) => {
+						return (
+							<TabNavItem key={slugify(cluster.label)}>
+								<TabNavButton tabKey={slugify(cluster.label)}
+								              color={getColorForStatus(cluster.label)}
+								              aria-selected={openTab === slugify(cluster.label)}
+								              onClick={() => setOpenTab(slugify(cluster.label))}>
+									{cluster.label}
+									<span>
+										Ends {cluster.endDate.toLocaleDateString('en-AU', {
+											day: 'numeric',
+											weekday: 'long',
+											month: 'long'
+										})}
+									</span>
+								</TabNavButton>
+							</TabNavItem>
+						);
+					})
+					:
+					items && Object.keys(items).map(key => {
+						return (
+							<TabNavItem key={key}>
+								<TabNavButton tabKey={key}
 							              color={getColorForStatus(key)}
 							              aria-selected={openTab === key}
 							              onClick={() => setOpenTab(key)}>
-								<IconForStatus status={key}/>
-								{getTabLabel(key)}
-							</TabNavButton>
-						</TabNavItem>
-					);
-				})}
+									<IconForStatus status={key}/>
+									{getTabLabel(key)}
+								</TabNavButton>
+							</TabNavItem>
+						);
+					})}
 			</TabNavList>
 			<TabPanels>
 				{items && Object.entries(items).map(([status, assignments]) => {
@@ -74,7 +118,9 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 				})}
 			</TabPanels>
 		</TabSection>
-	);
+	); */
+
+	return <></>;
 };
 
 export default Tabs;

@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import TabMenu from './components/Header/TabMenu/TabMenu.tsx';
 import { MenuItem } from './types.ts';
 import { Outlet } from 'react-router-dom';
-import { Subject } from '@server/types.ts';
+import { Subject } from '@server/types';
 import Footer from './components/Footer/Footer.tsx';
 import Drawer from './components/Drawer/Drawer.tsx';
 

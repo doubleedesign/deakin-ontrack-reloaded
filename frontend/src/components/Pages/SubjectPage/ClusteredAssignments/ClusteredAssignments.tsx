@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection, TabNavWrapper, TabContentWrapper } from '../Tabs/Tabs.styled.ts';
 import { getColorForStatus, slugify } from '../../../../utils.ts';
 import { Row } from '../../../common.styled.ts';
-import { Assignment, Subject } from '@server/types.ts';
+import { Assignment, Subject } from '@server/types';
 import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { useClusteredAssignments } from '../sorting/useClusteredAssignments.ts';
 import { AssignmentCluster } from '../../../../types.ts';

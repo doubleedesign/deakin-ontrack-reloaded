@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql/error';
-import { Assignment } from '@server/types.ts';
+import { Assignment } from '@server/types';
 
 export type SystemName = 'OnTrack' | 'DeakinSync' | 'CloudDeakin';
 

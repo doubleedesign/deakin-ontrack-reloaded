@@ -2,7 +2,7 @@ import React, { FC, useContext, useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from '../../../context/AppContextProvider.tsx';
 import { GraphQLError } from 'graphql/error';
-import { Subject } from '@server/types.ts';
+import { Subject } from '@server/types';
 import Page from '../Page.tsx';
 import { SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow } from './SubjectPage.styled.ts';
 import { Col, ScreenReaderText } from '../../common.styled.ts';

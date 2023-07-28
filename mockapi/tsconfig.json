@@ -13,7 +13,7 @@
 		"resolveJsonModule": true,
 		"incremental": true,
 		"paths": {
-			"@server/types.ts": ["../server/src/types.ts"],
+			"@server/types": ["../server/src/types.ts"],
 			"@server/ontrack/types.ts": ["../server/src/datasources/OnTrack/types.ts"],
 		},
 	},

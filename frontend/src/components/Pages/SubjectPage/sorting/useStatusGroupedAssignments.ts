@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
-import { Assignment } from '@server/types.ts';
+import { Assignment } from '@server/types';
 
 export function useStatusGroupedAssignments(projectId: number, targetGrade: number) {
 	const [assignmentGroups, setAssignmentGroups] = useState<any>();

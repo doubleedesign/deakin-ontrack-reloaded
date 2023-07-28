@@ -4,9 +4,10 @@ import { useStatusGroupedAssignments } from './sorting/useStatusGroupedAssignmen
 import { useDateGroupedAssignments } from './sorting/useDateGroupedAssignments.ts';
 import { useGradeGroupedAssignments } from './sorting/useGradeGroupedAssignments.ts';
 import Tabs from './Tabs/Tabs.tsx';
-import { AssignmentGroup, SubjectViewMode } from '../../../types.ts';
+import { AssignmentCluster, AssignmentGroup, SubjectViewMode } from '../../../types.ts';
 import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
-import { Subject } from '@server/types.ts';
+import { Subject } from '@server/types';
+import { useClusteredAssignments } from './sorting/useClusteredAssignments.ts';
 
 interface SubjectContentProps {
 	projectId: number;
@@ -17,15 +18,22 @@ interface SubjectContentProps {
 
 const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId, viewMode, subject, targetGrade, children }) => {
 	const { clearMessages } = useContext(AppContext);
+	const { assignmentGroups: byCluster } = useClusteredAssignments(subject, targetGrade);
 	const { assignmentGroups: byStatus } = useStatusGroupedAssignments(projectId, targetGrade);
 	const { assignmentGroups: byDate } = useDateGroupedAssignments(projectId, targetGrade);
 	const { assignmentGroups: byGrade } = useGradeGroupedAssignments(projectId, targetGrade);
-	const [currentGroups, setCurrentGroups] = useState<AssignmentGroup>();
+	const [currentGroups, setCurrentGroups] = useState<AssignmentGroup | AssignmentCluster[]>();
 
 	useEffect(() => {
 		clearMessages();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		if(viewMode === 'cluster') {
+			setCurrentGroups(byCluster);
+		}
 		if(viewMode === 'status') {
-			console.log(byStatus);
 			setCurrentGroups(byStatus);
 		}
 		if(viewMode === 'date') {
@@ -34,15 +42,10 @@ const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId,
 		if(viewMode === 'grade') {
 			setCurrentGroups(byGrade);
 		}
-	}, [viewMode]);
+	}, [byCluster, byDate, byGrade, byStatus, viewMode]);
 
-	return (
-		<>
-			{viewMode === 'cluster' ?
-				<ClusteredAssignments subject={subject} targetGrade={targetGrade}/>
-				: <Tabs items={currentGroups} viewMode={viewMode} />}
-		</>
-	);
+
+	return <Tabs items={currentGroups} viewMode={viewMode} />;
 };
 
 export default SubjectContent;
