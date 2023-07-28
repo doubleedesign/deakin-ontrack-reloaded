@@ -1,12 +1,12 @@
 {
-	"name": "deakin-custom-ontrack-client",
+	"name": "deakin-ontrack-reloaded",
 	"private": true,
 	"version": "0.0.1",
 	"description": "Personal custom app to access and present data about my class progress in Deakin's OnTrack system.",
 	"author": "Leesa Ward",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/doubleedesign/deakin-custom-ontrack-client"
+		"url": "https://github.com/doubleedesign/deakin-ontrack-reloaded"
 	},
 	"workspaces": ["./server", "./frontend", "./mockapi"],
 	"dependencies": {
