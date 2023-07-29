@@ -4,7 +4,7 @@ export const typeDefs = gql`
 	type Query {
 		persistentCacheStatus: PersistentCacheStatus
 		currentSubjects: [Subject]
-		allAssignmentsForSubject(projectId: Int, unitId: Int): [Assignment]
+		allAssignmentsForSubject(projectId: Int): [Assignment]
 	}
 	
 	type PersistentCacheStatus {
