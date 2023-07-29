@@ -5,9 +5,9 @@ import { AppContext } from '../../../../context/AppContextProvider.tsx';
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { targetGrades } from '../../../../constants.ts';
 import { Row } from '../../../common.styled.ts';
-import { Assignment, Subject } from '@server/types';
+import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
-import { AssignmentCluster, AssignmentGroup, SubjectViewMode } from '../../../../types.ts';
+import { SubjectViewMode } from '../../../../types.ts';
 
 interface TabProps {
 	items: AssignmentGroup | AssignmentCluster[] | undefined;
@@ -29,7 +29,8 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(Array.isArray(items) ? items[0] : items)
+			body: JSON.stringify(Array.isArray(items) ? items[0] : items),
+			redirect: 'manual'
 		})
 			.then(response => {
 				return response.text();

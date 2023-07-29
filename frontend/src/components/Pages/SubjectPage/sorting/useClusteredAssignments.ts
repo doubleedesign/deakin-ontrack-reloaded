@@ -2,10 +2,9 @@ import { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
-import { Assignment, Subject } from '@server/types';
+import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import { add, closestTo, eachWeekOfInterval, isSameDay, sub } from 'date-fns';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
-import { AssignmentCluster, AssignmentGroup } from '../../../../types.ts';
 
 
 function clusterGroups(assignments: Assignment[], subject: Subject) {

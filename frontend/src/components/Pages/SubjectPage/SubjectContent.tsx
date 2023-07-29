@@ -4,9 +4,8 @@ import { useStatusGroupedAssignments } from './sorting/useStatusGroupedAssignmen
 import { useDateGroupedAssignments } from './sorting/useDateGroupedAssignments.ts';
 import { useGradeGroupedAssignments } from './sorting/useGradeGroupedAssignments.ts';
 import Tabs from './Tabs/Tabs.tsx';
-import { AssignmentCluster, AssignmentGroup, SubjectViewMode } from '../../../types.ts';
-import ClusteredAssignments from './ClusteredAssignments/ClusteredAssignments.tsx';
-import { Subject } from '@server/types';
+import { SubjectViewMode } from '../../../types.ts';
+import { AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import { useClusteredAssignments } from './sorting/useClusteredAssignments.ts';
 
 interface SubjectContentProps {

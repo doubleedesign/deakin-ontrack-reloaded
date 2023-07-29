@@ -22,7 +22,7 @@
 	},
 	"typechecker": {
 		"types": [
-			"AssignmentGroup", "AssignmentCluster"
+			"AssignmentCluster"
 		],
 		"locations": ["./src/types.ts"]
 	},

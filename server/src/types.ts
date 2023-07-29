@@ -54,3 +54,13 @@ export type Assignment = {
 	awardedPoints: number;
 }
 
+export type AssignmentGroup = {
+	[key: string]: Assignment[]
+}
+
+export type AssignmentCluster = {
+	label: string;
+	endDate: Date;
+	assignments: Assignment[];
+}
+
