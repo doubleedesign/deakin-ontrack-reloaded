@@ -30,5 +30,5 @@ export function useStatusGroupedAssignments(projectId: number, targetGrade: numb
 		}
 	}, [data, loading, targetGrade]);
 
-	return { assignmentGroups };
+	return { assignmentGroups, loading };
 }

@@ -10,10 +10,10 @@ import Dashboard from './components/Pages/Dashboard/Dashboard.tsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation, faWrench, faHourglassHalf } from '@fortawesome/pro-solid-svg-icons';
 import { fal, faLightbulbOn, faXmark } from '@fortawesome/pro-light-svg-icons';
-import { faD, faLoader, faComments, faCommentsQuestion } from '@fortawesome/pro-duotone-svg-icons';
+import { faD, faLoader, faComments, faCommentsQuestion, faGear } from '@fortawesome/pro-duotone-svg-icons';
 import ErrorPage from './components/Pages/ErrorPage/ErrorPage.tsx';
 import UITest from './components/Pages/UITest/UITest.tsx';
-library.add(fal, faS, faD, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation, faLoader, faComments, faWrench, faCommentsQuestion, faHourglassHalf);
+library.add(fal, faS, faD, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation, faLoader, faComments, faWrench, faCommentsQuestion, faHourglassHalf, faGear);
 
 const client = new ApolloClient({
 	uri: 'http://localhost:5000/graphql',

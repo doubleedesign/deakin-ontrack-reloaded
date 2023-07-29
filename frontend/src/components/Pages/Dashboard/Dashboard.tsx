@@ -5,11 +5,17 @@ import Page from '../Page.tsx';
 import LoginForm from '../../Form/LoginForm/LoginForm.tsx';
 import { darkTheme, lightTheme } from '../../../theme.ts';
 import Messages from '../../Messages/Messages.tsx';
+import Loading from '../../Loading/Loading.tsx';
 
 const Dashboard: FC = () => {
-	const { currentSubjects, authenticated, theme, drawerOpen } = useContext(AppContext);
+	const { clearMessages, currentSubjects, authenticated, theme, drawerOpen } = useContext(AppContext);
 	const themeObject = theme === 'light' ? lightTheme : darkTheme;
 	const [showLogin, setShowLogin] = useState<boolean>(false);
+
+	useEffect(() => {
+		clearMessages();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		if(authenticated?.isAuthenticated) {
@@ -27,6 +33,7 @@ const Dashboard: FC = () => {
 			<Messages/>
 			<Row>
 				{ (showLogin && !drawerOpen) && <LoginForm /> }
+				<Loading/>
 			</Row>
 		</Page>
 	);

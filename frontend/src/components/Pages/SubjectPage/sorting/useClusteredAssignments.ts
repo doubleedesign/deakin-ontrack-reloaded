@@ -89,5 +89,5 @@ export function useClusteredAssignments(subject: Subject, targetGrade: number) {
 	}, [allAssignments, setWarningMessages, subject, targetGrade]);
 
 
-	return { assignmentGroups };
+	return { assignmentGroups, loading: isLoading };
 }

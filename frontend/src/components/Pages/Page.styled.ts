@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
+import { Row } from '../common.styled.ts';
 
 export interface PageWrapperProps {
 	color: string;
@@ -7,6 +8,9 @@ export interface PageWrapperProps {
 
 export const PageWrapper = styled.section<PageWrapperProps>`
     width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
     flex-grow: 1;
     background: ${({ theme }): string => theme.colors.contentBackground};
 	border-top: ${props => props.color ? `1rem solid ${props.color}` : ''};
@@ -21,4 +25,8 @@ export const PageWrapper = styled.section<PageWrapperProps>`
         color: ${props => props.color};
         font-weight: 700;
     }
+	
+	> ${Row} {
+		flex-grow: 1;
+	}
 `;

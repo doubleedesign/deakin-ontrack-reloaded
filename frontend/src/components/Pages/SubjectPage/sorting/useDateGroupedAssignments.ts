@@ -32,5 +32,5 @@ export function useDateGroupedAssignments(projectId: number, targetGrade: number
 		}
 	}, [data, loading, targetGrade]);
 
-	return { assignmentGroups };
+	return { assignmentGroups, loading };
 }

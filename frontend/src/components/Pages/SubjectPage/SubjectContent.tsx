@@ -7,6 +7,7 @@ import Tabs from './Tabs/Tabs.tsx';
 import { SubjectViewMode } from '../../../types.ts';
 import { AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import { useClusteredAssignments } from './sorting/useClusteredAssignments.ts';
+import Loading from '../../Loading/Loading.tsx';
 
 interface SubjectContentProps {
 	projectId: number;
@@ -17,34 +18,50 @@ interface SubjectContentProps {
 
 const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId, viewMode, subject, targetGrade, children }) => {
 	const { clearMessages } = useContext(AppContext);
-	const { assignmentGroups: byCluster } = useClusteredAssignments(subject, targetGrade);
-	const { assignmentGroups: byStatus } = useStatusGroupedAssignments(projectId, targetGrade);
-	const { assignmentGroups: byDate } = useDateGroupedAssignments(projectId, targetGrade);
-	const { assignmentGroups: byGrade } = useGradeGroupedAssignments(projectId, targetGrade);
+	const { assignmentGroups: byCluster, loading: clusterLoading } = useClusteredAssignments(subject, targetGrade);
+	const { assignmentGroups: byStatus, loading: statusLoading } = useStatusGroupedAssignments(projectId, targetGrade);
+	const { assignmentGroups: byDate, loading: dateLoading } = useDateGroupedAssignments(projectId, targetGrade);
+	const { assignmentGroups: byGrade, loading: gradeLoading } = useGradeGroupedAssignments(projectId, targetGrade);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [currentGroups, setCurrentGroups] = useState<AssignmentGroup | AssignmentCluster[]>();
 
 	useEffect(() => {
 		clearMessages();
+		setLoading(true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
-		if(viewMode === 'cluster') {
+		if(viewMode === 'cluster' && byCluster) {
 			setCurrentGroups(byCluster);
+			setLoading(false);
 		}
-		if(viewMode === 'status') {
+		if(viewMode === 'status' && byStatus) {
 			setCurrentGroups(byStatus);
+			setLoading(false);
 		}
-		if(viewMode === 'date') {
+		if(viewMode === 'date' && byDate) {
 			setCurrentGroups(byDate);
+			setLoading(false);
 		}
-		if(viewMode === 'grade') {
+		if(viewMode === 'grade' && byGrade) {
 			setCurrentGroups(byGrade);
+			setLoading(false);
 		}
 	}, [byCluster, byDate, byGrade, byStatus, viewMode]);
 
+	useEffect(() => {
+		if(clusterLoading || statusLoading || dateLoading || gradeLoading) {
+			setLoading(true);
+		}
+	}, [clusterLoading, statusLoading, dateLoading, gradeLoading]);
 
-	return <Tabs items={currentGroups} viewMode={viewMode} />;
+
+	return (
+		<>
+			{loading ? <Loading/> : <Tabs items={currentGroups} viewMode={viewMode} />}
+		</>
+	);
 };
 
 export default SubjectContent;

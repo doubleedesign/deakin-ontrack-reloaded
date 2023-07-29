@@ -9,11 +9,9 @@ interface AlertProps {
 }
 
 const Alert: FC<PropsWithChildren<AlertProps>> = ({ children, type, size }) => (
-	<Container>
-		<AlertWrapper data-component-id="Alert" type={type} size={size}>
-			{children}
-		</AlertWrapper>
-	</Container>
+	<AlertWrapper data-component-id="Alert" type={type} size={size}>
+		{children}
+	</AlertWrapper>
 );
 
 export default Alert;
