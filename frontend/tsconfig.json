@@ -1,7 +1,5 @@
 {
 	"compilerOptions": {
-		"baseUrl": ".",
-		"composite": true,
 		"target": "ESNext",
 		"lib": [
 			"ESNext",
@@ -29,6 +27,6 @@
 		"noFallthroughCasesInSwitch": true
 	},
 	"include": [
-		"./"
+		"src"
 	]
 }
