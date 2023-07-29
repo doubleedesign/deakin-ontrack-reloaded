@@ -84,7 +84,7 @@ export class Ontrack extends RESTDataSource {
 			const result = await this.get(`/api/projects/${id}`, this.options);
 			const file = fs.readFileSync('./src/cache/project-details.json');
 			const cached = JSON.parse(file.toString());
-			if(!cached) {
+			if(!cached && result) {
 				const updated = {
 					[id]: result
 				};
@@ -123,11 +123,13 @@ export class Ontrack extends RESTDataSource {
 	public async getUnitDetails(id: number): Promise<UnitDetail> {
 		try {
 			const result = await this.get(`/api/units/${id}`, this.options);
-
 			const file = fs.readFileSync('./src/cache/unit-details.json');
 			const cached = JSON.parse(file.toString());
-			cached[id] = result;
-			fs.writeFileSync('./src/cache/unit-details.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+
+			if(cached && result) {
+				cached[id] = result;
+				fs.writeFileSync('./src/cache/unit-details.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+			}
 
 			return result;
 		}
@@ -142,7 +144,7 @@ export class Ontrack extends RESTDataSource {
 				throw new GraphQLError('Attempted to load from a cached file, but the requested data was not in it.', {
 					extensions: {
 						code: 404,
-						stacktrace: './server/src/datasources/CloudDeakin/ontrack.ts'
+						stacktrace: './server/src/datasources/OnTrack/ontrack.ts'
 					}
 				});
 			}

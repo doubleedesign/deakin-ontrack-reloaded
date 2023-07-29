@@ -21,8 +21,10 @@ export class CloudDeakin extends RESTDataSource {
 			const result = await this.get(`/d2l/api/le/1.45/${id}/dropbox/folders/`, this.options);
 			const file = fs.readFileSync('./src/cache/cloud-assignments.json');
 			const cached = JSON.parse(file.toString());
-			cached[id] = result;
-			fs.writeFileSync('./src/cache/cloud-assignments.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+			if(cached && result) {
+				cached[id] = result;
+				fs.writeFileSync('./src/cache/cloud-assignments.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+			}
 
 			return result;
 		}
