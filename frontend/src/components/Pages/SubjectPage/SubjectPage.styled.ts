@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Col, Row } from '../../common.styled.ts';
-import { meetsContrastGuidelines, shade, readableColor, tint, transparentize } from 'polished';
+import { meetsContrastGuidelines, shade, readableColor, tint, transparentize, darken } from 'polished';
 import { isHexColor } from '../../../utils.ts';
 
 export const SubjectHeaderRow = styled(Row).attrs({ as: 'header' })<{color: string}>`
@@ -37,19 +37,26 @@ export const SubjectHeaderRow = styled(Row).attrs({ as: 'header' })<{color: stri
 	}
 `;
 
+export const SubjectViewToggles = styled.div`
+	margin: ${props => props.theme.spacing.lg} 0;
+	
+	> div + div {
+		margin-top: ${props => props.theme.spacing.sm};
+	}
+`;
+
 export const SubjectViewToggleRow = styled(Row).attrs({ 'data-component-id': 'SubjectViewToggleRow' })`
 	justify-content: flex-end;
 	align-items: center;
 `;
 
 export const SubjectViewToggle = styled(Col).attrs({ 'data-component-id': 'SubjectViewToggle' })<{color:string, current?:number}>`
-	margin-top: ${({ theme }): string => theme.spacing.lg};
     display: flex;
     justify-content: flex-end;
     align-items: center;
 	flex-grow: 0;
 
-    p {
+    p, label {
         font-size: 0.875rem;
         margin: 0;
         margin-right: ${({ theme }): string => theme.spacing.sm};
@@ -124,4 +131,47 @@ export const SubjectViewToggle = styled(Col).attrs({ 'data-component-id': 'Subje
 			}
 		`};
 	}
+`;
+
+export const CheckboxLabel = styled.label`
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	
+	svg {
+		font-size: 2rem;
+		margin-left: ${props => props.theme.spacing.sm};
+        clip-path: inset(0.25rem 0 0.25rem 0);
+        background: ${props => darken(0.1, props.theme.colors.light)};
+		border-radius: 100%;
+
+		&.fa-toggle-large-on {
+			
+			path.fa-secondary {
+				fill: white;
+			}
+
+            path.fa-secondary {
+                fill: ${props => props.theme.colors.success};
+	            opacity: 1;
+            }
+        }
+		
+		&.fa-toggle-large-off {
+
+            path.fa-secondary {
+                fill: white;
+            }
+
+            path.fa-secondary {
+                fill: ${props => darken(0.1, props.theme.colors.light)};
+                opacity: 1;
+            }
+        }
+	}
+	
+	& + input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
 `;

@@ -16,6 +16,10 @@ export async function getTypes(obj: object | undefined) {
 }
 
 export function slugify(text: string) {
+	if(!text) {
+		return '';
+	}
+
 	return text.replace(/\s/g, '-').toLowerCase();
 }
 
@@ -36,16 +40,21 @@ export function getColorForStatus(status: string) {
 			return 'info';
 		case 'not_started':
 			return 'info';
+		case 'tomorrow':
+		case 'this_week':
 		case 'discuss':
 		case 'fix_and_resubmit':
 			return 'warning';
 		case 'need_help':
 		case 'ready_for_feedback':
 			return 'info';
+		case 'overdue':
+		case 'today':
 		case 'time_exceeded':
 		case 'feedback_exceeded':
 			return 'error';
 		case 'complete':
+		case 'done':
 			return 'success';
 		default:
 			return 'bodyText';

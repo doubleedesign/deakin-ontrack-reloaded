@@ -3,7 +3,8 @@ import { Row, Col } from '../../../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { readableColor, shade } from 'polished';
 import { StyledButton } from '../../../Button/Button.styled.ts';
-import ButtonGroup from '../../../ButtonGroup/ButtonGroup.tsx';
+import { ButtonGroupWrapper } from '../../../ButtonGroup/ButtonGroup.styled.ts';
+
 export const TabSection = styled(Row)`
 	display: flex;
 	flex-wrap: wrap;
@@ -28,7 +29,19 @@ export const TabNavWrapper = styled(Col).attrs({ as: 'nav' })`
     `)};
 `;
 
-export const TabNavList = styled(ButtonGroup).attrs({ role: 'tablist', as: 'ul' })`
+export const TabNavList = styled(ButtonGroupWrapper).attrs({ role: 'tablist', as: 'ul' })`
+	
+	li {
+		padding-left: 2px;
+		padding-right: 2px;
+
+        button {
+            margin-left: 0;
+            margin-right: 0;
+	        padding-left: ${props => props.theme.spacing.sm};
+	        padding-right: ${props => props.theme.spacing.sm};
+        }
+	}
 `;
 
 interface EachTabProps {

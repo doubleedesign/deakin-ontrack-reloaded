@@ -14,14 +14,15 @@ interface SubjectContentProps {
 	viewMode: SubjectViewMode;
 	targetGrade: number;
 	subject: Subject;
+	showComplete: boolean; // only used when displaying by target grade
 }
 
-const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId, viewMode, subject, targetGrade, children }) => {
+const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId, viewMode, subject, targetGrade, showComplete }) => {
 	const { clearMessages } = useContext(AppContext);
 	const { assignmentGroups: byCluster, loading: clusterLoading } = useClusteredAssignments(subject, targetGrade);
 	const { assignmentGroups: byStatus, loading: statusLoading } = useStatusGroupedAssignments(projectId, targetGrade);
 	const { assignmentGroups: byDate, loading: dateLoading } = useDateGroupedAssignments(projectId, targetGrade);
-	const { assignmentGroups: byGrade, loading: gradeLoading } = useGradeGroupedAssignments(projectId, targetGrade);
+	const { assignmentGroups: byGrade, loading: gradeLoading } = useGradeGroupedAssignments(projectId, targetGrade, showComplete);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [currentGroups, setCurrentGroups] = useState<AssignmentGroup | AssignmentCluster[]>();
 

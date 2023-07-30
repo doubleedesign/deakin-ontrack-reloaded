@@ -4,7 +4,7 @@ import { AppContext } from '../../../context/AppContextProvider.tsx';
 import { GraphQLError } from 'graphql/error';
 import { Subject } from '@server/types';
 import Page from '../Page.tsx';
-import { SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow } from './SubjectPage.styled.ts';
+import { CheckboxLabel, SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow, SubjectViewToggles } from './SubjectPage.styled.ts';
 import { Col, ScreenReaderText } from '../../common.styled.ts';
 import { LinkStyledAsButton } from '../../Button/Button.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,6 +22,7 @@ const SubjectPage: FC = () => {
 	const [viewMode, setViewMode] = useState<SubjectViewMode>('date');
 	const [targetGrade, setTargetGrade] = useState<SingleValue<{value: number, label: string}>>(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
 	const [color, setColor] = useState<string>('#333333');
+	const [showComplete, setShowComplete] = useState<boolean>(true); // only for grade mode
 
 
 	useEffect(() => {
@@ -54,6 +55,12 @@ const SubjectPage: FC = () => {
 		}
 	}, [subject]);
 
+	useEffect(() => {
+		if(viewMode !== 'grade') {
+			setShowComplete(false);
+		}
+	}, [viewMode]);
+
 
 	return (
 		<Page color={subject?.color}>
@@ -78,33 +85,49 @@ const SubjectPage: FC = () => {
 				</Col>
 			</SubjectHeaderRow>
 
-			<SubjectViewToggleRow>
-				<SubjectViewToggle color={color} current={targetGrade?.value}>
-					<p>Target grade:</p>
-					<Select
-						value={targetGrade}
-						onChange={(selected) => setTargetGrade(selected)}
-						options={targetGrades}
-						className="selectBox"
-						unstyled
-					/>
-				</SubjectViewToggle>
-				<SubjectViewToggle color={color}>
-					<p>View by:</p>
-					<ButtonGroup buttons={[
-						{ label: 'Cluster', onClick: () => setViewMode('cluster'), active: viewMode === 'cluster' },
-						{ label: 'Status', onClick: () => setViewMode('status'), active: viewMode === 'status' },
-						{ label: 'Due date', onClick: () => setViewMode('date'), active: viewMode === 'date' },
-						{ label: 'Target grade', onClick: () => setViewMode('grade'), active: viewMode === 'grade' },
-					]}/>
-				</SubjectViewToggle>
-			</SubjectViewToggleRow>
+			<SubjectViewToggles>
+				<SubjectViewToggleRow>
+					<SubjectViewToggle color={color} current={targetGrade?.value}>
+						<p>Target grade:</p>
+						<Select
+							value={targetGrade}
+							onChange={(selected) => setTargetGrade(selected)}
+							options={targetGrades}
+							className="selectBox"
+							unstyled
+						/>
+					</SubjectViewToggle>
+					<SubjectViewToggle color={color}>
+						<p>View by:</p>
+						<ButtonGroup buttons={[
+							{ label: 'Cluster', onClick: () => setViewMode('cluster'), active: viewMode === 'cluster' },
+							{ label: 'Status', onClick: () => setViewMode('status'), active: viewMode === 'status' },
+							{ label: 'Due date', onClick: () => setViewMode('date'), active: viewMode === 'date' },
+							{ label: 'Target grade', onClick: () => setViewMode('grade'), active: viewMode === 'grade' },
+						]}/>
+					</SubjectViewToggle>
+				</SubjectViewToggleRow>
+				{viewMode === 'grade' &&
+				<SubjectViewToggleRow>
+					<SubjectViewToggle color="info">
+						<CheckboxLabel htmlFor="show_complete">
+							Show completed
+							{showComplete ? <FontAwesomeIcon icon={['fad', 'toggle-large-on']}/> : <FontAwesomeIcon icon={['fad', 'toggle-large-off']}/>}
+						</CheckboxLabel>
+						<input type="checkbox" id="show_complete" name="show_complete" checked={showComplete} onChange={(event) => setShowComplete(event.target.checked)}/>
+					</SubjectViewToggle>
+				</SubjectViewToggleRow>
+				}
+			</SubjectViewToggles>
 
 			<Messages/>
 
 			<SubjectContent projectId={Number(params.projectId)}
 			                subject={subject as Subject}
-			                viewMode={viewMode} targetGrade={targetGrade?.value || 2}/>
+			                viewMode={viewMode}
+			                targetGrade={targetGrade?.value || 2}
+			                showComplete={showComplete}
+			/>
 
 		</Page>
 	);

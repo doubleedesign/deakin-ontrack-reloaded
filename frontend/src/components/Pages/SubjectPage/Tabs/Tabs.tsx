@@ -8,6 +8,7 @@ import { Row } from '../../../common.styled.ts';
 import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { SubjectViewMode } from '../../../../types.ts';
+import { isValid } from 'date-fns';
 
 interface TabProps {
 	items: AssignmentGroup | AssignmentCluster[] | undefined;
@@ -46,10 +47,19 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 			return targetGrades.find(grade => grade.value.toString() === key)?.label;
 		}
 		else if(viewMode === 'date') {
-			return key; // TODO: Nicely formatted dates
+			const date = new Date(Date.parse(key));
+			if(!isValid(date)) {
+				return ucfirst(key.replace('_', ' '));
+			}
+
+			return date.toLocaleDateString('en-AU', {
+				day: 'numeric',
+				weekday: 'short',
+				month: 'short'
+			});
 		}
 		else {
-			return ucfirst(key);
+			return ucfirst(key.replace('_', ' '));
 		}
 	}
 
@@ -76,12 +86,17 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 						);
 					})}
 					{(items && type === 'group') && Object.keys(items).map(key => {
+						// @ts-ignore
+						if(items[key].length < 1) {
+							return null;
+						}
 						return (
 							<TabNavItem key={key}>
-								<TabNavButton tabKey={key}
+								<TabNavButton tabKey={viewMode === 'grade' ? slugify(targetGrades?.find(grade => grade?.value === parseInt((key)))?.label as string) : key}
 						                  color={openTab == key ? getColorForStatus(key) : 'light'}
 							              aria-selected={openTab === key}
-							              onClick={() => setOpenTab(key)}>
+							              onClick={() => setOpenTab(key)}
+								>
 									<IconForStatus status={key}/>
 									{getTabLabel(key)}
 								</TabNavButton>
@@ -99,8 +114,14 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 					);
 				})}
 				{(items && type === 'group') && Object.entries(items).map(([key, assignments]) => {
+					if(assignments.length < 1) {
+						return null;
+					}
 					return (
-						<TabContentWrapper key={key} tabKey={key} open={openTab === key}>
+						<TabContentWrapper key={key}
+						                   tabKey={viewMode === 'grade' ? slugify(targetGrades?.find(grade => grade?.value === parseInt((key)))?.label as string) : key}
+						                   open={openTab === key}
+						>
 							<Row>
 								{(assignments as Assignment[]).map((assignment: Assignment) => {
 									return (

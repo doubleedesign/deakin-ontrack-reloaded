@@ -7,13 +7,18 @@ import './global.css';
 import App from './App.tsx';
 import SubjectPage from './components/Pages/SubjectPage/SubjectPage.tsx';
 import Dashboard from './components/Pages/Dashboard/Dashboard.tsx';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation, faWrench, faHourglassHalf } from '@fortawesome/pro-solid-svg-icons';
-import { fal, faLightbulbOn, faXmark } from '@fortawesome/pro-light-svg-icons';
-import { faD, faLoader, faComments, faCommentsQuestion, faGear } from '@fortawesome/pro-duotone-svg-icons';
 import ErrorPage from './components/Pages/ErrorPage/ErrorPage.tsx';
 import UITest from './components/Pages/UITest/UITest.tsx';
-library.add(fal, faS, faD, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation, faLoader, faComments, faWrench, faCommentsQuestion, faHourglassHalf, faGear);
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation,
+	faWrench, faHourglassHalf, faAlarmExclamation, faAlarmClock, faCalendarClock, faCircle } from '@fortawesome/pro-solid-svg-icons';
+import { fal, faLightbulbOn, faXmark } from '@fortawesome/pro-light-svg-icons';
+import { faD, faLoader, faComments, faCommentsQuestion, faGear, faCalendarLines,
+	faCircleQuarter, faCircleHalf, faCircleThreeQuarters, faToggleLargeOn, faToggleLargeOff } from '@fortawesome/pro-duotone-svg-icons';
+library.add(fal, faS, faD, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck,
+	faCircleExclamation, faTriangleExclamation, faLoader, faComments, faWrench, faCommentsQuestion, faHourglassHalf, faGear,
+	faAlarmExclamation, faAlarmClock, faCalendarClock, faCalendarLines, faCircleQuarter, faCircleHalf, faCircleThreeQuarters, faCircle,
+	faToggleLargeOn, faToggleLargeOff);
 
 const client = new ApolloClient({
 	uri: 'http://localhost:5000/graphql',

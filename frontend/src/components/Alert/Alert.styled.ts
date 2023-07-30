@@ -8,6 +8,7 @@ export const AlertWrapper = styled.div<{type: StatusColor, size?: string}>`
 	width: 100%;
 	padding: ${props => props.size === 'small' ? props.theme.spacing.xs : props.theme.spacing.sm};
 	background: ${props => props.size === 'small' ? 'transparent' : props.theme.colors.contentBackground};
+    margin-top: ${({ theme }): string => theme.spacing.sm};
     margin-bottom: ${({ theme }): string => theme.spacing.sm};
 	display: flex;
 	flex-wrap: wrap;
