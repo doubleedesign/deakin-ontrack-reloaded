@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 import { Row, Col } from '../../../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { readableColor, shade } from 'polished';
+import { StyledButton } from '../../../Button/Button.styled.ts';
+import ButtonGroup from '../../../ButtonGroup/ButtonGroup.tsx';
 export const TabSection = styled(Row)`
 	display: flex;
 	flex-wrap: wrap;
@@ -26,7 +28,7 @@ export const TabNavWrapper = styled(Col).attrs({ as: 'nav' })`
     `)};
 `;
 
-export const TabNavList = styled.ul.attrs({ role: 'tablist' })`
+export const TabNavList = styled(ButtonGroup).attrs({ role: 'tablist', as: 'ul' })`
 `;
 
 interface EachTabProps {
@@ -39,43 +41,28 @@ export const TabNavItem = styled.li`
 	list-style: none;
 `;
 
-export const TabNavButton = styled.button.attrs((props: EachTabProps) => ({
+export const TabNavButton = styled(StyledButton).attrs((props: EachTabProps) => ({
 	role: 'tab',
 	id: `button-${props.tabKey}`,
 	'aria-controls': `panel-${props.tabKey}`
 }))<EachTabProps>`
-	padding: ${({ theme }): string => theme.spacing.md} ${({ theme }): string => theme.spacing.sm};
-	appearance: none;
-	font-family: ${({ theme }): string => theme.fonts.body};
-    font-weight: 600;
-	border: 0;
 	width: 100%;
-	text-align: left;
-	cursor: pointer; 
-	transition: all 0.3s ease;
-	text-decoration: underline;
-	text-decoration-color: transparent;
-	font-size: 0.9rem;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-    flex-wrap: wrap;
-	background: ${({ theme }): string => shade(0.07, theme.colors.contentBackground)};
-	color: ${({ theme }): string => readableColor(theme.colors.contentBackground)};
-	position: relative;
-	height: 68px;
 	
 	&:hover, &:focus-visible {
 		text-decoration-color: currentColor;
 	}
 	
+	/*
 	span {
 		display: block;
 		font-weight: 300;
 		font-size: 0.875em;
 		width: 100%;
 		flex-basis: 100%;
-	}
+	} */
 	
 	svg {
 		margin-right: ${({ theme }): string => theme.spacing.sm};
@@ -88,30 +75,6 @@ export const TabNavButton = styled.button.attrs((props: EachTabProps) => ({
 		svg {
             color: ${props => props.color ? readableColor(props.theme.colors[props.color]) : 'currentColor'};
 		}
-		
-		&:before,
-		&:after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-style: solid;
-			position: absolute;
-			right: -1rem;
-		}
-		
-		&:before {
-			position: absolute;
-			top: 0;
-            border-width: 34px 0 0 1rem;
-            border-color: transparent transparent transparent ${props => props.color ? props.theme.colors[props.color] : 'unset'};
-		}
-
-        &:after {
-            position: absolute;
-            bottom: 0;
-            border-width: 34px 1rem 0 0;
-            border-color: ${props => props.color ? props.theme.colors[props.color] : 'unset'} transparent transparent transparent;
-        }
 	}
 `;
 

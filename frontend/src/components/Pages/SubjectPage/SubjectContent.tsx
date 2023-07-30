@@ -26,12 +26,11 @@ const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId,
 	const [currentGroups, setCurrentGroups] = useState<AssignmentGroup | AssignmentCluster[]>();
 
 	useEffect(() => {
-		clearMessages();
 		setLoading(true);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
+		clearMessages();
 		if(viewMode === 'cluster' && byCluster) {
 			setCurrentGroups(byCluster);
 			setLoading(false);
@@ -48,6 +47,7 @@ const SubjectContent: FC<PropsWithChildren<SubjectContentProps>> = ({ projectId,
 			setCurrentGroups(byGrade);
 			setLoading(false);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [byCluster, byDate, byGrade, byStatus, viewMode]);
 
 	useEffect(() => {

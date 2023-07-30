@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { TabContentWrapper, TabNavButton, TabNavItem, TabNavList, TabPanels, TabSection } from './Tabs.styled.ts';
-import { getColorForStatus, object_key_first, slugify, ucfirst } from '../../../../utils.ts';
+import { TabContentWrapper, TabNavButton, TabNavItem, TabNavList, TabNavWrapper, TabPanels, TabSection } from './Tabs.styled.ts';
+import { getColorForStatus, getTypes, object_key_first, slugify, ucfirst } from '../../../../utils.ts';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { targetGrades } from '../../../../constants.ts';
@@ -16,39 +16,34 @@ interface TabProps {
 
 const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 	const [openTab, setOpenTab] = useState<string>('');
+	const [type, setType] = useState<'cluster'|'group'>('group');
+
+	useEffect(() => {
+		getTypes(Array.isArray(items) ? items[0] : items).then(result => {
+			if(result && result.includes('AssignmentCluster')) {
+				setType('cluster');
+			}
+			else {
+				setType('group');
+			}
+		});
+	}, [items]);
 
 	useEffect(() => {
 		if(items) {
-			setOpenTab(items ? object_key_first(items) : '');
+			if(type === 'cluster') {
+				// @ts-ignore
+				setOpenTab(slugify(items[0].label));
+			}
+			else {
+				setOpenTab(object_key_first(items));
+			}
 		}
-	}, [items]);
-
-	useEffect(() => {
-		fetch('http://localhost:5000/typecheck', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(Array.isArray(items) ? items[0] : items),
-			redirect: 'manual'
-		})
-			.then(response => {
-				return response.text();
-			})
-			.then(result => {
-				console.log(result);
-			})
-			.catch(error => {
-				console.log('error', error);
-			});
-	}, [items]);
+	}, [items, type]);
 
 	function getTabLabel(key: string) {
 		if (viewMode === 'grade') {
 			return targetGrades.find(grade => grade.value.toString() === key)?.label;
-		}
-		else if(viewMode === 'cluster') {
-			return '// TODO';
 		}
 		else if(viewMode === 'date') {
 			return key; // TODO: Nicely formatted dates
@@ -58,36 +53,33 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 		}
 	}
 
-	/*
 	return (
 		<TabSection>
-			<TabNavList>
-				{viewMode === 'cluster' ?
-					items?.map((cluster: AssignmentCluster) => {
+			<TabNavWrapper>
+				<TabNavList>
+					{(items && type === 'cluster') && (items as AssignmentCluster[]).map((item: AssignmentCluster) => {
 						return (
-							<TabNavItem key={slugify(cluster.label)}>
-								<TabNavButton tabKey={slugify(cluster.label)}
-								              color={getColorForStatus(cluster.label)}
-								              aria-selected={openTab === slugify(cluster.label)}
-								              onClick={() => setOpenTab(slugify(cluster.label))}>
-									{cluster.label}
-									<span>
-										Ends {cluster.endDate.toLocaleDateString('en-AU', {
-											day: 'numeric',
-											weekday: 'long',
-											month: 'long'
-										})}
-									</span>
+							<TabNavItem key={slugify(item.label)}>
+								<TabNavButton tabKey={slugify(item.label)}
+							              color={openTab == slugify(item.label) ? 'logo' : 'light'}
+							              aria-selected={openTab === slugify(item.label)}
+							              onClick={() => setOpenTab(slugify(item.label))}
+								>
+									{item.label}
+									<span>Ends {item.endDate.toLocaleDateString('en-AU', {
+										day: 'numeric',
+										weekday: 'long',
+										month: 'long'
+									})}</span>
 								</TabNavButton>
 							</TabNavItem>
 						);
-					})
-					:
-					items && Object.keys(items).map(key => {
+					})}
+					{(items && type === 'group') && Object.keys(items).map(key => {
 						return (
 							<TabNavItem key={key}>
 								<TabNavButton tabKey={key}
-							              color={getColorForStatus(key)}
+						                  color={openTab == key ? getColorForStatus(key) : 'light'}
 							              aria-selected={openTab === key}
 							              onClick={() => setOpenTab(key)}>
 									<IconForStatus status={key}/>
@@ -96,11 +88,19 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 							</TabNavItem>
 						);
 					})}
-			</TabNavList>
+				</TabNavList>
+			</TabNavWrapper>
 			<TabPanels>
-				{items && Object.entries(items).map(([status, assignments]) => {
+				{(items && type === 'cluster') && (items as AssignmentCluster[]).map((item: AssignmentCluster) => {
 					return (
-						<TabContentWrapper key={status} tabKey={status} open={openTab === status}>
+						<TabContentWrapper key={slugify(item.label)}>
+
+						</TabContentWrapper>
+					);
+				})}
+				{(items && type === 'group') && Object.entries(items).map(([key, assignments]) => {
+					return (
+						<TabContentWrapper key={key} tabKey={key} open={openTab === key}>
 							<Row>
 								{(assignments as Assignment[]).map((assignment: Assignment) => {
 									return (
@@ -119,9 +119,7 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 				})}
 			</TabPanels>
 		</TabSection>
-	); */
-
-	return <></>;
+	);
 };
 
 export default Tabs;

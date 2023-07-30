@@ -27,6 +27,6 @@ export const PageWrapper = styled.section<PageWrapperProps>`
     }
 	
 	> ${Row} {
-		flex-grow: 1;
+		//flex-grow: 1;
 	}
 `;

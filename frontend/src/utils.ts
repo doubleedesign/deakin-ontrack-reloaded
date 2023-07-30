@@ -1,5 +1,19 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+export async function getTypes(obj: object | undefined) {
+	if (!obj) {
+		return undefined;
+	}
+
+	const response = await fetch('http://localhost:5000/typecheck', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(obj),
+		redirect: 'manual'
+	});
+
+	return await response.json();
+}
 
 export function slugify(text: string) {
 	return text.replace(/\s/g, '-').toLowerCase();

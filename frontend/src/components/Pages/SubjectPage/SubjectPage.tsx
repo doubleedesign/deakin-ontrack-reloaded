@@ -19,7 +19,7 @@ const SubjectPage: FC = () => {
 	const params = useParams();
 	const { currentSubjects, setErrors, setWarningMessages, setInfoMessages, clearMessages } = useContext(AppContext);
 	const [subject, setSubject] = useState<Subject>();
-	const [viewMode, setViewMode] = useState<SubjectViewMode>('cluster');
+	const [viewMode, setViewMode] = useState<SubjectViewMode>('date');
 	const [targetGrade, setTargetGrade] = useState<SingleValue<{value: number, label: string}>>(targetGrades.find((grade => grade.value === subject?.targetGrade)) || targetGrades[2]);
 	const [color, setColor] = useState<string>('#333333');
 

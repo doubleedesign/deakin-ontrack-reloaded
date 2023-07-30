@@ -21,12 +21,12 @@ const ErrorPage: FC = () => {
 
 	return (
 		<Page>
-			<Row>
+			<Row style={{ flexGrow: '1' }}>
 				<ErrorPageContent>
 					<FontAwesomeIcon icon={['fas', 'circle-exclamation']}/>
 					<h2>Something went wrong</h2>
 					<p>Well, this is an unfortunate turn of events. Apparently <strong>{error.message}</strong>.</p>
-					<p>This error was thrown by {trimFileUrl(data[0].fileName as string)}</p>
+					<p>This error was thrown by {trimFileUrl(data[0].fileName as string)} on line {data[0].lineNumber}.</p>
 				</ErrorPageContent>
 			</Row>
 		</Page>
