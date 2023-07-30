@@ -41,7 +41,10 @@ const IconForStatus: FC<IconForStatusProps> = ({ status }) => {
 			case 'tomorrow':
 				return <FontAwesomeIcon icon={['fas', 'alarm-clock']}/>;
 			case 'this_week':
+			case 'upcoming':
 				return <FontAwesomeIcon icon={['fas', 'calendar-clock']}/>;
+			case 'later':
+				return <FontAwesomeIcon icon={['fad', 'calendar-lines']}/>;
 			case 'working_on_it':
 				return <FontAwesomeIcon icon={['fad', 'loader']}/>;
 			case 'ready_for_feedback':

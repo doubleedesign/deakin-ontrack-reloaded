@@ -46,16 +46,19 @@ export const TabNav: React.FC<TabNavProps> = function({ items, type, viewMode, o
 					return (
 						<TabNavItem key={slugify(item.label)}>
 							<TabNavButton tabKey={slugify(item.label)}
-							              color={openTab == slugify(item.label) ? 'bodyText' : 'light'}
+							              color={openTab == slugify(item.label) ? getColorForStatus(item.status) : 'light'}
 							              aria-selected={openTab === slugify(item.label)}
 							              onClick={() => setOpenTab(slugify(item.label))}
 							>
-								<strong>{item.label}</strong>
-								<small>Ends {item.endDate.toLocaleDateString('en-AU', {
-									day: 'numeric',
-									weekday: 'short',
-									month: 'short'
-								})}</small>
+								<IconForStatus status={item.status}/>
+								<div>
+									<strong>{item.label}</strong>
+									<small>Ends {item.endDate.toLocaleDateString('en-AU', {
+										day: 'numeric',
+										weekday: 'short',
+										month: 'short'
+									})}</small>
+								</div>
 							</TabNavButton>
 						</TabNavItem>
 					);

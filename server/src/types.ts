@@ -62,5 +62,6 @@ export type AssignmentCluster = {
 	label: string;
 	endDate: Date;
 	assignments: Assignment[];
+	status: string;
 }
 

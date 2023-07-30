@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
 import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
-import { add, closestTo, eachWeekOfInterval, isSameDay, sub } from 'date-fns';
+import { add, closestTo, differenceInWeeks, eachWeekOfInterval, isBefore, isSameDay, sub } from 'date-fns';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
 
 
@@ -24,12 +24,21 @@ function clusterGroups(assignments: Assignment[], subject: Subject) {
 	weeks.splice(5, 1); // Deletes the intra-trimester break, so may need to be changed on a per-trimester basis
 
 	const clusteredAssignments: AssignmentCluster[] = desiredDueDates.map((date: Date, index: number) => {
+		const today = new Date();
 		const sunday = closestTo(date, weeks);
 		const week = weeks.findIndex(lastDayOfWeek => isSameDay(lastDayOfWeek, sunday as Date));
+		let status = 'later';
+		if(isBefore(date, today))  {
+			status = 'overdue';
+		}
+		else if(differenceInWeeks(date, today) < 2) {
+			status = 'upcoming';
+		}
 		return {
 			label: `Week ${week}`,
 			endDate: date,
-			assignments: []
+			assignments: [],
+			status: status
 		};
 	});
 

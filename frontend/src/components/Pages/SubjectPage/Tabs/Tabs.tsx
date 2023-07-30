@@ -1,13 +1,9 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { TabContentWrapper, TabNavButton, TabNavItem, TabNavList, TabNavWrapper, TabPanels, TabSection } from './Tabs.styled.ts';
-import { getColorForStatus, getTypes, object_key_first, slugify, ucfirst } from '../../../../utils.ts';
-import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
-import { targetGrades } from '../../../../constants.ts';
-import { Row } from '../../../common.styled.ts';
-import { Assignment, AssignmentCluster, AssignmentGroup } from '@server/types';
-import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
+import { TabSection } from './Tabs.styled.ts';
+import { getTypes, object_key_first, slugify } from '../../../../utils.ts';
+import { AssignmentCluster, AssignmentGroup } from '@server/types';
 import { SubjectViewMode } from '../../../../types.ts';
-import { isValid } from 'date-fns';
+import { closestTo, isSameDay } from 'date-fns';
 import Loading from '../../../Loading/Loading.tsx';
 import TabNav from './TabNav.tsx';
 import TabContent from './TabContent.tsx';
@@ -29,8 +25,12 @@ const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 	const handleTheType = useCallback(function (types: string[]): void {
 		if(items && types && types.includes('AssignmentCluster')) {
 			setType('cluster');
+			const today = new Date();
 			// @ts-ignore
-			setOpenTab(slugify(items[0].label));
+			const closestDate = closestTo(today, items.map(item => item.endDate));
+			const closestItem = (items as AssignmentCluster[]).find(item => isSameDay(item.endDate, closestDate as Date));
+			// @ts-ignore
+			setOpenTab(slugify(closestItem.label));
 		}
 		else {
 			setType('group');
