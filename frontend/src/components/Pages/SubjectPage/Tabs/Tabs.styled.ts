@@ -63,19 +63,23 @@ export const TabNavButton = styled(StyledButton).attrs((props: EachTabProps) => 
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	flex-wrap: wrap;
+	text-align: left;
 	
 	&:hover, &:focus-visible {
 		text-decoration-color: currentColor;
 	}
 	
-	/*
-	span {
-		display: block;
+	strong, small {
+        display: block;
+        width: 100%;
+        flex-basis: 100%;
+	}
+	
+	small {
 		font-weight: 300;
 		font-size: 0.875em;
-		width: 100%;
-		flex-basis: 100%;
-	} */
+	} 
 	
 	svg {
 		margin-right: ${({ theme }): string => theme.spacing.sm};

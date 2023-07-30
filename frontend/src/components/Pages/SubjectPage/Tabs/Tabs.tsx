@@ -1,14 +1,16 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { TabContentWrapper, TabNavButton, TabNavItem, TabNavList, TabNavWrapper, TabPanels, TabSection } from './Tabs.styled.ts';
 import { getColorForStatus, getTypes, object_key_first, slugify, ucfirst } from '../../../../utils.ts';
-import { AppContext } from '../../../../context/AppContextProvider.tsx';
 import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
 import { targetGrades } from '../../../../constants.ts';
 import { Row } from '../../../common.styled.ts';
-import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
+import { Assignment, AssignmentCluster, AssignmentGroup } from '@server/types';
 import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
 import { SubjectViewMode } from '../../../../types.ts';
 import { isValid } from 'date-fns';
+import Loading from '../../../Loading/Loading.tsx';
+import TabNav from './TabNav.tsx';
+import TabContent from './TabContent.tsx';
 
 interface TabProps {
 	items: AssignmentGroup | AssignmentCluster[] | undefined;
@@ -18,128 +20,46 @@ interface TabProps {
 const Tabs: FC<TabProps> = ({ items, viewMode }) => {
 	const [openTab, setOpenTab] = useState<string>('');
 	const [type, setType] = useState<'cluster'|'group'>('group');
+	const [loading, setLoading] = useState<boolean>(true);
 
-	useEffect(() => {
-		getTypes(Array.isArray(items) ? items[0] : items).then(result => {
-			if(result && result.includes('AssignmentCluster')) {
-				setType('cluster');
-			}
-			else {
-				setType('group');
-			}
-		});
+	const getMeTheTypes = useCallback(async function (): Promise<string[]> {
+		return await getTypes(Array.isArray(items) ? items[0] : items).then(response => response);
 	}, [items]);
 
-	useEffect(() => {
-		if(items) {
-			if(type === 'cluster') {
-				// @ts-ignore
-				setOpenTab(slugify(items[0].label));
-			}
-			else {
-				setOpenTab(object_key_first(items));
-			}
-		}
-	}, [items, type]);
-
-	function getTabLabel(key: string) {
-		if (viewMode === 'grade') {
-			return targetGrades.find(grade => grade.value.toString() === key)?.label;
-		}
-		else if(viewMode === 'date') {
-			const date = new Date(Date.parse(key));
-			if(!isValid(date)) {
-				return ucfirst(key.replace('_', ' '));
-			}
-
-			return date.toLocaleDateString('en-AU', {
-				day: 'numeric',
-				weekday: 'short',
-				month: 'short'
-			});
+	const handleTheType = useCallback(function (types: string[]): void {
+		if(items && types && types.includes('AssignmentCluster')) {
+			setType('cluster');
+			// @ts-ignore
+			setOpenTab(slugify(items[0].label));
 		}
 		else {
-			return ucfirst(key.replace('_', ' '));
+			setType('group');
+			setOpenTab(object_key_first(items as AssignmentGroup));
 		}
-	}
+	}, [items]);
+
+	useEffect( () => {
+		if(!items) {
+			setLoading(true);
+		}
+		else {
+			getMeTheTypes().then(response => handleTheType(response));
+			setLoading(false);
+		}
+	}, [getMeTheTypes, handleTheType, items]);
+
 
 	return (
-		<TabSection>
-			<TabNavWrapper>
-				<TabNavList>
-					{(items && type === 'cluster') && (items as AssignmentCluster[]).map((item: AssignmentCluster) => {
-						return (
-							<TabNavItem key={slugify(item.label)}>
-								<TabNavButton tabKey={slugify(item.label)}
-							              color={openTab == slugify(item.label) ? 'logo' : 'light'}
-							              aria-selected={openTab === slugify(item.label)}
-							              onClick={() => setOpenTab(slugify(item.label))}
-								>
-									{item.label}
-									<span>Ends {item.endDate.toLocaleDateString('en-AU', {
-										day: 'numeric',
-										weekday: 'long',
-										month: 'long'
-									})}</span>
-								</TabNavButton>
-							</TabNavItem>
-						);
-					})}
-					{(items && type === 'group') && Object.keys(items).map(key => {
-						// @ts-ignore
-						if(items[key].length < 1) {
-							return null;
-						}
-						return (
-							<TabNavItem key={key}>
-								<TabNavButton tabKey={viewMode === 'grade' ? slugify(targetGrades?.find(grade => grade?.value === parseInt((key)))?.label as string) : key}
-						                  color={openTab == key ? getColorForStatus(key) : 'light'}
-							              aria-selected={openTab === key}
-							              onClick={() => setOpenTab(key)}
-								>
-									<IconForStatus status={key}/>
-									{getTabLabel(key)}
-								</TabNavButton>
-							</TabNavItem>
-						);
-					})}
-				</TabNavList>
-			</TabNavWrapper>
-			<TabPanels>
-				{(items && type === 'cluster') && (items as AssignmentCluster[]).map((item: AssignmentCluster) => {
-					return (
-						<TabContentWrapper key={slugify(item.label)}>
-
-						</TabContentWrapper>
-					);
-				})}
-				{(items && type === 'group') && Object.entries(items).map(([key, assignments]) => {
-					if(assignments.length < 1) {
-						return null;
-					}
-					return (
-						<TabContentWrapper key={key}
-						                   tabKey={viewMode === 'grade' ? slugify(targetGrades?.find(grade => grade?.value === parseInt((key)))?.label as string) : key}
-						                   open={openTab === key}
-						>
-							<Row>
-								{(assignments as Assignment[]).map((assignment: Assignment) => {
-									return (
-										<AssignmentCard key={assignment.id}
-										                title={`${assignment.abbreviation} ${assignment.name}`}
-										                status={assignment.status}
-										                dueDate={assignment.target_date}
-										>
-											<p>{assignment.description}</p>
-										</AssignmentCard>
-									);
-								})}
-							</Row>
-						</TabContentWrapper>
-					);
-				})}
-			</TabPanels>
-		</TabSection>
+		<section data-component-id="TabbedSection">
+			{loading ?
+				<Loading/>
+				:
+				<TabSection>
+					{items && <TabNav items={items} type={type} viewMode={viewMode} openTab={openTab} setOpenTab={setOpenTab} />}
+					{items && <TabContent items={items} type={type} viewMode={viewMode} openTab={openTab} />}
+				</TabSection>
+			}
+		</section>
 	);
 };
 

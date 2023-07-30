@@ -10,7 +10,6 @@ import ErrorStackParser, { StackFrame } from 'error-stack-parser';
 const ErrorPage: FC = () => {
 	const error: Error = useRouteError() as Error;
 	const data: StackFrame[] = ErrorStackParser.parse(error);
-	console.log(data[0]);
 
 	function trimFileUrl(url: string) {
 		let trimmed = url.replace(window.location.origin, '');
