@@ -21,7 +21,7 @@ export const TabNav: React.FC<TabNavProps> = function({ items, type, viewMode, o
 		if (viewMode === 'grade') {
 			return targetGrades.find(grade => grade.value.toString() === key)?.label;
 		}
-		else if(viewMode === 'date') {
+		else if(viewMode === 'date' || (viewMode === 'cluster' && type === 'group')) {
 			const date = new Date(Date.parse(key));
 			if(!isValid(date)) {
 				return ucfirst(key.replace('_', ' '));
