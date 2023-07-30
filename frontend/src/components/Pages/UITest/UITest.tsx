@@ -14,9 +14,9 @@ const UiTest: FC = () => {
 			</Row>
 			<Row style={{ marginBottom: '2rem' }}>
 				<ColorBox className="success">Success</ColorBox>
-				<ColorBox className="info">Info</ColorBox>
 				<ColorBox className="warning">Warning</ColorBox>
 				<ColorBox className="error">Error</ColorBox>
+				<ColorBox className="info">Info</ColorBox>
 			</Row>
 			<Row>
 				<Col>

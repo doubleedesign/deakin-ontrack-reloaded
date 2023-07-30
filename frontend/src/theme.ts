@@ -1,4 +1,4 @@
-import { adjustHue, darken, lighten, shade, tint, desaturate, complement, readableColor, saturate } from 'polished';
+import { adjustHue, darken, lighten, shade, tint, desaturate, complement, readableColor, saturate, rgb } from 'polished';
 
 const baseTheme = {
 	fonts: {
@@ -29,10 +29,10 @@ export const lightTheme = {
 	...baseTheme,
 	colors: {
 		logo: lightmodeBaseColor,
-		success: adjustHue(255, lightmodeBaseColor),
-		error: saturate(0.2, adjustHue(105, lightmodeBaseColor)),
-		info: saturate(0.2, adjustHue(330, lightmodeBaseColor)),
-		warning: saturate(0.2, lighten(0.05, adjustHue(165, lightmodeBaseColor))),
+		success: adjustHue(15, saturate(0.2, shade(0.3, '#a5eb82'))),
+		error: saturate(0.1, adjustHue(255, '#6abe42')),
+		info: adjustHue(90, '#4bbe42'),
+		warning: '#f2ac00',
 		accent: '#a007a6', // for tabs
 		pageBackground: '#f6f5f5',
 		contentBackground: '#FFF',
