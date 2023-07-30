@@ -5,6 +5,7 @@ import groupBy from 'lodash/groupBy';
 import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import { add, closestTo, differenceInWeeks, eachWeekOfInterval, isBefore, isSameDay, sub } from 'date-fns';
 import { AppContext } from '../../../../context/AppContextProvider.tsx';
+import difference from 'lodash/difference';
 
 
 function clusterGroups(assignments: Assignment[], subject: Subject) {
@@ -46,6 +47,12 @@ function clusterGroups(assignments: Assignment[], subject: Subject) {
 		const closestClusterDate = closestTo(new Date(Date.parse(item.target_date)), desiredDueDates);
 		const cluster = clusteredAssignments.find(cluster => isSameDay(cluster.endDate, closestClusterDate as Date));
 		cluster?.assignments.push(item);
+	});
+
+	clusteredAssignments.forEach(cluster => {
+		const complete_or_submitted = cluster.assignments.filter(item => ['complete', 'ready_for_feedback'].includes(item.status));
+		const incomplete = difference(cluster.assignments, complete_or_submitted);
+		cluster.assignments = incomplete.concat(complete_or_submitted);
 	});
 
 	return clusteredAssignments;
