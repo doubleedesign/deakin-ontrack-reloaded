@@ -31,10 +31,7 @@ const Dashboard: FC = () => {
 	return (
 		<Page color={themeObject.colors.logo}>
 			<Messages/>
-			<Row>
-				{ (showLogin && !drawerOpen) && <LoginForm /> }
-				<Loading/>
-			</Row>
+			{ (showLogin && !drawerOpen) ? <LoginForm /> :  <Loading/>}
 		</Page>
 	);
 };

@@ -8,7 +8,6 @@ export const DateIntervalWrapper = styled.p<{color: string}>`
 	display: inline-block;
 	margin-top: ${({ theme }): string => theme.spacing.sm};
 	padding-top: ${({ theme }): string => theme.spacing.sm};
-	border-top: 1px solid ${props => lighten(0.3, props.theme.colors.reverseSubtle)};
 	
 	strong {
         font-family: ${({ theme }): string => theme.fonts.accent};

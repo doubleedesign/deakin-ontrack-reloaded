@@ -4,6 +4,7 @@ import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
 import { Assignment } from '@server/types';
 import difference from 'lodash/difference';
+import concat from 'lodash/concat';
 import { add, isBefore, isSameDay, nextSunday } from 'date-fns';
 
 export function useDateGroupedAssignments(projectId: number, targetGrade: number) {
@@ -40,15 +41,15 @@ export function useDateGroupedAssignments(projectId: number, targetGrade: number
 				const today = new Date();
 				const due = new Date(Date.parse(item.target_date));
 				const sunday = nextSunday(today);
-				return (isBefore(due, sunday) || isSameDay(due, sunday)) && !dueToday.concat(dueTomorrow).includes(item);
+				return (isBefore(due, sunday) || isSameDay(due, sunday)) && !concat(complete_or_submitted, dueToday, dueTomorrow).includes(item);
 			});
-			const incomplete = difference(ordered, dueToday.concat(dueTomorrow).concat(overdue).concat(complete_or_submitted));
+			const remaining = difference(ordered, concat(complete_or_submitted, overdue, dueToday, dueTomorrow, dueThisWeek));
 			const grouped = {
 				overdue: overdue,
 				today: dueToday,
 				tomorrow: dueTomorrow,
 				this_week: dueThisWeek,
-				...groupBy(incomplete, 'target_date'),
+				...groupBy(remaining, 'target_date'),
 				done: complete_or_submitted
 			};
 

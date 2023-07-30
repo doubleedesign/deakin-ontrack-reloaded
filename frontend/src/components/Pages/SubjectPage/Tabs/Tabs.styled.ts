@@ -95,7 +95,7 @@ export const TabNavButton = styled(StyledButton).attrs((props: EachTabProps) => 
 	}
 `;
 
-export const TabPanels = styled(Col).attrs({ as: 'div' })`
+export const TabPanels = styled.div`
 	width: 100%;
 	flex-basis: 100%;
 

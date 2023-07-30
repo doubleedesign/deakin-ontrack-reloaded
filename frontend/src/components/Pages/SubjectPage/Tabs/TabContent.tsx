@@ -27,13 +27,7 @@ export const TabContent: React.FC<TabContentProps> = function({ items, type, vie
 						<Row>
 							{item.assignments.map((assignment: Assignment) => {
 								return (
-									<AssignmentCard key={assignment.id}
-									                title={`${assignment.abbreviation} ${assignment.name}`}
-									                status={assignment.status}
-									                dueDate={assignment.target_date}
-									>
-										<p>{assignment.description}</p>
-									</AssignmentCard>
+									<AssignmentCard assignment={assignment} />
 								);
 							})}
 						</Row>
@@ -54,13 +48,7 @@ export const TabContent: React.FC<TabContentProps> = function({ items, type, vie
 						<Row>
 							{Array.isArray(assignments) && (assignments).map((assignment: Assignment) => {
 								return (
-									<AssignmentCard key={assignment.id}
-									                title={`${assignment.abbreviation} ${assignment.name}`}
-									                status={assignment.status}
-									                dueDate={assignment.target_date}
-									>
-										<p>{assignment.description}</p>
-									</AssignmentCard>
+									<AssignmentCard assignment={assignment}/>
 								);
 							})}
 						</Row>

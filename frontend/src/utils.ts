@@ -44,8 +44,9 @@ export function getColorForStatus(status: string) {
 		case 'this_week':
 		case 'upcoming':
 		case 'discuss':
-		case 'fix_and_resubmit':
 			return 'warning';
+		case 'fix_and_resubmit':
+			return 'error';
 		case 'need_help':
 		case 'ready_for_feedback':
 			return 'info';

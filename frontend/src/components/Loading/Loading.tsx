@@ -8,7 +8,7 @@ import { ScreenReaderText } from '../common.styled.ts';
 const Loading: FC = () => {
 	const message = sampleSize(loadingMessages, 1);
 	return (
-		<LoadingWrapper>
+		<LoadingWrapper data-component-id="Loading">
 			<div>
 				<FontAwesomeIcon icon={['fad', 'gear']} spin/>
 				<FontAwesomeIcon icon={['fad', 'gear']} spin spinReverse/>
