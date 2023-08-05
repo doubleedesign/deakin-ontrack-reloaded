@@ -1,19 +1,25 @@
 import styled, { css } from 'styled-components';
-import { lighten, shade, transparentize } from 'polished';
-import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { Col } from '../common.styled.ts';
+import { transparentize } from 'polished';
 
 export const CardWrapper = styled(Col)`
 	width: 100%;
 	flex-basis: 100%;
 	max-width: 100%;
 	display: flex;
+    position: relative;
+`;
 
-    ${props => breakpointUp(props.theme.breakpoints.lg, css`
-       // width: 50%;
-	    //flex-basis: 50%;
-	   // max-width: 50%;
-    `)};
+export const CardImage = styled.div`
+    width: 100%;
+    height: 180px;
+  
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
 `;
 
 export const CardInner = styled.div`
@@ -24,6 +30,7 @@ export const CardInner = styled.div`
     border: 1px solid ${props => transparentize(0.5, props.theme.colors.reverseSubtle)};
 	border-radius: 0.25rem;
 	display: flex;
+	flex-wrap: wrap;
 
     [data-component-id="IconForStatus"] {
 	    width: 2rem;
@@ -32,15 +39,21 @@ export const CardInner = styled.div`
 
     > div {
         flex-grow: 1;
-        padding: 0 ${({ theme }): string => theme.spacing.sm};
     }
+	
+	[data-component-id="IconForStatus"] + div {
+        padding: 0 ${({ theme }): string => theme.spacing.sm};
+	}
 
     h3 {
         font-size: 1.125rem;
         margin-bottom: ${({ theme }): string => theme.spacing.xs};
     }
-`;
-
-export const DateDataWrapper = styled.div`
-    border-top: 1px solid ${props => lighten(0.35, props.theme.colors.reverseSubtle)};
+	
+	p {
+		
+		strong {
+			font-weight: 600;
+		}
+	}
 `;

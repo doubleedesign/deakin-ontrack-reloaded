@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { lighten, tint, readableColor, meetsContrastGuidelines, shade } from 'polished';
-import { isHexColor } from '../../../utils.ts';
+import { isHexColor } from '../../../../utils.ts';
 
 function customTextColor(bgColor: string, theme: { colors: { [x: string]: string; }; }) {
 	let theColor: string;

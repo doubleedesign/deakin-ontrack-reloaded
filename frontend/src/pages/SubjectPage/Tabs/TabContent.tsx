@@ -4,7 +4,7 @@ import { TabContentWrapper, TabPanels } from './Tabs.styled.ts';
 import { slugify } from '../../../utils.ts';
 import { targetGrades } from '../../../constants.ts';
 import { Row } from '../../../components/common.styled.ts';
-import AssignmentCard from '../../../components/AssignmentCard/AssignmentCard.tsx';
+import AssignmentCard from '../../../components/Card/AssignmentCard/AssignmentCard.tsx';
 import { SubjectViewMode } from '../../../types.ts';
 
 export interface TabContentProps {

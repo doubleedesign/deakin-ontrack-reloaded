@@ -25,8 +25,4 @@ export const PageWrapper = styled.section<PageWrapperProps>`
         color: ${props => props.color};
         font-weight: 700;
     }
-	
-	> ${Row} {
-		//flex-grow: 1;
-	}
 `;

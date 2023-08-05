@@ -1,4 +1,4 @@
-## OnTrack Reloaded: Front-end 
+# OnTrack Reloaded: Front-end 
 
 Yeah, it's Yet Another React app. I would have liked to take Vue out for another spin but found it was a bit tricky to get Apollo Client working with it and get up to speed on how to do what I wanted quickly enough - I started building this in Week 0 of a trimester. I use React at work, so I'm a lot more familiar with it and some of the learnings from this project are more immediately applicable this way.
 
