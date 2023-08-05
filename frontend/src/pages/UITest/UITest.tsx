@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Row, Col } from '../../common.styled.ts';
+import { Row, Col } from '../../components/common.styled.ts';
 import { ColorBox, TabExampleRow, ColorWheelRow } from './UITest.styled.ts';
 import Page from '../Page.tsx';
 

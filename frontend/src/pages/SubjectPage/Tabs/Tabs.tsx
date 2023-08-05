@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { TabSection } from './Tabs.styled.ts';
-import { getTypes, object_key_first, slugify } from '../../../../utils.ts';
+import { getTypes, object_key_first, slugify } from '../../../utils.ts';
 import { AssignmentCluster, AssignmentGroup } from '@server/types';
-import { SubjectViewMode } from '../../../../types.ts';
+import { SubjectViewMode } from '../../../types.ts';
 import { closestTo, isSameDay } from 'date-fns';
-import Loading from '../../../Loading/Loading.tsx';
+import Loading from '../../../components/Loading/Loading.tsx';
 import TabNav from './TabNav.tsx';
 import TabContent from './TabContent.tsx';
 

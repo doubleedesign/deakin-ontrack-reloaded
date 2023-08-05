@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
-import { Row } from '../common.styled.ts';
+import { Row } from '../components/common.styled.ts';
 
 export interface PageWrapperProps {
 	color: string;

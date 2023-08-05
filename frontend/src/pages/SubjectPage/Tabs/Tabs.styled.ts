@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
-import { Row, Col } from '../../../common.styled.ts';
+import { Row, Col } from '../../../components/common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
 import { meetsContrastGuidelines, readableColor, shade } from 'polished';
-import { StyledButton } from '../../../Button/Button.styled.ts';
-import { ButtonGroupWrapper } from '../../../ButtonGroup/ButtonGroup.styled.ts';
-import { isHexColor } from '../../../../utils.ts';
+import { StyledButton } from '../../../components/Button/Button.styled.ts';
+import { ButtonGroupWrapper } from '../../../components/ButtonGroup/ButtonGroup.styled.ts';
+import { isHexColor } from '../../../utils.ts';
 
 export const TabSection = styled(Row)`
 	display: flex;

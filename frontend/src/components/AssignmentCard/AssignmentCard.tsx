@@ -2,11 +2,11 @@ import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { CardInner, CardWrapper, DateDataWrapper } from './AssignmentCard.styled.ts';
 import IconForStatus from '../IconForStatus/IconForStatus.tsx';
 import { getColorForStatus } from '../../utils.ts';
-import DateInterval from '../DateInterval/DateInterval.tsx';
-import DateTag from '../DateTag/DateTag.tsx';
+import DateInterval from './DateInterval/DateInterval.tsx';
+import DateTag from './DateTag/DateTag.tsx';
 import { add, isBefore, isSameDay, nextSunday } from 'date-fns';
 import { Assignment } from '@server/types';
-import { DateIntervalWrapper } from '../DateInterval/DateInterval.styled.ts';
+import { DateIntervalWrapper } from './DateInterval/DateInterval.styled.ts';
 
 interface CardProps {
 	assignment: Assignment;

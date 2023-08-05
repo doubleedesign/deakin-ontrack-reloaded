@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { PageWrapper } from './Page.styled';
+import { PageWrapper } from './Page.styled.ts';
 
 interface PageProps {
 	color?: string;

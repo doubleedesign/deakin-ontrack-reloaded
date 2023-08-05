@@ -1,11 +1,11 @@
 import React from 'react';
 import { Assignment, AssignmentCluster, AssignmentGroup } from '@server/types';
 import { TabContentWrapper, TabPanels } from './Tabs.styled.ts';
-import { slugify } from '../../../../utils.ts';
-import { targetGrades } from '../../../../constants.ts';
-import { Row } from '../../../common.styled.ts';
-import AssignmentCard from '../../../AssignmentCard/AssignmentCard.tsx';
-import { SubjectViewMode } from '../../../../types.ts';
+import { slugify } from '../../../utils.ts';
+import { targetGrades } from '../../../constants.ts';
+import { Row } from '../../../components/common.styled.ts';
+import AssignmentCard from '../../../components/AssignmentCard/AssignmentCard.tsx';
+import { SubjectViewMode } from '../../../types.ts';
 
 export interface TabContentProps {
 	items: AssignmentGroup | AssignmentCluster[];

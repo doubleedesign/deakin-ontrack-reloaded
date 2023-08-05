@@ -1,11 +1,11 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../../context/AppContextProvider.tsx';
-import { Row } from '../../common.styled.ts';
+import { AppContext } from '../../context/AppContextProvider.tsx';
+import { Row } from '../../components/common.styled.ts';
 import Page from '../Page.tsx';
-import LoginForm from '../../Form/LoginForm/LoginForm.tsx';
-import { darkTheme, lightTheme } from '../../../theme.ts';
-import Messages from '../../Messages/Messages.tsx';
-import Loading from '../../Loading/Loading.tsx';
+import LoginForm from '../../components/Form/LoginForm/LoginForm.tsx';
+import { darkTheme, lightTheme } from '../../theme.ts';
+import Messages from '../../components/Messages/Messages.tsx';
+import Loading from '../../components/Loading/Loading.tsx';
 
 const Dashboard: FC = () => {
 	const { clearMessages, currentSubjects, authenticated, theme, drawerOpen } = useContext(AppContext);

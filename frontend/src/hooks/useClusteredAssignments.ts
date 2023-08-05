@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../../../../graphql/queries.ts';
+import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
 import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
 import { add, closestTo, differenceInWeeks, eachWeekOfInterval, isBefore, isSameDay, sub } from 'date-fns';
-import { AppContext } from '../../../../context/AppContextProvider.tsx';
+import { AppContext } from '../context/AppContextProvider.tsx';
 import difference from 'lodash/difference';
 
 

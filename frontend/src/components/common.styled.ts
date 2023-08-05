@@ -41,9 +41,6 @@ export const Col = styled.div.attrs({ 'data-component-id': 'Col' })`
     `)};
 `;
 
-export const UnitCode = styled.span`
-`;
-
 export const ScreenReaderText = styled.span`
     border: 0;
     clip: rect(1px, 1px, 1px, 1px);

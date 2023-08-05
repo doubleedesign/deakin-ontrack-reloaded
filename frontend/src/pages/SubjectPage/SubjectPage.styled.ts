@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { Col, Row } from '../../common.styled.ts';
+import { Col, Row } from '../../components/common.styled.ts';
 import { meetsContrastGuidelines, shade, readableColor, tint, transparentize, darken } from 'polished';
-import { isHexColor } from '../../../utils.ts';
+import { isHexColor } from '../../utils.ts';
 
 export const SubjectHeaderRow = styled(Row).attrs({ as: 'header' })<{color: string}>`
 	padding: ${props => props.theme.spacing.lg} 0;

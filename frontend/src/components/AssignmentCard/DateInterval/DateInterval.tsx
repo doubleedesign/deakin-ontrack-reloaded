@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DateIntervalWrapper } from './DateInterval.styled';
+import { DateIntervalWrapper } from './DateInterval.styled.ts';
 import { isSameDay, eachWeekOfInterval, intervalToDuration, isBefore } from 'date-fns';
 
 interface DateIntervalProps {

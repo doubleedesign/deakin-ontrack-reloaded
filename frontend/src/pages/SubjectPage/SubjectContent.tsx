@@ -1,13 +1,13 @@
 import React, { FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../../context/AppContextProvider.tsx';
-import { useStatusGroupedAssignments } from './sorting/useStatusGroupedAssignments.ts';
-import { useDateGroupedAssignments } from './sorting/useDateGroupedAssignments.ts';
-import { useGradeGroupedAssignments } from './sorting/useGradeGroupedAssignments.ts';
+import { AppContext } from '../../context/AppContextProvider.tsx';
+import { useStatusGroupedAssignments } from '../../hooks/useStatusGroupedAssignments.ts';
+import { useDateGroupedAssignments } from '../../hooks/useDateGroupedAssignments.ts';
+import { useGradeGroupedAssignments } from '../../hooks/useGradeGroupedAssignments.ts';
 import Tabs from './Tabs/Tabs.tsx';
-import { SubjectViewMode } from '../../../types.ts';
+import { SubjectViewMode } from '../../types.ts';
 import { AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
-import { useClusteredAssignments } from './sorting/useClusteredAssignments.ts';
-import Loading from '../../Loading/Loading.tsx';
+import { useClusteredAssignments } from '../../hooks/useClusteredAssignments.ts';
+import Loading from '../../components/Loading/Loading.tsx';
 
 interface SubjectContentProps {
 	projectId: number;

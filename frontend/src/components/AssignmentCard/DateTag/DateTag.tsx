@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DateWrapper } from './DateTag.styled';
+import { DateWrapper } from './DateTag.styled.ts';
 
 interface DateTagProps {
 	date: string;

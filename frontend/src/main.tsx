@@ -5,10 +5,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppContextProvider from './context/AppContextProvider.tsx';
 import './global.css';
 import App from './App.tsx';
-import SubjectPage from './components/Pages/SubjectPage/SubjectPage.tsx';
-import Dashboard from './components/Pages/Dashboard/Dashboard.tsx';
-import ErrorPage from './components/Pages/ErrorPage/ErrorPage.tsx';
-import UITest from './components/Pages/UITest/UITest.tsx';
+import SubjectPage from './pages/SubjectPage/SubjectPage.tsx';
+import Dashboard from './pages/Dashboard/Dashboard.tsx';
+import ErrorPage from './pages/ErrorPage/ErrorPage.tsx';
+import UITest from './pages/UITest/UITest.tsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation,
 	faWrench, faHourglassHalf, faAlarmExclamation, faAlarmClock, faCalendarClock, faCircle } from '@fortawesome/pro-solid-svg-icons';

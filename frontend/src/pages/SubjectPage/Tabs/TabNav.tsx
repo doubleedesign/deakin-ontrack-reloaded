@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { TabNavButton, TabNavItem, TabNavList, TabNavWrapper } from './Tabs.styled.ts';
 import { AssignmentCluster, AssignmentGroup } from '@server/types';
-import { getColorForStatus, slugify, ucfirst } from '../../../../utils.ts';
-import { targetGrades } from '../../../../constants.ts';
-import IconForStatus from '../../../IconForStatus/IconForStatus.tsx';
-import { SubjectViewMode } from '../../../../types.ts';
+import { getColorForStatus, slugify, ucfirst } from '../../../utils.ts';
+import { targetGrades } from '../../../constants.ts';
+import IconForStatus from '../../../components/IconForStatus/IconForStatus.tsx';
+import { SubjectViewMode } from '../../../types.ts';
 import { isValid } from 'date-fns';
 
 export interface TabNavProps {

@@ -1,19 +1,19 @@
 import React, { FC, useContext, useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { AppContext } from '../../../context/AppContextProvider.tsx';
+import { AppContext } from '../../context/AppContextProvider.tsx';
 import { GraphQLError } from 'graphql/error';
 import { Subject } from '@server/types';
 import Page from '../Page.tsx';
 import { CheckboxLabel, SubjectHeaderRow, SubjectViewToggle, SubjectViewToggleRow, SubjectViewToggles } from './SubjectPage.styled.ts';
-import { Col, ScreenReaderText } from '../../common.styled.ts';
-import { LinkStyledAsButton } from '../../Button/Button.styled.ts';
+import { Col, ScreenReaderText } from '../../components/common.styled.ts';
+import { LinkStyledAsButton } from '../../components/Button/Button.styled.ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select, { SingleValue } from 'react-select';
-import Messages from '../../Messages/Messages.tsx';
-import { targetGrades } from '../../../constants.ts';
-import ButtonGroup from '../../ButtonGroup/ButtonGroup.tsx';
+import Messages from '../../components/Messages/Messages.tsx';
+import { targetGrades } from '../../constants.ts';
+import ButtonGroup from '../../components/ButtonGroup/ButtonGroup.tsx';
 import SubjectContent from './SubjectContent.tsx';
-import { SubjectViewMode } from '../../../types.ts';
+import { SubjectViewMode } from '../../types.ts';
 
 const SubjectPage: FC = () => {
 	const params = useParams();

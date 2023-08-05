@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useRouteError } from 'react-router-dom';
-import { Row } from '../../common.styled.ts';
+import { Row } from '../../components/common.styled.ts';
 import Page from '../Page.tsx';
-import Alert from '../../Alert/Alert.tsx';
+import Alert from '../../components/Alert/Alert.tsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ErrorPageContent } from './ErrorPage.styled.ts';
 import ErrorStackParser, { StackFrame } from 'error-stack-parser';
