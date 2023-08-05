@@ -5,6 +5,7 @@ export const typeDefs = gql`
 		persistentCacheStatus: PersistentCacheStatus
 		currentSubjects: [Subject]
 		allAssignmentsForSubject(projectId: Int): [Assignment]
+		upcomingAssignments(weeks: Int): [Assignment]
 	}
 	
 	type PersistentCacheStatus {

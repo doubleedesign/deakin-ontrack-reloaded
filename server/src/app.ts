@@ -14,6 +14,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import listEndpoints from 'express-list-endpoints';
 import router from './rest/endpoints.ts';
+import { upcomingAssignmentsResolver } from './resolvers/upcomingAssignments.ts';
 
 
 const app = express();
@@ -27,7 +28,8 @@ const graphQLServer = new ApolloServer({
 		Query: {
 			...persistentCacheResolver,
 			...currentSubjectsResolver,
-			...assignmentsForSubjectResolver
+			...assignmentsForSubjectResolver,
+			...upcomingAssignmentsResolver
 		}
 	},
 });

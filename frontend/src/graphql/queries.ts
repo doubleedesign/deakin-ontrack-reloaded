@@ -45,3 +45,19 @@ export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsFor
         }
     }
 `;
+
+export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{upcomingAssignments: Assignment[]}> = gql`
+    query UpcomingAssignmentsQuery($weeks: Int) {
+        upcomingAssignments(weeks: $weeks) {
+	        projectId,
+            id,
+            abbreviation,
+            description,
+            name,
+            target_date,
+            status,
+            target_grade,
+            submission_date
+        }
+    }
+`;
