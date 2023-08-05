@@ -44,26 +44,15 @@ const AssignmentCard: FC<CardProps> = ({ assignment }) => {
 				<div>
 					<h3>{`${assignment.abbreviation} ${assignment.name}`}</h3>
 					<p>{assignment.description}</p>
-					{assignment.status === 'complete' &&
-						<DateDataWrapper>
-							<DateIntervalWrapper color={getColorForStatus('complete')}>
-								Completed on {assignment.completion_date}
-							</DateIntervalWrapper>
-						</DateDataWrapper>
-					}
-					{assignment.status === 'ready_for_feedback' &&
-						<DateDataWrapper>
-							<DateIntervalWrapper color={getColorForStatus('ready_for_feedback')}>
-								Submitted on {assignment.submission_date}
-							</DateIntervalWrapper>
-						</DateDataWrapper>
-					}
-					{assignment.status !== 'complete' && assignment.status !== 'ready_for_feedback' &&
-						<DateDataWrapper>
+					<DateDataWrapper>
+						{!['complete', 'ready_for_feedback'].includes(assignment.status) &&
 							<DateTag date={assignment.target_date} color={getColorForStatus(cardStatus)}/>
-							<DateInterval date={assignment.target_date} color={getColorForStatus(cardStatus)}/>
-						</DateDataWrapper>
-					}
+						}
+						{/* eslint-disable-next-line max-len */}
+						<DateInterval date={['complete', 'ready_for_feedback'].includes(assignment.status) ? assignment.completion_date || assignment.submission_date : assignment.target_date}
+						              color={getColorForStatus(cardStatus)}
+						              status={assignment.status} />
+					</DateDataWrapper>
 				</div>
 			</CardInner>
 		</CardWrapper>
