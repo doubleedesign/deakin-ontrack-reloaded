@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
 import { Row, Col } from '../../../common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
-import { readableColor, shade } from 'polished';
+import { meetsContrastGuidelines, readableColor, shade } from 'polished';
 import { StyledButton } from '../../../Button/Button.styled.ts';
 import { ButtonGroupWrapper } from '../../../ButtonGroup/ButtonGroup.styled.ts';
+import { isHexColor } from '../../../../utils.ts';
 
 export const TabSection = styled(Row)`
 	display: flex;
@@ -54,6 +55,21 @@ export const TabNavItem = styled.li`
 	list-style: none;
 `;
 
+function customTextColor(bgColor: string, theme: { colors: { [x: string]: string; }; }) {
+	let theColor: string;
+	if(isHexColor(bgColor)) {
+		theColor = bgColor;
+	}
+	else {
+		theColor = theme.colors[bgColor];
+	}
+	const scores = meetsContrastGuidelines(shade(0.2, (theColor)), '#FFF');
+	if(scores.AALarge) {
+		return '#FFF';
+	}
+	return readableColor(shade(0.1, (theColor)));
+}
+
 export const TabNavButton = styled(StyledButton).attrs((props: EachTabProps) => ({
 	role: 'tab',
 	id: `button-${props.tabKey}`,
@@ -87,10 +103,10 @@ export const TabNavButton = styled(StyledButton).attrs((props: EachTabProps) => 
 	
 	&[aria-selected="true"] {
         background: ${props => props.color ? props.theme.colors[props.color] : 'unset'};
-        color: ${props => props.color ? readableColor(props.theme.colors[props.color]) : 'unset'};
+        color: ${props => customTextColor(props.color, props.theme)};
 		
 		svg {
-            color: ${props => props.color ? readableColor(props.theme.colors[props.color]) : 'currentColor'};
+            color: ${props => customTextColor(props.color, props.theme)};
 		}
 	}
 `;
