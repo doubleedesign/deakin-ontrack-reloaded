@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Col } from '../common.styled.ts';
 import { transparentize } from 'polished';
+import { PropsWithRef } from 'react';
 
 export const CardWrapper = styled(Col)`
 	width: 100%;
@@ -22,7 +23,7 @@ export const CardImage = styled.div`
     }
 `;
 
-export const CardInner = styled.div`
+export const CardInner = styled.div<PropsWithRef<any>>`
 	width: 100%;
     padding: ${({ theme }): string => theme.spacing.md};
     margin-bottom: ${({ theme }): string => theme.spacing.md};

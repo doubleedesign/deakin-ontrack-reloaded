@@ -2,11 +2,18 @@ import styled, { css } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { darken, readableColor } from 'polished';
 import { isHexColor } from '../../../utils.ts';
+import { PropsWithRef } from 'react';
 
-export const SubjectHeading = styled.h3<{color: string}>`
+interface SubjectHeadingProps extends PropsWithRef<any> {
+	color: string;
+}
+
+export const SubjectHeading = styled.h3<SubjectHeadingProps>`
     display: block;
     color: ${props => props.color};
     font-weight: 700;
+	margin-left: -${props => props.theme.spacing.md};
+	white-space: nowrap;
     
     span {
         background: ${props => props.color};

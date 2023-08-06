@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Assignment, Subject } from '@server/types';
 import { ProgressBar, ProgressBarGroup, ProgressCaption, SubjectHeading, SubjectLink } from './SubjectCard.styled.ts';
 import { CardInner, CardWrapper } from '../Card.styled.ts';
@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row } from '../../common.styled.ts';
 import { targetGrades } from '../../../constants.ts';
 import Tooltip from '../../Tooltip/Tooltip.tsx';
+import { useTruncatedText } from '../../../hooks/useTruncatedText.ts';
+
 
 interface SubjectCardProps {
     subject: Subject;
@@ -16,6 +18,9 @@ interface SubjectCardProps {
 
 const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 	const { assignmentGroups, loading } = useGradeGroupedAssignments(subject.projectId, subject.targetGrade, true);
+	const boxRef = useRef<MutableRefObject<HTMLElement>>();
+	const headingRef = useRef<MutableRefObject<HTMLElement>>();
+	useTruncatedText(boxRef, headingRef, loading);
 
 	const totalTasks: number = useMemo(() => {
 		return flatMap(assignmentGroups).length;
@@ -26,20 +31,14 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 		return all.filter((item: Assignment) => item.status === 'complete').length;
 	}, [assignmentGroups]);
 
-
 	return (
 		<>
 			{loading ? <Loading /> :
 				<CardWrapper>
-					<CardInner>
-						<Row style={{ alignItems: 'center', padding: '0' }}>
-							<SubjectHeading color={subject.color as string}>
-								<span>{subject.unitCode}</span>&nbsp;{subject.name}
-							</SubjectHeading>
-							<SubjectLink to={`/${subject.projectId}`} color={subject.color as string}>
-								Details <FontAwesomeIcon icon={['fal', 'arrow-right']}/>
-							</SubjectLink>
-						</Row>
+					<CardInner ref={boxRef}>
+						<SubjectHeading ref={headingRef} color={subject.color as string}>
+							<span>{subject.unitCode}</span>&nbsp;{subject.name}
+						</SubjectHeading>
 						<ProgressBarGroup>
 							<div>
 								{assignmentGroups && Object.entries(assignmentGroups).map(([grade, items]) => {
@@ -65,6 +64,9 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 								<strong>{completeTasks}</strong> of <strong>{totalTasks}</strong> tasks completed
 							</ProgressCaption>
 						</ProgressBarGroup>
+						<SubjectLink to={`/${subject.projectId}`} color={subject.color as string}>
+							Details <FontAwesomeIcon icon={['fal', 'arrow-right']}/>
+						</SubjectLink>
 					</CardInner>
 				</CardWrapper> }
 		</>
