@@ -10,7 +10,7 @@ export const TooltipWrapper = styled.div`
 	
 	> div {
 		position: absolute;
-		top: 75%;
+		top: calc(100% + 0.5rem);
 		left: 0;
 		right: 0;
 		display: flex;
@@ -27,6 +27,19 @@ export const TooltipWrapper = styled.div`
             color: ${props => readableColor(props.theme.colors.reverse)};
             line-height: 1;
 			white-space: nowrap;
+			position: relative;
+			
+			&:before {
+				content: '';
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 0.75rem 0.5rem 0.75rem;
+                border-color: transparent transparent ${props => props.theme.colors.reverse} transparent;
+				position: absolute;
+				top: -0.5rem;
+				left: calc(50% - 0.75rem);
+			}
 		}
 	}
 	
