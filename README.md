@@ -83,6 +83,7 @@ const token = Object.values(JSON.parse(data));
 navigator.clipboard.writeText(token[0].access_token);
 alert("Copied bearer token: " + token[0].access_token);
 ```
+**Note:** I have had issues with the token in local storage being expired, and basically having to clear it and browse around until a new one appears.
 
 ### Making your own version
 
