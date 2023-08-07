@@ -4,7 +4,6 @@ import { readableColor, } from 'polished';
 import { isHexColor, customTextColor } from '../utils.ts';
 
 export const AppWrapper = styled.div`
-	width: 100vw;
 	min-height: 100vh;
 	padding: 0 ${({ theme }): string => theme.spacing.md};
     padding-bottom: ${({ theme }): string => theme.spacing.xl};
@@ -31,6 +30,10 @@ export const Row = styled.div.attrs({ 'data-component-id': 'Row' })`
 	margin: 0 auto;
 	padding: 0 ${({ theme }): string => theme.spacing.sm};
 	position: relative;
+`;
+
+export const FullWidthRow = styled(Row)`
+	max-width: 100%;
 `;
 
 export const Col = styled.div.attrs({ 'data-component-id': 'Col' })`

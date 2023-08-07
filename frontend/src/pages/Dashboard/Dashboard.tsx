@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState, useEffect } from 'react';
+import React, { FC, useContext, useState, useEffect, useMemo } from 'react';
 import { AppContext } from '../../context/AppContextProvider.tsx';
 import Page from '../Page.tsx';
 import LoginForm from '../../components/Form/LoginForm/LoginForm.tsx';
@@ -10,7 +10,7 @@ import { Assignment } from '@server/types';
 import AssignmentCard from '../../components/Card/AssignmentCard/AssignmentCard.tsx';
 import SubjectCard from '../../components/Card/SubjectCard/SubjectCard.tsx';
 import { AssignmentsSummary, DashboardHeading, SubjectsSummary } from './Dashboard.styled.ts';
-import { Col, Row } from '../../components/common.styled.ts';
+import { add, isBefore, isSameDay } from 'date-fns';
 
 const Dashboard: FC = () => {
 	const { clearMessages, currentSubjects, authenticated, theme, drawerOpen, setErrors } = useContext(AppContext);
@@ -35,6 +35,29 @@ const Dashboard: FC = () => {
 		}
 	}, [authenticated?.isAuthenticated]);
 
+	const overdue = useMemo(() => {
+		const today = new Date();
+		return results?.filter(item => {
+			const due = new Date(Date.parse(item.target_date));
+			return isBefore(due, today) && !isSameDay(due, today);
+		});
+	}, [results]);
+
+	const dueNow = useMemo(() => {
+		const today = new Date();
+		const tomorrow = add(today, { days: 1 });
+		return results?.filter(item => {
+			const due = new Date(Date.parse(item.target_date));
+			return isSameDay(due, today) || isSameDay(due, tomorrow);
+		});
+	}, [results]);
+
+	const remaining = useMemo(() => {
+		return results?.filter(item => {
+			return !overdue?.includes(item) && !dueNow?.includes(item);
+		});
+	}, [results, overdue, dueNow]);
+
 	return (
 		<Page color={themeObject.colors.logo}>
 			<Messages/>
@@ -52,9 +75,31 @@ const Dashboard: FC = () => {
 
 			{ !loading && results &&
 				<>
+					{overdue &&
+						<>
+							<DashboardHeading>Overdue</DashboardHeading>
+							<AssignmentsSummary>
+								{overdue.map((assignment: Assignment) => {
+									return <AssignmentCard key={assignment.id} assignment={assignment} showSubject={true}/>;
+								})}
+							</AssignmentsSummary>
+						</>
+
+					}
+					{dueNow &&
+						<>
+							<DashboardHeading>Due today & tomorrow</DashboardHeading>
+							<AssignmentsSummary>
+								{dueNow.map((assignment: Assignment) => {
+									return <AssignmentCard key={assignment.id} assignment={assignment} showSubject={true}/>;
+								})}
+							</AssignmentsSummary>
+						</>
+
+					}
 					<DashboardHeading>Coming up <span>(next {upcomingWeeks} weeks)</span></DashboardHeading>
 					<AssignmentsSummary>
-						{results.map((assignment: Assignment) => {
+						{remaining?.map((assignment: Assignment) => {
 							return <AssignmentCard key={assignment.id} assignment={assignment} showSubject={true}/>;
 						})}
 					</AssignmentsSummary>
