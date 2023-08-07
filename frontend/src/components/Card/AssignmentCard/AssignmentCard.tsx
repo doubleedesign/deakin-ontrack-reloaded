@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { DateDataWrapper } from './AssignmentCard.styled.ts';
 import IconForStatus from '../../IconForStatus/IconForStatus.tsx';
 import { getColorForStatus } from '../../../utils.ts';
@@ -7,13 +7,18 @@ import DateTag from './DateTag/DateTag.tsx';
 import { add, isBefore, isSameDay, nextSunday } from 'date-fns';
 import { Assignment } from '@server/types';
 import { CardInner, CardWrapper } from '../Card.styled.ts';
+import { AppContext } from '../../../context/AppContextProvider.tsx';
+import { Label } from '../../common.styled.ts';
 
 interface CardProps {
 	assignment: Assignment;
+	showSubject?: boolean;
 }
 
-const AssignmentCard: FC<CardProps> = ({ assignment }) => {
+const AssignmentCard: FC<CardProps> = ({ assignment, showSubject }) => {
+	const { currentSubjects } = useContext(AppContext);
 	const [cardStatus, setCardStatus] = useState<string>(assignment.status);
+	const subject = currentSubjects.find(subject => subject.projectId === assignment.projectId);
 
 	useEffect(() => {
 		const today = new Date();
@@ -39,12 +44,15 @@ const AssignmentCard: FC<CardProps> = ({ assignment }) => {
 
 	return (
 		<CardWrapper data-component-id="AssignmentCard">
-			<CardInner>
-				<IconForStatus status={cardStatus}/>
+			<CardInner withBorder={showSubject ? subject?.color : null}>
 				<div>
-					<h3>{`${assignment.abbreviation} ${assignment.name}`}</h3>
+					<h3>
+						{showSubject && <Label color={subject?.color as string}>{subject?.unitCode}</Label>}
+						{`${assignment.abbreviation} ${assignment.name}`}
+					</h3>
 					<p>{assignment.description}</p>
 					<DateDataWrapper>
+						<IconForStatus status={cardStatus}/>
 						{!['complete', 'ready_for_feedback'].includes(assignment.status) &&
 							<DateTag date={assignment.target_date} color={getColorForStatus(cardStatus)}/>
 						}

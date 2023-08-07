@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DateWrapper } from './DateTag.styled.ts';
+import { Label } from '../../../common.styled.ts';
 
 interface DateTagProps {
 	date: string;
@@ -13,7 +13,7 @@ const DateTag: FC<DateTagProps> = ({ date, color }) => {
 	const month = monthLabels[dateData.getMonth()];
 
 	return (
-		<DateWrapper color={color}>{month}&nbsp;{day}</DateWrapper>
+		<Label color={color}>{month}&nbsp;{day}</Label>
 	);
 };
 

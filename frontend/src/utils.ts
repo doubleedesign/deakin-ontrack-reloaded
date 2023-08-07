@@ -1,3 +1,5 @@
+import { meetsContrastGuidelines, readableColor, shade } from 'polished';
+
 export async function getTypes(obj: object | undefined) {
 	if (!obj) {
 		return undefined;
@@ -72,4 +74,19 @@ export function isHexColor(str: string): boolean {
 		return true;
 	}
 	return false;
+}
+
+export function customTextColor(bgColor: string, theme: { colors: { [x: string]: string; }; }) {
+	let theColor: string;
+	if(isHexColor(bgColor)) {
+		theColor = bgColor;
+	}
+	else {
+		theColor = theme.colors[bgColor];
+	}
+	const scores = meetsContrastGuidelines(shade(0.2, (theColor)), '#FFF');
+	if(scores.AALarge) {
+		return '#FFF';
+	}
+	return readableColor(shade(0.1, (theColor)));
 }

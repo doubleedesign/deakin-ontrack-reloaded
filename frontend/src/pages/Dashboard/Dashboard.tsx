@@ -9,14 +9,15 @@ import { useUpcomingAssignments } from '../../hooks/useUpcomingAssignments.ts';
 import { Assignment } from '@server/types';
 import AssignmentCard from '../../components/Card/AssignmentCard/AssignmentCard.tsx';
 import SubjectCard from '../../components/Card/SubjectCard/SubjectCard.tsx';
-import { AssignmentsSummary, SubjectsSummary } from './Dashboard.styled.ts';
+import { AssignmentsSummary, DashboardHeading, SubjectsSummary } from './Dashboard.styled.ts';
 import { Col, Row } from '../../components/common.styled.ts';
 
 const Dashboard: FC = () => {
 	const { clearMessages, currentSubjects, authenticated, theme, drawerOpen, setErrors } = useContext(AppContext);
 	const themeObject = theme === 'light' ? lightTheme : darkTheme;
 	const [showLogin, setShowLogin] = useState<boolean>(false);
-	const { results, loading } = useUpcomingAssignments({ weeks: 2 });
+	const upcomingWeeks = 2;
+	const { results, loading } = useUpcomingAssignments({ weeks: upcomingWeeks });
 
 	useEffect(() => {
 		clearMessages();
@@ -41,18 +42,23 @@ const Dashboard: FC = () => {
 			{ loading && <Loading/> }
 
 			{ !loading && currentSubjects &&
-			<SubjectsSummary>
-				{currentSubjects.map(subject => <SubjectCard key={subject.projectId} subject={subject} />)}
-			</SubjectsSummary>
+				<>
+					<DashboardHeading>Current units</DashboardHeading>
+					<SubjectsSummary>
+						{currentSubjects.map(subject => <SubjectCard key={subject.projectId} subject={subject} />)}
+					</SubjectsSummary>
+				</>
 			}
 
-			{ /**
 			{ !loading && results &&
-			<AssignmentsSummary>
-				{results.map((assignment: Assignment) => {
-					return <AssignmentCard key={assignment.id} assignment={assignment}/>;
-				})}
-			</AssignmentsSummary> */
+				<>
+					<DashboardHeading>Coming up <span>(next {upcomingWeeks} weeks)</span></DashboardHeading>
+					<AssignmentsSummary>
+						{results.map((assignment: Assignment) => {
+							return <AssignmentCard key={assignment.id} assignment={assignment} showSubject={true}/>;
+						})}
+					</AssignmentsSummary>
+				</>
 			}
 		</Page>
 	);

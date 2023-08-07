@@ -25,6 +25,8 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 		return all.filter((item: Assignment) => item.status === 'complete').length;
 	}, [assignmentGroups]);
 
+	const gradeText = targetGrades.find(grade => subject.targetGrade === grade.value)?.label;
+
 	return (
 		<>
 			{loading ? <Loading /> :
@@ -34,6 +36,9 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 							<span>{subject.unitCode}</span>&nbsp;{subject.name}
 						</SubjectHeading>
 						<ProgressBarGroup>
+							<ProgressCaption>
+								<strong>{completeTasks}</strong> of <strong>{totalTasks}</strong> tasks completed for a {gradeText}
+							</ProgressCaption>
 							<div>
 								{assignmentGroups && Object.entries(assignmentGroups).map(([grade, items]) => {
 									const target = targetGrades.find(item => item.value === Number(grade));
@@ -54,9 +59,6 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 									);
 								})}
 							</div>
-							<ProgressCaption>
-								<strong>{completeTasks}</strong> of <strong>{totalTasks}</strong> tasks completed
-							</ProgressCaption>
 						</ProgressBarGroup>
 						<SubjectLink to={`/${subject.projectId}`} color={subject.color as string}>
 							Details <FontAwesomeIcon icon={['fal', 'arrow-right']}/>

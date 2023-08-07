@@ -78,7 +78,7 @@ interface ProgressBarProps {
 export const ProgressBar = styled.figure.attrs({ 'data-component-id': 'ProgressBar' })<ProgressBarProps>`
 	width: ${props => `${props.width}%` ?? '100%'};
 	flex-basis: ${props => `${props.width}%` ?? '100%'};
-	margin: ${props => props.theme.spacing.md} 0;
+	margin: ${props => props.theme.spacing.sm} 0;
 	position: relative;
 	
 	> div {

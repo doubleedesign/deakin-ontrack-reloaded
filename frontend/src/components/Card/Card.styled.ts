@@ -9,6 +9,7 @@ export const CardWrapper = styled(Col)`
 	max-width: 100%;
 	display: flex;
     position: relative;
+	
 `;
 
 export const CardImage = styled.div`
@@ -23,28 +24,20 @@ export const CardImage = styled.div`
     }
 `;
 
-export const CardInner = styled.div<PropsWithRef<any>>`
+export const CardInner = styled.div<PropsWithRef<{withBorder?: string | null}>>`
 	width: 100%;
     padding: ${({ theme }): string => theme.spacing.md};
     margin-bottom: ${({ theme }): string => theme.spacing.md};
     font-size: 0.9rem;
     border: 1px solid ${props => transparentize(0.5, props.theme.colors.reverseSubtle)};
+	border-left: ${props => props.withBorder ? `0.5rem solid ${props.withBorder}` : null};
 	border-radius: 0.25rem;
 	display: flex;
 	flex-wrap: wrap;
 
-    [data-component-id="IconForStatus"] {
-	    width: 2rem;
-        font-size: 1.5rem;
-    }
-
     > div {
         flex-grow: 1;
     }
-	
-	[data-component-id="IconForStatus"] + div {
-        padding: 0 ${({ theme }): string => theme.spacing.sm};
-	}
 
     h3 {
         font-size: 1.125rem;

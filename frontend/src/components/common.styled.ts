@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
+import { readableColor, } from 'polished';
+import { isHexColor, customTextColor } from '../utils.ts';
 
 export const AppWrapper = styled.div`
 	width: 100vw;
@@ -39,6 +41,17 @@ export const Col = styled.div.attrs({ 'data-component-id': 'Col' })`
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         padding: 0 ${({ theme }): string => theme.spacing.md};
     `)};
+`;
+
+export const Label = styled.span<{color: string}>`
+	background: ${props => props.color};
+    background: ${props => isHexColor(props.color) ? props.color : props.theme.colors[props.color]};
+    color: ${props => customTextColor(props.color, props.theme)};
+	font-weight: 700;
+	display: inline-block;
+	padding: ${props => props.theme.spacing.xs};
+	font-size: 0.9em;
+	margin-right: ${props => props.theme.spacing.xs};
 `;
 
 export const ScreenReaderText = styled.span`
