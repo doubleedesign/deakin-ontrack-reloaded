@@ -1,31 +1,9 @@
 import { useState, useEffect, useMemo, MutableRefObject } from 'react';
-
-
-function useObserverUtil(item: HTMLElement) {
-	const [width, setWidth] = useState<number>();
-
-	const observer = useMemo(() => {
-		return new ResizeObserver((entries) => {
-			window.requestAnimationFrame(() => {
-				setWidth(entries[0].target.getBoundingClientRect().width);
-			});
-		});
-	}, []);
-
-	useEffect(() => {
-		if (item) {
-			observer.observe(item);
-
-			return (): void => observer.unobserve(item);
-		}
-	}, [item, observer]);
-
-	return { width };
-}
+import { useVisibleSize } from './useVisibleSize.ts';
 
 export function useTruncatedText(outerRef: MutableRefObject<any>, innerRef: MutableRefObject<any>, deps: unknown) {
-	const { width: outerWidth } = useObserverUtil(outerRef.current);
-	const { width: innerWidth } = useObserverUtil(innerRef.current);
+	const { width: outerWidth } = useVisibleSize(outerRef.current);
+	const { width: innerWidth } = useVisibleSize(innerRef.current);
 
 	useEffect(() => {
 		// They may be undefined so this is checking first if they exist before the comparison
