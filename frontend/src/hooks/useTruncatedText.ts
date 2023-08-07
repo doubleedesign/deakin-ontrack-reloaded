@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo, MutableRefObject } from 'react';
+import { useEffect, MutableRefObject } from 'react';
 import { useVisibleSize } from './useVisibleSize.ts';
 
-export function useTruncatedText(outerRef: MutableRefObject<any>, innerRef: MutableRefObject<any>, deps: unknown) {
+export function useTruncatedText(outerRef: MutableRefObject<any>, innerRef: MutableRefObject<any>) {
 	const { width: outerWidth } = useVisibleSize(outerRef.current);
 	const { width: innerWidth } = useVisibleSize(innerRef.current);
 

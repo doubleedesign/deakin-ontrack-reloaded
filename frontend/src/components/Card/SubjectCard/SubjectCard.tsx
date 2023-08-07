@@ -20,7 +20,7 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 	const { assignmentGroups, loading } = useGradeGroupedAssignments(subject.projectId, subject.targetGrade, true);
 	const boxRef = useRef<MutableRefObject<HTMLElement>>();
 	const headingRef = useRef<MutableRefObject<HTMLElement>>();
-	useTruncatedText(boxRef, headingRef, loading);
+	useTruncatedText(boxRef, headingRef);
 
 	const totalTasks: number = useMemo(() => {
 		return flatMap(assignmentGroups).length;
