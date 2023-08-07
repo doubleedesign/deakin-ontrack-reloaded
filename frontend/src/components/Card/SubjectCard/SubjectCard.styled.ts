@@ -13,6 +13,9 @@ export const SubjectHeading = styled.h3<SubjectHeadingProps>`
     color: ${props => props.color};
     font-weight: 700;
 	margin-left: -${props => props.theme.spacing.md};
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
     
     span {
         background: ${props => props.color};

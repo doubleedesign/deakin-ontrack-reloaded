@@ -1,4 +1,4 @@
-import React, { FC, MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Assignment, Subject } from '@server/types';
 import { ProgressBar, ProgressBarGroup, ProgressCaption, SubjectHeading, SubjectLink } from './SubjectCard.styled.ts';
 import { CardInner, CardWrapper } from '../Card.styled.ts';
@@ -6,11 +6,8 @@ import { useGradeGroupedAssignments } from '../../../hooks/useGradeGroupedAssign
 import Loading from '../../Loading/Loading.tsx';
 import flatMap from 'lodash/flatMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Row } from '../../common.styled.ts';
 import { targetGrades } from '../../../constants.ts';
 import Tooltip from '../../Tooltip/Tooltip.tsx';
-import { useTruncatedText } from '../../../hooks/useTruncatedText.ts';
-
 
 interface SubjectCardProps {
     subject: Subject;
@@ -18,9 +15,6 @@ interface SubjectCardProps {
 
 const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 	const { assignmentGroups, loading } = useGradeGroupedAssignments(subject.projectId, subject.targetGrade, true);
-	const boxRef = useRef<MutableRefObject<HTMLElement>>();
-	const headingRef = useRef<MutableRefObject<HTMLElement>>();
-	useTruncatedText(boxRef, headingRef);
 
 	const totalTasks: number = useMemo(() => {
 		return flatMap(assignmentGroups).length;
@@ -35,8 +29,8 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 		<>
 			{loading ? <Loading /> :
 				<CardWrapper>
-					<CardInner ref={boxRef}>
-						<SubjectHeading ref={headingRef} color={subject.color as string}>
+					<CardInner>
+						<SubjectHeading color={subject.color as string}>
 							<span>{subject.unitCode}</span>&nbsp;{subject.name}
 						</SubjectHeading>
 						<ProgressBarGroup>
