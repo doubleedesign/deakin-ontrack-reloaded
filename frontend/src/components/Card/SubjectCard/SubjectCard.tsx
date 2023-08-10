@@ -63,7 +63,8 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 										>
 											<div></div>
 											<ProgressCaption>
-												<Tooltip text={`${total} ${target?.label} tasks`}/>
+												{subject.isOnTrackUnit && <Tooltip text={`${total} ${target?.label} tasks`}/>}
+												{!subject.isOnTrackUnit && <Tooltip text={`${total} standard assignments`}/>}
 											</ProgressCaption>
 										</ProgressBar>
 									);
