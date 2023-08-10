@@ -22,8 +22,13 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 
 	const completeTasks: number = useMemo(() => {
 		const all: Assignment[] = flatMap(assignmentGroups);
-		return all.filter((item: Assignment) => item.status === 'complete').length;
-	}, [assignmentGroups]);
+		if(subject.isOnTrackUnit) {
+			return all.filter((item: Assignment) => item.status === 'complete').length;
+		}
+		else {
+			return all.filter((item: Assignment) => ['complete', 'ready_for_feedback'].includes(item.status)).length;
+		}
+	}, [assignmentGroups, subject.isOnTrackUnit]);
 
 	const gradeText = targetGrades.find(grade => subject.targetGrade === grade.value)?.label;
 
@@ -37,13 +42,18 @@ const SubjectCard: FC<SubjectCardProps> = ({ subject }) => {
 						</SubjectHeading>
 						<ProgressBarGroup>
 							<ProgressCaption>
-								<strong>{completeTasks}</strong> of <strong>{totalTasks}</strong> tasks completed for a {gradeText}
+								{subject.isOnTrackUnit && <><strong>{completeTasks}</strong> of <strong>{totalTasks}</strong> tasks completed for a {gradeText}</>}
+								{!subject.isOnTrackUnit && <><strong>{completeTasks}</strong> of <strong>{totalTasks}</strong> tasks completed</>}
 							</ProgressCaption>
 							<div>
 								{assignmentGroups && Object.entries(assignmentGroups).map(([grade, items]) => {
 									const target = targetGrades.find(item => item.value === Number(grade));
 									// @ts-ignore
-									const complete = items.filter(item => item.status === 'complete').length;
+									let complete = items.filter(item => item.status === 'complete').length;
+									if(!subject.isOnTrackUnit) {
+										// @ts-ignore
+										complete = items.filter(item => ['complete', 'ready_for_feedback'].includes(item.status)).length;
+									}
 									// @ts-ignore
 									const total = items.length;
 									return (

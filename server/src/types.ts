@@ -31,6 +31,7 @@ export type Subject = {
 	startDate: string;
 	endDate: string;
 	color?: string;
+	isOnTrackUnit: boolean;
 	urls: SubjectUrl[];
 }
 

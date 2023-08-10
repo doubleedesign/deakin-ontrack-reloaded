@@ -24,9 +24,10 @@ export const typeDefs = gql`
 		unitId: Int
 		unitCode: String
         name: String
-		targetGrade: Int,
-		startDate: String,
+		targetGrade: Int
+		startDate: String
 		endDate: String
+		isOnTrackUnit: Boolean
 		urls: [SubjectURL]
 	}
 	
