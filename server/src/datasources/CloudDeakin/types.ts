@@ -33,3 +33,27 @@ export type BrightspaceAssignment = {
 	CompletionType: number;
 	GradeItemId: number;
 }
+
+export type BrightspaceSubmission = {
+	Entity: {
+		'DisplayName': string;
+		'EntityId': number;
+		'EntityType': 'User',
+		'Active': boolean;
+	},
+	Status: number;
+	Feedback: { Score: number } | null,
+	Submissions: [
+		{
+			Id: number;
+			SubmittedBy: {
+				Identifier: string;
+				DisplayName: string;
+			},
+			SubmissionDate: string;
+			Comment: unknown;
+			Files: unknown[];
+		}
+	],
+	CompletionDate: string;
+}

@@ -1,6 +1,6 @@
 import { Assignment, ServerContext } from '../types.ts';
-import { ProjectDetail, TaskDefinition, UnitDetail } from '../datasources/OnTrack/types.ts';
-import { BrightspaceAssignment } from '../datasources/CloudDeakin/types.ts';
+import { ProjectDetail, TaskDefinition, TaskStatus, UnitDetail } from '../datasources/OnTrack/types.ts';
+import { BrightspaceAssignment, BrightspaceSubmission } from '../datasources/CloudDeakin/types.ts';
 import pick from 'lodash/pick';
 import chalk from 'chalk';
 
@@ -52,7 +52,23 @@ export const commonResolverFunctions = {
 			else {
 				const cloudAssignments: BrightspaceAssignment[] = await context.datasources.cloudDeakin.getAssignmentsForUnit(args.projectId);
 				if(cloudAssignments) {
-					return cloudAssignments.map((item: BrightspaceAssignment) => {
+					return await Promise.all(cloudAssignments.map(async (item: BrightspaceAssignment): Promise<Assignment> => {
+						let status: TaskStatus = 'not_started';
+						let lastSubmission: BrightspaceSubmission = undefined;
+						// eslint-disable-next-line max-len
+						const submissions: BrightspaceSubmission[] = await context.datasources.cloudDeakin.getAssignmentSubmission(args.projectId, item.Id);
+						if(submissions) {
+							lastSubmission = submissions[submissions.length - 1];
+							if (lastSubmission) {
+								if (lastSubmission.Feedback) {
+									status = 'complete';
+								}
+								else {
+									status = 'ready_for_feedback';
+								}
+							}
+						}
+
 						return {
 							unitId: args.projectId,
 							projectId: args.projectId,
@@ -61,18 +77,18 @@ export const commonResolverFunctions = {
 							name: item.Name,
 							abbreviation: '',
 							description: undefined,
-							status: 'not_started', // TODO
+							status: status,
 							due_date: item.DueDate,
 							target_date: item.DueDate,
 							target_grade: 0, // Assume all CloudDeakin assignments are required for a pass
-							submission_date: undefined, // TODO
-							completion_date: undefined, // TODO
+							submission_date: lastSubmission ? lastSubmission.Submissions[0].SubmissionDate : undefined,
+							completion_date: status === 'complete' ? lastSubmission?.CompletionDate : undefined,
 							maxPoints: item.Assessment.ScoreDenominator,
-							awardedPoints: undefined, // TODO if possible
+							awardedPoints: lastSubmission?.Feedback ? lastSubmission?.Feedback?.Score : undefined,
 							weighting: undefined,
 							is_graded: true
 						};
-					});
+					}));
 				}
 			}
 		}
