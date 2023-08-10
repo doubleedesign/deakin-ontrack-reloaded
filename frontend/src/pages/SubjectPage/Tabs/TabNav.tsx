@@ -24,7 +24,7 @@ export const TabNav: React.FC<TabNavProps> = function({ items, type, viewMode, o
 		else if(viewMode === 'date' || (viewMode === 'cluster' && type === 'group')) {
 			const date = new Date(Date.parse(key));
 			if(!isValid(date)) {
-				return ucfirst(key.replace('_', ' '));
+				return ucfirst(key.replaceAll('_', ' '));
 			}
 
 			return date.toLocaleDateString('en-AU', {
@@ -34,7 +34,7 @@ export const TabNav: React.FC<TabNavProps> = function({ items, type, viewMode, o
 			});
 		}
 		else {
-			return ucfirst(key.replace('_', ' '));
+			return ucfirst(key.replaceAll('_', ' '));
 		}
 	}
 
