@@ -49,7 +49,7 @@ const SubjectPage: FC = () => {
 	}, [params, currentSubjects, setErrors, setWarningMessages, setInfoMessages]);
 
 	useEffect(() => {
-		if(subject && subject.targetGrade) {
+		if(subject && subject.isOnTrackUnit && subject.targetGrade) {
 			// @ts-ignore
 			setTargetGrade(targetGrades.find(item => item.value === subject.targetGrade));
 		}
@@ -87,24 +87,33 @@ const SubjectPage: FC = () => {
 
 			<SubjectViewToggles>
 				<SubjectViewToggleRow>
-					<SubjectViewToggle color={color} current={targetGrade?.value}>
-						<p>Target grade:</p>
-						<Select
-							value={targetGrade}
-							onChange={(selected) => setTargetGrade(selected)}
-							options={targetGrades}
-							className="selectBox"
-							unstyled
-						/>
-					</SubjectViewToggle>
+					{subject?.isOnTrackUnit &&
+						<SubjectViewToggle color={color} current={targetGrade?.value}>
+							<p>Target grade:</p>
+							<Select
+								value={targetGrade}
+								onChange={(selected) => setTargetGrade(selected)}
+								options={targetGrades}
+								className="selectBox"
+								unstyled
+							/>
+						</SubjectViewToggle>
+					}
 					<SubjectViewToggle color={color}>
 						<p>View by:</p>
-						<ButtonGroup buttons={[
-							{ label: 'Cluster', onClick: () => setViewMode('cluster'), active: viewMode === 'cluster' },
-							{ label: 'Status', onClick: () => setViewMode('status'), active: viewMode === 'status' },
-							{ label: 'Due date', onClick: () => setViewMode('date'), active: viewMode === 'date' },
-							{ label: 'Target grade', onClick: () => setViewMode('grade'), active: viewMode === 'grade' },
-						]}/>
+						{subject?.isOnTrackUnit ?
+							<ButtonGroup buttons={[
+								{ label: 'Cluster', onClick: () => setViewMode('cluster'), active: viewMode === 'cluster' },
+								{ label: 'Status', onClick: () => setViewMode('status'), active: viewMode === 'status' },
+								{ label: 'Due date', onClick: () => setViewMode('date'), active: viewMode === 'date' },
+								{ label: 'Target grade', onClick: () => setViewMode('grade'), active: viewMode === 'grade' },
+							]}/>
+							:
+							<ButtonGroup buttons={[
+								{ label: 'Status', onClick: () => setViewMode('status'), active: viewMode === 'status' },
+								{ label: 'Due date', onClick: () => setViewMode('date'), active: viewMode === 'date' }
+							]}/>
+						}
 					</SubjectViewToggle>
 				</SubjectViewToggleRow>
 				{viewMode === 'grade' &&
