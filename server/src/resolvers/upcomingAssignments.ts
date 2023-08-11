@@ -25,7 +25,7 @@ export const upcomingAssignmentsResolver = {
 				}
 			})));
 
-			const incomplete = all.filter((assignment: Assignment) => assignment.status !== 'complete');
+			const incomplete = all.filter((assignment: Assignment) => !['complete', 'ready_for_feedback'].includes(assignment.status));
 
 			return incomplete.filter((assignment: Assignment) => {
 				const today = new Date();
