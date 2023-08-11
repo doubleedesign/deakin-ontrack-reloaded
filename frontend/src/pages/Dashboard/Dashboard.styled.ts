@@ -5,7 +5,7 @@ import { breakpointUp } from '@doubleedesign/styled-media-queries';
 export const SubjectSummarySection = styled.section`
 	max-width: 1440px;
 	margin: 0 auto;
-	padding-top: ${props => props.theme.spacing.lg};
+	padding-top: ${props => props.theme.spacing.xl};
 	padding-bottom: ${props => props.theme.spacing.lg};
 `;
 
