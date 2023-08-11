@@ -43,7 +43,7 @@ const AssignmentCard: FC<CardProps> = ({ assignment, showSubject }) => {
 	}, [assignment.target_date, assignment.status]);
 
 	return (
-		<CardWrapper data-component-id="AssignmentCard">
+		<CardWrapper>
 			<CardInner withBorder={showSubject ? subject?.color : null}>
 				<div>
 					<h3>

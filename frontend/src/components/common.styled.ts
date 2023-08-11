@@ -1,11 +1,9 @@
 import styled, { css } from 'styled-components';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
-import { readableColor, } from 'polished';
 import { isHexColor, customTextColor } from '../utils.ts';
 
 export const AppWrapper = styled.div`
 	min-height: 100vh;
-	padding: 0 ${({ theme }): string => theme.spacing.md};
     padding-bottom: ${({ theme }): string => theme.spacing.xl};
 	display: flex;
 	flex-direction: column;

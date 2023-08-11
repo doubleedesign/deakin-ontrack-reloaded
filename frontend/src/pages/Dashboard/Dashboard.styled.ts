@@ -12,7 +12,14 @@ export const DashboardHeading = styled.h2`
 	}
 `;
 
-export const SubjectsSummary = styled(FullWidthRow).attrs({ as : 'section' })`
+export const SubjectSummarySection = styled.section`
+	max-width: 1440px;
+	margin: 0 auto;
+	padding-top: ${props => props.theme.spacing.lg};
+	padding-bottom: ${props => props.theme.spacing.lg};
+`;
+
+export const SubjectsSummary = styled(FullWidthRow)`
 	padding: 0;
 	justify-content: flex-start;
 	
@@ -25,30 +32,3 @@ export const SubjectsSummary = styled(FullWidthRow).attrs({ as : 'section' })`
     `)};
 `;
 
-export const AssignmentsSummary = styled(Col).attrs({ as : 'section' })`
-
-    ${Col} {
-        padding: 0;
-    }
-
-    ${props => breakpointUp(props.theme.breakpoints.lg, css`
-	    display: flex;
-	    flex-wrap: wrap;
-	    
-        ${Col} {
-	        width: 50%;
-	        flex-basis: 50%;
-	        max-width: 50%;
-	        padding: 0 ${props => props.theme.spacing.sm};
-        }
-    `)};
-
-
-    ${props => breakpointUp(props.theme.breakpoints.xl, css`
-        > ${Col} {
-	        width: 25%;
-	        flex-basis: 25%;
-            flex-grow: 0;
-        }
-    `)};
-`;

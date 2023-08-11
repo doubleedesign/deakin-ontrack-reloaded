@@ -3,7 +3,7 @@ import { Col } from '../common.styled.ts';
 import { transparentize } from 'polished';
 import { PropsWithRef } from 'react';
 
-export const CardWrapper = styled(Col)`
+export const CardWrapper = styled(Col).attrs({ 'data-component-id': 'CardWrapper' })`
 	width: 100%;
 	flex-basis: 100%;
 	max-width: 100%;
@@ -11,19 +11,6 @@ export const CardWrapper = styled(Col)`
     position: relative;
 	
 `;
-
-export const CardImage = styled.div`
-    width: 100%;
-    height: 180px;
-  
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center center;
-    }
-`;
-
 export const CardInner = styled.div<PropsWithRef<{withBorder?: string | null}>>`
 	width: 100%;
     padding: ${({ theme }): string => theme.spacing.md};
@@ -34,6 +21,7 @@ export const CardInner = styled.div<PropsWithRef<{withBorder?: string | null}>>`
 	border-radius: 0.25rem;
 	display: flex;
 	flex-wrap: wrap;
+    background: ${props => props.theme.colors.contentBackground};
 
     > div {
         flex-grow: 1;
