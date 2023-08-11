@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 import { ASSIGNMENTS_FOR_SUBJECT_QUERY } from '../graphql/queries.ts';
 import groupBy from 'lodash/groupBy';
 import { Assignment, AssignmentCluster, AssignmentGroup, Subject } from '@server/types';
-import { add, closestTo, differenceInWeeks, eachWeekOfInterval, isBefore, isSameDay, sub } from 'date-fns';
+import { add, closestTo, closestIndexTo, differenceInWeeks, eachWeekOfInterval, isBefore, isAfter, isSameDay, sub } from 'date-fns';
 import { AppContext } from '../context/AppContextProvider.tsx';
 import difference from 'lodash/difference';
 
@@ -44,8 +44,14 @@ function clusterGroups(assignments: Assignment[], subject: Subject) {
 	});
 
 	assignments.forEach((item: Assignment) => {
-		const closestClusterDate = closestTo(new Date(Date.parse(item.target_date)), desiredDueDates);
-		const cluster = clusteredAssignments.find(cluster => isSameDay(cluster.endDate, closestClusterDate as Date));
+		const due = new Date(Date.parse(item.target_date));
+		let closestClusterIndex = closestIndexTo(due, desiredDueDates) || 0;
+		const closestClusterDate = closestTo(due, desiredDueDates) || desiredDueDates[0];
+		if(isAfter(due, closestClusterDate)) {
+			closestClusterIndex = closestClusterIndex - 1;
+		}
+		const finalClusterDate = desiredDueDates[closestClusterIndex];
+		const cluster = clusteredAssignments.find(cluster => isSameDay(cluster.endDate, finalClusterDate as Date));
 		cluster?.assignments.push(item);
 	});
 
@@ -96,7 +102,7 @@ export function useClusteredAssignments(subject: Subject, targetGrade: number) {
 				setWarningMessages([[
 					`You have ${filtered.length - done.length} tasks remaining for your target grade, 
 					with ${Object.keys(grouped).length - 1} different due dates.`,
-					'This page shows suggested clustering of tasks. You may need to request extensions on some tasks for these to work in practice.'
+					'This page shows suggested clustering of tasks.'
 				]]);
 
 				setAssignmentGroups(clusterGroups(filtered, subject));
