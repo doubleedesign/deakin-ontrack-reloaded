@@ -8,7 +8,7 @@ import Loading from '../../components/Loading/Loading.tsx';
 import { useUpcomingAssignments } from '../../hooks/useUpcomingAssignments.ts';
 import { Assignment } from '@server/types';
 import SubjectCard from '../../components/Card/SubjectCard/SubjectCard.tsx';
-import { DashboardHeading, SubjectsSummary, SubjectSummarySection } from './Dashboard.styled.ts';
+import { SubjectsSummary, SubjectSummarySection } from './Dashboard.styled.ts';
 import { add, isBefore, isSameDay } from 'date-fns';
 import AssignmentsSummary from './AssignmentsSummary/AssignmentsSummary.tsx';
 
@@ -66,7 +66,6 @@ const Dashboard: FC = () => {
 
 			{ !loading && currentSubjects &&
 				<SubjectSummarySection>
-					<DashboardHeading>Current units</DashboardHeading>
 					<SubjectsSummary>
 						{currentSubjects.map(subject => <SubjectCard key={subject.projectId} subject={subject} />)}
 					</SubjectsSummary>

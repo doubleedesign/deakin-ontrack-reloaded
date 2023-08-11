@@ -23,6 +23,7 @@ export const AssignmentsSummarySection = styled.section<{ status: string }>`
 	}
 
 	h2 {
+		font-size: 1.25rem;
 		color: ${props => props.theme.colors[getColorForStatus(props.status)]};
 		width: 100%;
 		flex-basis: 100%;
