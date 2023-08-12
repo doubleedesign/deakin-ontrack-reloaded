@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Assignment, AssignmentCluster, AssignmentGroup } from '@server/types';
-import { TabContentWrapper, TabPanels } from './Tabs.styled.ts';
+import { ContentDetail, ContentList, TabContentInner, TabContentWrapper, TabPanels } from './Tabs.styled.ts';
 import { slugify } from '../../../utils.ts';
 import { targetGrades } from '../../../constants.ts';
-import { Row } from '../../../components/common.styled.ts';
 import AssignmentCard from '../../../components/Card/AssignmentCard/AssignmentCard.tsx';
 import { SubjectViewMode } from '../../../types.ts';
+import { CardButton } from '../../../components/Card/Card.styled.ts';
+import AssignmentDetail from '../../../components/AssignmentDetail/AssignmentDetail.tsx';
 
 export interface TabContentProps {
 	items: AssignmentGroup | AssignmentCluster[];
@@ -15,6 +16,7 @@ export interface TabContentProps {
 }
 
 export const TabContent: React.FC<TabContentProps> = function({ items, type, viewMode, openTab }) {
+	const [selected, setSelected] = useState<Assignment | undefined>(undefined);
 
 	return (
 		<TabPanels>
@@ -24,13 +26,18 @@ export const TabContent: React.FC<TabContentProps> = function({ items, type, vie
 					                   tabKey={slugify(item.label)}
 					                   open={openTab === slugify(item.label)}
 					>
-						<Row>
-							{item.assignments.map((assignment: Assignment) => {
-								return (
-									<AssignmentCard assignment={assignment} />
-								);
-							})}
-						</Row>
+						<TabContentInner>
+							<ContentList>
+								{item.assignments.map((assignment: Assignment) => {
+									return (
+										<AssignmentCard assignment={assignment} />
+									);
+								})}
+							</ContentList>
+							<ContentDetail>
+								<AssignmentDetail assignment={selected}/>
+							</ContentDetail>
+						</TabContentInner>
 					</TabContentWrapper>
 				);
 			})}
@@ -45,13 +52,20 @@ export const TabContent: React.FC<TabContentProps> = function({ items, type, vie
 					                   })?.label as string) : key}
 					                   open={openTab === key}
 					>
-						<Row>
-							{Array.isArray(assignments) && (assignments).map((assignment: Assignment) => {
-								return (
-									<AssignmentCard assignment={assignment}/>
-								);
-							})}
-						</Row>
+						<TabContentInner>
+							<ContentList>
+								{Array.isArray(assignments) && (assignments).map((assignment: Assignment) => {
+									return (
+										<CardButton key={assignment.id} onClick={() => setSelected(assignment)} active={selected === assignment}>
+											<AssignmentCard assignment={assignment}/>
+										</CardButton>
+									);
+								})}
+							</ContentList>
+							<ContentDetail>
+								<AssignmentDetail assignment={selected}/>
+							</ContentDetail>
+						</TabContentInner>
 					</TabContentWrapper>
 				);
 			})}

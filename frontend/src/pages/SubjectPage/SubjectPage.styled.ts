@@ -56,6 +56,10 @@ export const SubjectViewToggle = styled(Col).attrs({ 'data-component-id': 'Subje
     align-items: center;
 	flex-grow: 0;
 
+    &:last-child {
+        padding-right: ${props => props.theme.spacing.xs};
+    }
+
     p, label {
         font-size: 0.875rem;
         margin: 0;

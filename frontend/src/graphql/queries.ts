@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { TypedDocumentNode } from '@apollo/client';
-import { PersistentCacheStatus, Assignment, Subject } from '@server/types';
+import { PersistentCacheStatus, Assignment, Subject, AssignmentDetail } from '@server/types';
 
 export const PERSISTENT_CACHE_STATUS_QUERY: TypedDocumentNode<{persistentCacheStatus: PersistentCacheStatus}> = gql`
     query PersistentCacheStatus {
@@ -35,6 +35,7 @@ export const ASSIGNMENTS_FOR_SUBJECT_QUERY: TypedDocumentNode<{allAssignmentsFor
     query AssignmentsForSubjectQuery($projectId: Int) {
         allAssignmentsForSubject(projectId: $projectId) {
 	        id,
+	        projectId,
             abbreviation,
 	        description,
             name,
@@ -61,4 +62,13 @@ export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{upcomingAssignments:
             submission_date
         }
     }
+`;
+
+export const ASSIGNMENT_DETAIL_QUERY: TypedDocumentNode<{assignmentDetail: AssignmentDetail}> = gql`
+	query AssignmentDetailQuery($projectId: Int, $taskDefId: Int) {
+		assignmentDetail(projectId: $projectId, taskDefId: $taskDefId) {
+			taskSheetUrl,
+			taskResourcesUrl
+		}
+	}
 `;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
 import { TabSection } from './Tabs.styled.ts';
 import { getTypes, object_key_first, slugify } from '../../../utils.ts';
 import { AssignmentCluster, AssignmentGroup } from '@server/types';

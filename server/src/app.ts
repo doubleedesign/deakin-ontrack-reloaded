@@ -15,6 +15,7 @@ import bodyParser from 'body-parser';
 import listEndpoints from 'express-list-endpoints';
 import router from './rest/endpoints.ts';
 import { upcomingAssignmentsResolver } from './resolvers/upcomingAssignments.ts';
+import { assignmentDetailResolver } from './resolvers/assignmentDetail.ts';
 
 
 const app = express();
@@ -29,7 +30,8 @@ const graphQLServer = new ApolloServer({
 			...persistentCacheResolver,
 			...currentSubjectsResolver,
 			...assignmentsForSubjectResolver,
-			...upcomingAssignmentsResolver
+			...upcomingAssignmentsResolver,
+			...assignmentDetailResolver
 		}
 	},
 });

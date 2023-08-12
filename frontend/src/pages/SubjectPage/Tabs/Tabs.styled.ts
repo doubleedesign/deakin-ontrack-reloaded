@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Row, Col } from '../../../components/common.styled.ts';
 import { breakpointUp } from '@doubleedesign/styled-media-queries';
-import { meetsContrastGuidelines, readableColor, shade } from 'polished';
+import { meetsContrastGuidelines, readableColor, shade, transparentize } from 'polished';
 import { StyledButton } from '../../../components/Button/Button.styled.ts';
 import { ButtonGroupWrapper } from '../../../components/ButtonGroup/ButtonGroup.styled.ts';
 import { isHexColor } from '../../../utils.ts';
@@ -9,7 +9,6 @@ import { isHexColor } from '../../../utils.ts';
 export const TabSection = styled(Row)`
 	display: flex;
 	flex-wrap: wrap;
-	align-items: flex-start;
 	margin-bottom: ${props => props.theme.spacing.lg};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
@@ -17,7 +16,7 @@ export const TabSection = styled(Row)`
     `)};
 `;
 
-export const TabNavWrapper = styled(Col).attrs({ as: 'nav' })`
+export const TabNavWrapper = styled(Col).attrs({ as: 'nav', 'data-component-id': 'TabNav' })`
     width: 100%;
     flex-basis: 100%;
 
@@ -111,7 +110,7 @@ export const TabNavButton = styled(StyledButton).attrs((props: EachTabProps) => 
 	}
 `;
 
-export const TabPanels = styled.div`
+export const TabPanels = styled.div.attrs({ 'data-component-id': 'TabPanels' })`
 	width: 100%;
 	flex-basis: 100%;
 
@@ -130,9 +129,40 @@ export const TabContentWrapper = styled.div.attrs((props: EachTabProps) => ({
 	'aria-expanded': props.open,
 	'tabIndex': props.open ? 0 : -1
 }))<EachTabProps>`
+	height: 100%;
 	display: ${props => props.open ? 'block' : 'none'};
 
     ${props => breakpointUp(props.theme.breakpoints.lg, css`
         padding-left: 0;
     `)};
 `;
+
+export const TabContentInner = styled(Row) `
+	align-items: unset;
+	height: 100%;
+`;
+
+export const ContentList = styled(Col)`
+	
+    ${props => breakpointUp(props.theme.breakpoints.lg, css`
+	    padding: 0;
+       	width: 40%;
+	    flex-basis: 40%;
+    `)};
+`;
+
+export const ContentDetail = styled(Col)`
+    border: 1px solid ${props => transparentize(0.5, props.theme.colors.reverseSubtle)};
+	border-radius: 0.25rem;
+	margin-bottom: ${props => props.theme.spacing.md};
+	
+    ${props => breakpointUp(props.theme.breakpoints.lg, css`
+       	width: 60%;
+	    flex-basis: 60%;
+    `)};
+	
+	[data-component-id="Loading"]:only-child {
+		height: 100%;
+	}
+`;
+

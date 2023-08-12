@@ -11,14 +11,14 @@ import ErrorPage from './pages/ErrorPage/ErrorPage.tsx';
 import UITest from './pages/UITest/UITest.tsx';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faS, faLightbulb, faListUl, faUserGear, faArrowUpRightFromSquare, faCircleCheck, faCircleExclamation, faTriangleExclamation,
-	faWrench, faHourglassHalf, faAlarmExclamation, faAlarmClock, faCalendarClock, faCircle, faAngleDown } from '@fortawesome/pro-solid-svg-icons';
+	faWrench, faHourglassHalf, faAlarmExclamation, faAlarmClock, faCalendarClock, faCircle, faAngleDown, faDownload } from '@fortawesome/pro-solid-svg-icons';
 import { fal, faLightbulbOn, faXmark, faArrowRight } from '@fortawesome/pro-light-svg-icons';
 import { faD, faLoader, faComments, faCommentsQuestion, faGear, faCalendarLines,
 	faCircleQuarter, faCircleHalf, faCircleThreeQuarters, faToggleLargeOn, faToggleLargeOff } from '@fortawesome/pro-duotone-svg-icons';
 library.add(fal, faS, faD, faLightbulb, faLightbulbOn, faListUl, faXmark, faUserGear, faArrowUpRightFromSquare, faCircleCheck,
 	faCircleExclamation, faTriangleExclamation, faLoader, faComments, faWrench, faCommentsQuestion, faHourglassHalf, faGear,
 	faAlarmExclamation, faAlarmClock, faCalendarClock, faCalendarLines, faCircleQuarter, faCircleHalf, faCircleThreeQuarters, faCircle,
-	faToggleLargeOn, faToggleLargeOff, faArrowRight, faAngleDown);
+	faToggleLargeOn, faToggleLargeOff, faArrowRight, faAngleDown, faDownload);
 
 const client = new ApolloClient({
 	uri: 'http://localhost:5000/graphql',

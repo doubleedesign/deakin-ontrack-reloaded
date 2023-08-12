@@ -2,6 +2,8 @@ import { RESTDataSource } from '@apollo/datasource-rest';
 import { ProjectDetail, ProjectOverview, UnitDetail } from './types';
 import fs from 'fs';
 import { GraphQLError } from 'graphql/error';
+import axios from 'axios';
+import chalk from 'chalk';
 
 /**
  * Each unit enrolment you have is for some reason called a Project in the OnTrack API.
@@ -142,6 +144,56 @@ export class Ontrack extends RESTDataSource {
 			}
 			else {
 				throw new GraphQLError('Attempted to load from a cached file, but the requested data was not in it.', {
+					extensions: {
+						code: 404,
+						stacktrace: './server/src/datasources/OnTrack/ontrack.ts'
+					}
+				});
+			}
+		}
+	}
+
+
+	/**
+	 * Fetch file, save it to the cache folder, and return the URL of the saved/cached file
+	 * @param unitId
+	 * @param taskDefId
+	 * @param sourceFile
+	 * @param outputFile
+	 * @param format
+	 */
+	public async getTaskDefFile(unitId: number, taskDefId: number, sourceFile: string, outputFile: string, format: string): Promise<string> {
+		const path = `${this.baseURL}/api/units/${unitId}/task_definitions/${taskDefId}/${sourceFile}`;
+		const saved = `./src/cache/files/${outputFile}`;
+		const output = `http://localhost:5000/files/${outputFile}`;
+		try {
+			const result = await axios.get(path, {
+				headers: {
+					'Auth-Token': this.options.headers['Auth-Token'],
+					'Username': this.options.headers['Username'],
+					Accept: format,
+					'Content-Type': format
+				},
+				responseType: 'stream'
+			});
+			if(result.status === 200) {
+				result.data.pipe(fs.createWriteStream(saved));
+
+				return output;
+			}
+		}
+		catch(error) {
+			console.warn(chalk.yellow(error.message));
+			console.warn(chalk.yellow('Trying to load from cache...'));
+			if(fs.existsSync(saved)) {
+				const cached = fs.readFileSync(saved);
+				if(cached) {
+					console.log(chalk.green('Loaded file from cache'));
+					return output;
+				}
+			}
+			else {
+				throw new GraphQLError('Attempted to load a cached file, but it wasn\'t there.', {
 					extensions: {
 						code: 404,
 						stacktrace: './server/src/datasources/OnTrack/ontrack.ts'

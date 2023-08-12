@@ -3,6 +3,8 @@ import { TaskStatus } from './datasources/OnTrack/types';
 import { DeakinSync } from './datasources/DeakinSync/deakinsync';
 import { CloudDeakin } from './datasources/CloudDeakin/clouddeakin';
 
+// Note: As a general rule, the idea is that snake_case fields are brought in as-is from the API and camelCase are ones I've added/customised
+
 export type ServerContext = {
 	datasources: {
 		onTrack: Ontrack,
@@ -53,6 +55,11 @@ export type Assignment = {
 	is_graded: boolean;
 	maxPoints: number;
 	awardedPoints: number;
+}
+
+export type AssignmentDetail = {
+	taskSheetUrl: string;
+	taskResourcesUrl: string
 }
 
 export type AssignmentGroup = {

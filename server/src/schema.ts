@@ -1,11 +1,14 @@
 import gql from 'graphql-tag';
 
+// Note: As a general rule, the idea is that snake_case fields are brought in as-is from the API and camelCase are ones I've added/customised
+
 export const typeDefs = gql`
 	type Query {
 		persistentCacheStatus: PersistentCacheStatus
 		currentSubjects: [Subject]
 		allAssignmentsForSubject(projectId: Int): [Assignment]
 		upcomingAssignments(weeks: Int): [Assignment]
+		assignmentDetail(projectId: Int, taskDefId: Int): AssignmentDetail
 	}
 	
 	type PersistentCacheStatus {
@@ -49,5 +52,10 @@ export const typeDefs = gql`
 		isGraded: Boolean
 		maxPoints: Int
 		awardedPoints: Int
+	}
+	
+	type AssignmentDetail {
+        taskSheetUrl: String
+        taskResourcesUrl: String
 	}
 `;
