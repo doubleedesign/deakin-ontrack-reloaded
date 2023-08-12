@@ -44,7 +44,6 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 			data.then(result => {
 				if(!result) {
 					setInlineErrors(['Problem loading task files']);
-					setLoading(false);
 				}
 			});
 		}
@@ -68,16 +67,16 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 						<h2>{assignment.abbreviation} {assignment.name}</h2>
 						<p>{assignment.description}</p>
 					</AssignmentDetailText>
-					{inlineInfo && inlineInfo.map(message => {
+					{inlineInfo && inlineInfo.map((message, index) => {
 						return (
-							<Alert type="info">
+							<Alert type="info" key={index}>
 								<p><strong>{message}</strong></p>
 							</Alert>
 						);
 					})}
-					{inlineErrors && inlineErrors.map(error => {
+					{inlineErrors && inlineErrors.map((error, index) => {
 						return (
-							<Alert type="error">
+							<Alert type="error" key={index}>
 								<p><strong>{error}</strong></p>
 							</Alert>
 						);
@@ -98,7 +97,7 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 					}
 				</AssignmentDetailWrapper>
 			}
-			{loading && !assignment && <Loading/>}
+			{loading && <Loading/>}
 		</>
 	);
 };

@@ -47,7 +47,7 @@ export const auth = {
 		const authenticated: DeakinCredential[] = [];
 		const systemQty = 3;
 
-		const trimmedOtToken = submittedOtToken.trim();
+		const trimmedOtToken = submittedOtToken ? submittedOtToken.trim() : '';
 		// Make sure "Bearer" won't be included twice, and it doesn't matter if it's submitted with it or not
 		const trimmedDsToken = submittedDsToken ? submittedDsToken.replaceAll('Bearer', '').trim() : '';
 		const trimmedCdToken = submittedCdToken ? submittedCdToken.replaceAll('Bearer', '').trim() : '';

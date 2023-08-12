@@ -47,13 +47,6 @@ export const SubjectLink = styled(NavLink)<{color: string}>`
         transition: all 0.2s ease;
 	}
 
-    &:hover, &:focus, &:active {
-        background: ${props => darken(0.15, isHexColor(props.color) ? props.color : props.theme.colors[props.color])};
-    
-	    svg {
-	    }
-    }
-
     &:focus {
         text-decoration-color: currentColor;
     }

@@ -66,12 +66,14 @@ export function getColorForStatus(status: string) {
 }
 
 export function isHexColor(str: string): boolean {
-	const matches = str.match(/[0-9A-Fa-f]{6}/g);
-	if(!matches) {
-		return false;
-	}
-	else if(matches.length > 0) {
-		return true;
+	if(str) {
+		const matches = str.match(/[0-9A-Fa-f]{6}/g);
+		if (!matches) {
+			return false;
+		}
+		else if (matches.length > 0) {
+			return true;
+		}
 	}
 	return false;
 }
