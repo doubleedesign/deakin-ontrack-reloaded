@@ -50,6 +50,10 @@ export const SubjectLink = styled(NavLink)<{color: string}>`
     &:focus {
         text-decoration-color: currentColor;
     }
+
+    &:hover, &:focus, &:active {
+        background: ${props => darken(0.15, isHexColor(props.color) ? props.color : props.theme.colors[props.color])};
+    }
 `;
 
 export const ProgressBarGroup = styled.figure.attrs({ role: 'group' })`
