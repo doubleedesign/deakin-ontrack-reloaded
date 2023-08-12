@@ -13,7 +13,7 @@ export function useStatusGroupedAssignments(projectId: number, targetGrade: numb
 	});
 
 	useEffect(() => {
-		if(!loading && data) {
+		if(!loading && data && data.allAssignmentsForSubject && data.allAssignmentsForSubject) {
 			const filtered = data.allAssignmentsForSubject.filter((item: Assignment) => item.target_grade <= targetGrade);
 			const ordered = filtered.sort((a, b) => Date.parse(a.target_date) - Date.parse(b.target_date));
 			const grouped = groupBy(ordered, 'status');

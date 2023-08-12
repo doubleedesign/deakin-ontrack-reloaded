@@ -14,7 +14,7 @@ export function useGradeGroupedAssignments(projectId: number, targetGrade: numbe
 
 
 	useEffect(() => {
-		if(!loading && data) {
+		if(!loading && data && data.allAssignmentsForSubject) {
 			const filtered = data.allAssignmentsForSubject.filter((item: Assignment) => {
 				if(!showComplete) {
 					return item.target_grade <= targetGrade && item.status !== 'complete';
