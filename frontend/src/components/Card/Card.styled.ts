@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components';
 import { Col } from '../common.styled.ts';
-import { darken, transparentize } from 'polished';
+import { darken, readableColor, transparentize } from 'polished';
 import { PropsWithRef } from 'react';
+import { getColorForStatus, isHexColor } from '../../utils.ts';
 
 export const CardWrapper = styled(Col).attrs({ 'data-component-id': 'CardWrapper' })`
 	width: 100%;
@@ -51,7 +52,7 @@ export const CardInner = styled.div.attrs({ 'data-component-id': 'CardInner' })<
 	}
 `;
 
-export const CardButton = styled.button<{active: boolean}>`
+export const CardButton = styled.button<{active: boolean, color: string}>`
 	width: 100%;
 	appearance: none;
 	background: transparent;
@@ -59,12 +60,16 @@ export const CardButton = styled.button<{active: boolean}>`
     text-align: unset;
 	font-family: ${props => props.theme.fonts.body};
 	cursor: pointer;
-	opacity: ${props => props.active ? '1' : '0.6'};
 	transition: all 0.3s ease;
 	
 	${CardInner} {
+        background: ${props => props.active ? (isHexColor(props.color) ? props.color : props.theme.colors[props.color]) : props.theme.colors.contentBackground};
        	border-color: ${props => props.active && props.theme.colors.logo};
         box-shadow: ${props => props.active && `0 0 0.125rem 1px ${props.theme.colors.logo}`};
+		
+		* {
+            color: ${props => props.active && readableColor((isHexColor(props.color) ? props.color : props.theme.colors[props.color]))};
+		}
 	}
 	
 	&:focus-visible {

@@ -26,6 +26,12 @@ const DateInterval: FC<DateIntervalProps> = ({ date, color, status }) => {
 			month: 'long'
 		})}`;
 	}
+	else if(['time_exceeded', 'feedback_exceeded'].includes(status)) {
+		timeStatement = `Submitted on ${new Date(Date.parse(date)).toLocaleDateString('en-AU', {
+			day: 'numeric',
+			month: 'long'
+		})}`;
+	}
 	else {
 		const timeLeft = intervalToDuration({
 			start: today,

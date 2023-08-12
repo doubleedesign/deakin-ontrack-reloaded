@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useMemo, useEffect, useState } from 'react';
 import { DateDataWrapper } from './AssignmentCard.styled.ts';
 import IconForStatus from '../../IconForStatus/IconForStatus.tsx';
 import { getColorForStatus } from '../../../utils.ts';
@@ -17,29 +17,35 @@ interface CardProps {
 
 const AssignmentCard: FC<CardProps> = ({ assignment, showSubject }) => {
 	const { currentSubjects } = useContext(AppContext);
-	const [cardStatus, setCardStatus] = useState<string>(assignment.status);
 	const subject = currentSubjects.find(subject => subject.projectId === assignment.projectId);
 
-	useEffect(() => {
+	const submitted = useMemo(() => {
+		if(assignment.submission_date) {
+			return true;
+		}
+		return false;
+	}, [assignment.submission_date]);
+
+	const cardStatus = useMemo(() => {
 		const today = new Date();
 		const due = new Date(Date.parse(assignment.target_date));
 		const sunday = nextSunday(today);
 
-		if(assignment.status === 'complete' || assignment.status === 'ready_for_feedback' || assignment.status === 'discuss' || assignment.status === 'fix_and_resubmit') {
-			setCardStatus(assignment.status);
+		if(['not_started', 'working_on_it', 'fix_and_resubmit', 'discuss'].includes(assignment.status)) {
+			if (isBefore(due, today)) {
+				return 'overdue';
+			}
+			else if (isSameDay(due, today)) {
+				return 'today';
+			}
+			else if (isSameDay(due, add(today, { days: 1 }))) {
+				return 'tomorrow';
+			}
+			else if (isBefore(due, sunday) || isSameDay(due, sunday)) {
+				return 'upcoming';
+			}
 		}
-		else if(isBefore(due, today)) {
-			setCardStatus('overdue');
-		}
-		else if(isSameDay(due, today)) {
-			setCardStatus('today');
-		}
-		else if(isSameDay(due, add(today, { days: 1 }))) {
-			setCardStatus('tomorrow');
-		}
-		else if(isBefore(due, sunday) || isSameDay(due, sunday)) {
-			setCardStatus('upcoming');
-		}
+		return assignment.status;
 	}, [assignment.target_date, assignment.status]);
 
 	return (
@@ -57,7 +63,7 @@ const AssignmentCard: FC<CardProps> = ({ assignment, showSubject }) => {
 							<DateTag date={assignment.target_date} color={getColorForStatus(cardStatus)}/>
 						}
 						{/* eslint-disable-next-line max-len */}
-						<DateInterval date={['complete', 'ready_for_feedback'].includes(assignment.status) ? assignment.completion_date || assignment.submission_date : assignment.target_date}
+						<DateInterval date={['complete', 'ready_for_feedback', 'time_exceeded', 'feedback_exceeded'].includes(assignment.status) ? assignment.completion_date || assignment.submission_date : assignment.target_date}
 						              color={getColorForStatus(cardStatus)}
 						              status={assignment.status} />
 					</DateDataWrapper>

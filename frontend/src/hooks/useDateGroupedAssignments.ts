@@ -20,7 +20,7 @@ export function useDateGroupedAssignments(projectId: number, targetGrade: number
 			const filtered = data.allAssignmentsForSubject.filter((item: Assignment) => item.target_grade <= targetGrade);
 			const ordered = filtered.sort((a, b) => Date.parse(a.target_date) - Date.parse(b.target_date));
 			const complete_or_submitted = ordered.filter((item: Assignment) => {
-				return ['complete', 'ready_for_feedback'].includes(item.status);
+				return ['complete', 'ready_for_feedback'].includes(item.status) || item.submission_date;
 			});
 			const overdue = filtered.filter(item => {
 				const today = new Date();

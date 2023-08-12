@@ -5,6 +5,7 @@ import { CallistaUnit } from '../datasources/DeakinSync/types.ts';
 import flatten from 'lodash/flatten';
 import { isWithinInterval, add, isBefore } from 'date-fns';
 import chalk from 'chalk';
+import { assign } from 'lodash';
 
 export const upcomingAssignmentsResolver = {
 	upcomingAssignments: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
@@ -25,9 +26,12 @@ export const upcomingAssignmentsResolver = {
 				}
 			})));
 
-			const incomplete = all.filter((assignment: Assignment) => !['complete', 'ready_for_feedback'].includes(assignment.status));
+			const incomplete = all.filter((assignment: Assignment) => {
+				return !assignment.submission_date;
+			});
 
 			return incomplete.filter((assignment: Assignment) => {
+				console.log(assignment);
 				const today = new Date();
 				const due = new Date(Date.parse(assignment.target_date));
 				return isWithinInterval(due, {
