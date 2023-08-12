@@ -2,7 +2,6 @@
 
 Custom client to view data from Deakin University's OnTrack assessment system, used for IT and CS units. **Now with a sprinkling of DeakinSync & CloudDeakin data!**
 
-
 I'm building this as a learning exercise and to find ways to view and track my course progress and upcoming assessment information that work better for me than the current OnTrack interface. 
 
 A bit about how it's built and how it works: 
@@ -22,6 +21,14 @@ Other important information:
 
 ---
 ## How to use 
+
+>  :warning: :warning: :warning:
+> 
+> **This application is NOT production ready and should only be used locally / in a private environment.**
+> **It downloads and saves data about the individual user's work** and thus publishing it live online in its current state is a **massive privacy issue.**
+> Other students would be able to see your data (and override it with theirs) depending whose credentials are being used; in the event of lack of valid credentials it falls back to using the cached JSON.
+> 
+> :warning: :warning: :warning:
 
 **Prerequisites:** Node, an IDE, and a web browser.
 
@@ -87,11 +94,14 @@ alert("Copied bearer token: " + token[0].access_token);
 
 ### Making your own version
 
+⚠️⚠️⚠️
+**Please see the note under "How to use" about NOT publishing this app online in is current state due to data privacy issues.** In its current state, this app is ONLY suitable for use in a local/private environment.
+
 You are welcome to fork this repo and modify it to find your own way of managing your OnTrack units, and I would love to see what you come up with! Alternatively if you pretty much use my app as-is but have any suggestions or fixes/tweaks, pull requests are also welcome.
 
-There is a work-in-progress [Mock API](mockapi/README.md) included that you can use for developing with fake data.
+There is a work-in-progress [Mock API](mockapi/README.md) included that you can use for developing with fake data. (However, I have done a LOT of work using my real data since I last worked on the mock API, so it's...probably not even close to complete and usable yet.)
 
-:warning: If you would like to use this repo as a starting point for your own app, I would really appreciate it if you definitely actually _fork_ it (don't download and copy) on GitHub. This is so it will show up in the list of forks and I (and others) can learn from your work as well, and can form part of giving me due credit by making what you used from my project clear in the commit history.
+✏️ If you would like to use this repo as a starting point for your own app, I would really appreciate it if you definitely actually _fork_ it (don't download and copy) on GitHub. This is so it will show up in the list of forks and I (and others) can learn from your work as well, and can form part of giving me due credit by making what you used from my project clear in the commit history.
 
 
 ---
