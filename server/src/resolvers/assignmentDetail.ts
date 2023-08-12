@@ -5,7 +5,7 @@ import chalk from 'chalk';
 export const assignmentDetailResolver = {
 	assignmentDetail: async (_: any, args: any, context: ServerContext): Promise<AssignmentDetail> => {
 		try {
-			const onTrackUnits: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
+			const onTrackUnits: ProjectOverview[] = await context.datasources.onTrack.getProjects();
 			const isOnTrackUnit: ProjectOverview = onTrackUnits.find(item => item.id === args.projectId);
 
 			if (isOnTrackUnit) {

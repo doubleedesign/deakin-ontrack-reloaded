@@ -5,8 +5,9 @@ import { GraphQLError } from 'graphql/error';
 
 export class CloudDeakin extends RESTDataSource {
 	private readonly options: { headers: { Authorization: string } };
+	private readonly demoMode: boolean;
 
-	constructor(token: string, baseURL: string) {
+	constructor(token: string, baseURL: string, demoMode: boolean) {
 		super();
 		this.options = {
 			headers: {
@@ -14,22 +15,34 @@ export class CloudDeakin extends RESTDataSource {
 			}
 		};
 		this.baseURL = baseURL;
+		this.demoMode = demoMode;
 	}
 
 	public async getAssignmentsForUnit(id: number): Promise<BrightspaceAssignment[]> {
 		try {
 			const result = await this.get(`/d2l/api/le/1.45/${id}/dropbox/folders/`, this.options);
-			const file = fs.readFileSync('./src/cache/cloud-assignments.json');
+			let file = fs.readFileSync('./src/cache/cloud-assignments.json');
+			if(this.demoMode) {
+				file = fs.readFileSync('./src/cache/demo-cloud-assignments.json');
+			}
 			const cached = JSON.parse(file.toString());
 			if(cached && result) {
-				cached[id] = result;
-				fs.writeFileSync('./src/cache/cloud-assignments.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+				cached[id] = result.filter(item => item.Name !== 'Check your Work: Turnitin');
+				if(this.demoMode) {
+					fs.writeFileSync('./src/cache/demo-cloud-assignments.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+				}
+				else {
+					fs.writeFileSync('./src/cache/cloud-assignments.json', JSON.stringify(cached, null, 4), { flag: 'w' });
+				}
 			}
 
-			return result;
+			return result.filter(item => item.Name !== 'Check your Work: Turnitin');
 		}
 		catch(error) {
-			const file = fs.readFileSync('./src/cache/cloud-assignments.json');
+			let file = fs.readFileSync('./src/cache/cloud-assignments.json');
+			if(this.demoMode) {
+				file = fs.readFileSync('./src/cache/demo-cloud-assignments.json');
+			}
 			const cached = JSON.parse(file.toString());
 
 			if(cached[id]) {

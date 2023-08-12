@@ -8,8 +8,8 @@ import pick from 'lodash/pick';
 export const currentSubjectsResolver = {
 	currentSubjects: async (_: any, args: any, context: ServerContext): Promise<Subject[]> => {
 		try {
-			const currentUnits: CallistaUnit[] = await context.datasources.deakinSync.getCurrentUnits();
-			const onTrackProjects: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
+			const currentUnits: CallistaUnit[] = await context.datasources.deakinSync.getUnits();
+			const onTrackProjects: ProjectOverview[] = await context.datasources.onTrack.getProjects();
 
 			if(currentUnits || onTrackProjects) {
 				const otItems: Subject[] = await Promise.all(onTrackProjects.map(async (item: ProjectOverview) => {

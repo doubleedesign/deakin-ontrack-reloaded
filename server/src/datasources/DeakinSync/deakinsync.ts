@@ -4,8 +4,9 @@ import fs from 'fs';
 
 export class DeakinSync extends RESTDataSource {
 	private readonly options: { headers: { Authorization: string } };
+	private readonly demoMode: boolean;
 
-	constructor(token: string, baseURL: string) {
+	constructor(token: string, baseURL: string, demoMode: boolean) {
 		super();
 		this.options = {
 			headers: {
@@ -13,6 +14,7 @@ export class DeakinSync extends RESTDataSource {
 			}
 		};
 		this.baseURL = baseURL;
+		this.demoMode = demoMode;
 	}
 
 	public async getCurrentUnits(): Promise<CallistaUnit[]> {
@@ -32,5 +34,44 @@ export class DeakinSync extends RESTDataSource {
 				throw error;
 			}
 		}
+	}
+
+	public async getSelectedUnitsForDemo(): Promise<CallistaUnit[]> {
+		try {
+			const all = await this.get('/v1/units/all', this.options);
+			const selected: CallistaUnit[] = [];
+			all.deakinUnits.forEach(yearObject => {
+				yearObject.teachingPeriods.forEach(period => {
+					period.callistaUnits.forEach((unit: CallistaUnit) => {
+						// checking credit points accounts for being enrolled twice, e.g. late withdrawal
+						if(['ADD302', 'SIT217', 'SIT102', 'SIT331', 'SIT323', 'SIT192', 'SIT176'].includes(unit.code) && unit.creditPoints > 0) {
+							selected.push(unit);
+						}
+					});
+				});
+			});
+
+			fs.writeFileSync('./src/cache/demo-units.json', JSON.stringify(selected, null, 4), { flag: 'w' });
+
+			return selected;
+		}
+		catch(error) {
+			console.log(error);
+			try {
+				const cached = fs.readFileSync('./src/cache/demo-units.json');
+				return JSON.parse(cached.toString());
+			}
+			catch {
+				throw error;
+			}
+		}
+	}
+
+	public async getUnits(): Promise<CallistaUnit[]> {
+		if(this.demoMode) {
+			return this.getSelectedUnitsForDemo();
+		}
+
+		return this.getCurrentUnits();
 	}
 }

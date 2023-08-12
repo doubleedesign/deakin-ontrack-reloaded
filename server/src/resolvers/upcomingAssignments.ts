@@ -10,8 +10,8 @@ import { assign } from 'lodash';
 export const upcomingAssignmentsResolver = {
 	upcomingAssignments: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
 		try {
-			const allUnits: CallistaUnit[] = await context.datasources.deakinSync.getCurrentUnits();
-			const onTrackUnits: ProjectOverview[] = await context.datasources.onTrack.getCurrentProjects();
+			const allUnits: CallistaUnit[] = await context.datasources.deakinSync.getUnits();
+			const onTrackUnits: ProjectOverview[] = await context.datasources.onTrack.getProjects();
 
 			const all: Assignment[] = flatten(await Promise.all(allUnits.map((item: CallistaUnit) => {
 				const onTrackProject: ProjectOverview = onTrackUnits.find(subItem => {
@@ -31,7 +31,6 @@ export const upcomingAssignmentsResolver = {
 			});
 
 			return incomplete.filter((assignment: Assignment) => {
-				console.log(assignment);
 				const today = new Date();
 				const due = new Date(Date.parse(assignment.target_date));
 				return isWithinInterval(due, {

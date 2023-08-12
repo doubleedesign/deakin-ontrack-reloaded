@@ -10,5 +10,6 @@ export type CallistaUnit = {
 	period: 2;
 	deliveryMode: 'Cloud' | 'Campus',
 	calendarType: 'TRI-1' | 'TRI-2' | 'TRI-3',
-	source: 'callista' | 'd2l'
+	source: 'callista' | 'd2l',
+	creditPoints: number
 }

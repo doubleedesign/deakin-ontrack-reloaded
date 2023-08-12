@@ -7,7 +7,7 @@ import chalk from 'chalk';
 export const commonResolverFunctions = {
 	assignmentsForSubject: async (_: any, args: any, context: ServerContext): Promise<Assignment[]> => {
 		try {
-			const onTrackUnits = await context.datasources.onTrack.getCurrentProjects();
+			const onTrackUnits = await context.datasources.onTrack.getProjects();
 			const isOnTrackUnit = onTrackUnits.find(item => item.id === args.projectId);
 
 			if(isOnTrackUnit) {
@@ -93,6 +93,7 @@ export const commonResolverFunctions = {
 			}
 		}
 		catch (error) {
+			console.log(error);
 			console.error(chalk.red(error.message));
 			console.log(error.extensions);
 			/*

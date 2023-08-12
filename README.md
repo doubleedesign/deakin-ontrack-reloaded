@@ -35,7 +35,7 @@ Other important information:
 1. Fork this repo.
 2. Clone your fork on your machine.
 3. In a terminal, un `npm install` from the root of the project (it uses [NPM workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces))
-4. In the terminal, go into the server folder with `cd server` and run `npm run start` to run with the real OnTrack API or `npm run dev` to run with the [Mock API](mockapi/README.md)
+4. In the terminal, go into the server folder with `cd server` and run `npm run dev` to run with the real APIs and your current enrolment, or `npm run test` to run with a selection of past units (to be replaced with the [Mock API](mockapi/README.md) when I finish it)
     - Optionally, go to http://localhost:5000 in your browser to use [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/v2/testing/graphql-playground/)
 5. In a second terminal window, go into the frontend folder with `cd frontend` and run `npm run dev`
    - Open the URL shown in your terminal.
@@ -90,7 +90,7 @@ const token = Object.values(JSON.parse(data));
 navigator.clipboard.writeText(token[0].access_token);
 alert("Copied bearer token: " + token[0].access_token);
 ```
-**Note:** I have had issues with the token in local storage being expired, and basically having to clear it and browse around until a new one appears.
+**Note:** I have had issues with the token in local storage being expired. Explicitly ogging right out of CloudDeakin and back in again seems to be the most reliable way to get a new token.
 
 ### Making your own version
 

@@ -12,17 +12,19 @@ import chalk from 'chalk';
  * whereas the Unit details contain the definition of the unit itself.
  */
 export class Ontrack extends RESTDataSource {
-	private readonly options: { headers: { Username: string; 'Auth-Token': string } };
+	private readonly options: { headers: { Username: string; 'Auth-Token': string; } };
+	private readonly demoMode: boolean;
 
-	constructor(username: string, token: string, baseURL: string) {
+	constructor(username: string, token: string, baseURL: string, demoMode: boolean) {
 		super();
 		this.options = {
 			headers: {
 				'Auth-Token': token,
-				'Username': username
+				'Username': username,
 			}
 		};
 		this.baseURL = baseURL;
+		this.demoMode = demoMode;
 	}
 
 	/**
@@ -54,7 +56,7 @@ export class Ontrack extends RESTDataSource {
 			const projects = await this.get('/api/projects/?include_inactive=false', this.options);
 
 			// At the time of writing,
-			// the include_inactive parameter doesn't actually work, it returns all projects regardless
+			// the include_inactive parameter doesn't actually work like I expect, it returns all projects regardless
 			// (the front-end code in OnTrack just outputs an empty component for inactive units)
 			// so I need to do my own filtering
 			const filtered = projects.filter(project => {
@@ -74,6 +76,48 @@ export class Ontrack extends RESTDataSource {
 				throw error;
 			}
 		}
+	}
+
+	/**
+	 * A selection of units I have undertaken/am undertaking,
+	 * to use for demo/testing purposes (eventually this should be replaced with a full mock API)
+	 */
+	public async getSelectedProjectsForDemo(): Promise<ProjectOverview[]> {
+		try {
+			const projects = await this.get('/api/projects', this.options);
+
+			const filtered = projects.filter(project => {
+				return [
+					76205, // SIT217
+					63174, // SIT331
+					57704, // SIT323
+					58695, // SIT102
+					47250, // SIT192
+				].includes(project.id);
+			});
+
+			fs.writeFileSync('./src/cache/projects-demo.json', JSON.stringify(filtered, null, 4), { flag: 'w' });
+
+			return filtered;
+		}
+		catch(error) {
+			try {
+				const cached = fs.readFileSync('./src/cache/projects-demo.json');
+				return JSON.parse(cached.toString());
+			}
+			catch {
+				throw error;
+			}
+		}
+	}
+
+
+	public async getProjects(): Promise<ProjectOverview[]> {
+		if(this.demoMode) {
+			return this.getSelectedProjectsForDemo();
+		}
+
+		return this.getCurrentProjects();
 	}
 
 	/**

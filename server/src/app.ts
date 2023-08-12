@@ -37,12 +37,16 @@ const graphQLServer = new ApolloServer({
 });
 
 async function startServer() {
-	let otURL = 'https://ontrack.deakin.edu.au';
+	const otURL = 'https://ontrack.deakin.edu.au';
+	let demoMode = false;
 	const dsURL = 'https://bff-sync.sync.deakin.edu.au';
 	const cdURL = 'https://d2l.deakin.edu.au';
-	if (process.env.NODE_ENV.trim() == 'development') {
-		otURL = 'http://localhost:6001';
+	if (process.env.NODE_ENV.trim() == 'development' || process.env.NODE_ENV.trim() == 'test') {
+		//otURL = 'http://localhost:6001'; // TODO: MockAPI
 		// TODO: Mock DeakinSync and CloudDeakin
+	}
+	if(process.env.NODE_ENV.trim() == 'test') {
+		demoMode = true; // TODO: Replace use of demo mode functions in datasource with full mock API for testing
 	}
 
 	await graphQLServer.start();
@@ -52,9 +56,9 @@ async function startServer() {
 			context: async ({ req, res }) => {
 				return ({
 					datasources: {
-						onTrack: new Ontrack(<string>req.headers.username, <string>req.headers.ontrack, otURL),
-						deakinSync: new DeakinSync(<string>req.headers.deakinsync, dsURL),
-						cloudDeakin: new CloudDeakin(<string>req.headers.clouddeakin, cdURL)
+						onTrack: new Ontrack(<string>req.headers.username, <string>req.headers.ontrack, otURL, demoMode),
+						deakinSync: new DeakinSync(<string>req.headers.deakinsync, dsURL, demoMode),
+						cloudDeakin: new CloudDeakin(<string>req.headers.clouddeakin, cdURL, demoMode)
 					}
 				});
 			},
