@@ -14,6 +14,7 @@ export const assignmentDetailResolver = {
 				const taskDef: TaskDefinition = unitDetails.task_definitions.find(def => def.id === args.taskDefId);
 
 				return {
+					isOnTrackUnit: true,
 					taskSheetUrl: taskDef.has_task_sheet ?
 						await context.datasources.onTrack.getTaskDefFile(unitId, args.taskDefId, 'task_pdf.json', `${unitDetails.code.split('/')[0]}-${taskDef.abbreviation}.pdf`, 'application/pdf')
 						: undefined,
@@ -24,6 +25,7 @@ export const assignmentDetailResolver = {
 			}
 			else {
 				return {
+					isOnTrackUnit: false,
 					taskSheetUrl: undefined,
 					taskResourcesUrl: undefined
 				};

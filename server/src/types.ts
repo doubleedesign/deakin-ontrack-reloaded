@@ -58,6 +58,7 @@ export type Assignment = {
 }
 
 export type AssignmentDetail = {
+	isOnTrackUnit: boolean;
 	taskSheetUrl: string;
 	taskResourcesUrl: string
 }

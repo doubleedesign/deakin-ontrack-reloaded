@@ -18,6 +18,10 @@ export interface TabContentProps {
 export const TabContent: React.FC<TabContentProps> = function({ items, type, viewMode, openTab }) {
 	const [selected, setSelected] = useState<Assignment | undefined>(undefined);
 
+	useEffect(() => {
+		setSelected(undefined);
+	}, [openTab]);
+
 	return (
 		<TabPanels>
 			{(Array.isArray(items) && type === 'cluster') && (items as AssignmentCluster[]).map((item: AssignmentCluster) => {
@@ -30,12 +34,14 @@ export const TabContent: React.FC<TabContentProps> = function({ items, type, vie
 							<ContentList>
 								{item.assignments.map((assignment: Assignment) => {
 									return (
-										<AssignmentCard assignment={assignment} />
+										<CardButton key={assignment.id} onClick={() => setSelected(assignment)} active={selected === assignment}>
+											<AssignmentCard assignment={assignment}/>
+										</CardButton>
 									);
 								})}
 							</ContentList>
 							<ContentDetail>
-								<AssignmentDetail assignment={selected}/>
+								{selected && <AssignmentDetail assignment={selected}/>}
 							</ContentDetail>
 						</TabContentInner>
 					</TabContentWrapper>
@@ -63,7 +69,7 @@ export const TabContent: React.FC<TabContentProps> = function({ items, type, vie
 								})}
 							</ContentList>
 							<ContentDetail>
-								<AssignmentDetail assignment={selected}/>
+								{selected && <AssignmentDetail assignment={selected}/>}
 							</ContentDetail>
 						</TabContentInner>
 					</TabContentWrapper>

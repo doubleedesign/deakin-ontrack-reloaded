@@ -19,10 +19,12 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 	const [loading, setLoading] = useState<boolean>(true);
 	const [details, setDetails] = useState<AssignmentDetail>();
 	const [inlineErrors, setInlineErrors] = useState<string[]>([]);
+	const [inlineInfo, setInlineInfo] = useState<string[]>([]);
 
 	useEffect(() => {
 		setLoading(true);
 		setInlineErrors([]);
+		setInlineInfo([]);
 		if(assignment) {
 			const data = getDetails({
 				variables: {
@@ -32,12 +34,17 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 			}).then((response => {
 				setLoading(response.loading);
 				setDetails(response?.data?.assignmentDetail);
+				if(!response?.data?.assignmentDetail.isOnTrackUnit) {
+					setInlineInfo(['This is not an OnTrack unit']);
+				}
+
 				return response?.data?.assignmentDetail;
 			}));
 
 			data.then(result => {
 				if(!result) {
 					setInlineErrors(['Problem loading task files']);
+					setLoading(false);
 				}
 			});
 		}
@@ -61,6 +68,13 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 						<h2>{assignment.abbreviation} {assignment.name}</h2>
 						<p>{assignment.description}</p>
 					</AssignmentDetailText>
+					{inlineInfo && inlineInfo.map(message => {
+						return (
+							<Alert type="info">
+								<p><strong>{message}</strong></p>
+							</Alert>
+						);
+					})}
 					{inlineErrors && inlineErrors.map(error => {
 						return (
 							<Alert type="error">
@@ -68,7 +82,7 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 							</Alert>
 						);
 					})}
-					{details &&
+					{details && details.isOnTrackUnit &&
 						<AssignmentDetailButtons>
 							{details?.taskSheetUrl &&
 								<StyledButton color="info" onClick={downloadTaskSheet}>
@@ -84,7 +98,7 @@ const AssignmentDetailComponent: FC<AssignmentDetailProps> = ({ assignment }) =>
 					}
 				</AssignmentDetailWrapper>
 			}
-			{loading && <Loading/>}
+			{loading && !assignment && <Loading/>}
 		</>
 	);
 };

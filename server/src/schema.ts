@@ -55,6 +55,7 @@ export const typeDefs = gql`
 	}
 	
 	type AssignmentDetail {
+		isOnTrackUnit: Boolean
         taskSheetUrl: String
         taskResourcesUrl: String
 	}

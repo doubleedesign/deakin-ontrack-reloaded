@@ -67,6 +67,7 @@ export const UPCOMING_ASSIGNMENTS_QUERY: TypedDocumentNode<{upcomingAssignments:
 export const ASSIGNMENT_DETAIL_QUERY: TypedDocumentNode<{assignmentDetail: AssignmentDetail}> = gql`
 	query AssignmentDetailQuery($projectId: Int, $taskDefId: Int) {
 		assignmentDetail(projectId: $projectId, taskDefId: $taskDefId) {
+			isOnTrackUnit,
 			taskSheetUrl,
 			taskResourcesUrl
 		}
